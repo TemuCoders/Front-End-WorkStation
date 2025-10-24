@@ -1,0 +1,139 @@
+@if (store.loading()) {
+  <mat-spinner diameter="40"></mat-spinner>
+}
+
+@if (store.error()) {
+  <mat-error>{{ store.error() }}</mat-error>
+}
+
+<mat-card class="workspace-form-card">
+  <mat-card-title>
+    {{ isEdit ? ('workspaceForm.title.edit' | translate) : ('workspaceForm.title.create' | translate) }}
+  </mat-card-title>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="workspace-form">
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>{{ 'workspaceForm.fields.name.label' | translate }}</mat-label>
+      <input
+        matInput
+        formControlName="name"
+        placeholder="{{ 'workspaceForm.fields.name.placeholder' | translate }}"
+      />
+      @if (form.get('name')?.invalid && form.get('name')?.touched) {
+        <mat-error>{{ 'workspaceForm.fields.name.requiredError' | translate }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>{{ 'workspaceForm.fields.description.label' | translate }}</mat-label>
+      <textarea
+        matInput
+        formControlName="description"
+        placeholder="{{ 'workspaceForm.fields.description.placeholder' | translate }}"
+        rows="3"
+      ></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>{{ 'workspaceForm.fields.type.label' | translate }}</mat-label>
+      <mat-select formControlName="type">
+        <mat-option value="private-office">{{ 'workspaceForm.fields.type.options.privateOffice' | translate }}</mat-option>
+        <mat-option value="coworking">{{ 'workspaceForm.fields.type.options.coworking' | translate }}</mat-option>
+        <mat-option value="meeting-room">{{ 'workspaceForm.fields.type.options.meetingRoom' | translate }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>{{ 'workspaceForm.fields.capacity.label' | translate }}</mat-label>
+      <input
+        matInput
+        type="number"
+        formControlName="capacity"
+        placeholder="{{ 'workspaceForm.fields.capacity.placeholder' | translate }}"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>{{ 'workspaceForm.fields.pricePerDay.label' | translate }}</mat-label>
+      <input
+        matInput
+        type="number"
+        formControlName="pricePerDay"
+        placeholder="{{ 'workspaceForm.fields.pricePerDay.placeholder' | translate }}"
+      />
+    </mat-form-field>
+
+    <mat-checkbox formControlName="isAvailable">
+      {{ 'workspaceForm.fields.isAvailable' | translate }}
+    </mat-checkbox>
+
+    <mat-card class="nested-card">
+      <mat-card-subtitle>{{ 'workspaceForm.fields.address.subtitle' | translate }}</mat-card-subtitle>
+
+      <div formGroupName="address" class="address-group">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'workspaceForm.fields.address.street' | translate }}</mat-label>
+          <input matInput formControlName="street" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'workspaceForm.fields.address.number' | translate }}</mat-label>
+          <input matInput formControlName="number" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'workspaceForm.fields.address.district' | translate }}</mat-label>
+          <input matInput formControlName="district" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'workspaceForm.fields.address.city' | translate }}</mat-label>
+          <input matInput formControlName="city" />
+        </mat-form-field>
+      </div>
+    </mat-card>
+
+    <mat-card class="nested-card">
+      <mat-card-subtitle>{{ 'workspaceForm.fields.owner.subtitle' | translate }}</mat-card-subtitle>
+
+      <div formGroupName="owner" class="owner-group">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'workspaceForm.fields.owner.firstName' | translate }}</mat-label>
+          <input matInput formControlName="firstName" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'workspaceForm.fields.owner.lastName' | translate }}</mat-label>
+          <input matInput formControlName="lastName" />
+        </mat-form-field>
+      </div>
+    </mat-card>
+
+    <mat-card class="nested-card">
+      <mat-card-subtitle>{{ 'workspaceForm.fields.services.subtitle' | translate }}</mat-card-subtitle>
+
+      <div formArrayName="services" class="services-group">
+        <div *ngFor="let service of services.controls; let i = index" [formGroupName]="i" class="service-item">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>{{ 'workspaceForm.fields.services.serviceName' | translate }}</mat-label>
+            <input matInput formControlName="name" />
+          </mat-form-field>
+          <button mat-button color="warn" type="button" (click)="removeService(i)">
+            {{ 'workspaceForm.fields.services.removeButton' | translate }}
+          </button>
+        </div>
+
+        <button mat-button color="primary" type="button" (click)="addService()">
+          {{ 'workspaceForm.fields.services.addButton' | translate }}
+        </button>
+      </div>
+    </mat-card>
+
+    <div class="actions">
+      <button mat-raised-button color="primary" type="submit">
+        {{ isEdit ? ('workspaceForm.actions.update' | translate) : ('workspaceForm.actions.create' | translate) }}
+      </button>
+    </div>
+  </form>
+</mat-card>

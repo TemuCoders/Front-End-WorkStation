@@ -1,0 +1,99 @@
+@if (store.loading()) {
+  <mat-spinner diameter="40"></mat-spinner>
+}
+
+@if (store.error()) {
+  <mat-error>{{ store.error() }}</mat-error>
+}
+
+<table mat-table [dataSource]="store.workspaces()" class="mat-elevation-z8">
+
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef>{{ 'workspaceTable.headers.id' | translate }}</th>
+    <td mat-cell *matCellDef="let w">{{ w.id }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>{{ 'workspaceTable.headers.name' | translate }}</th>
+    <td mat-cell *matCellDef="let w">{{ w.name }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="description">
+    <th mat-header-cell *matHeaderCellDef>{{ 'workspaceTable.headers.description' | translate }}</th>
+    <td mat-cell *matCellDef="let w">{{ w.description }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="type">
+    <th mat-header-cell *matHeaderCellDef>{{ 'workspaceTable.headers.type' | translate }}</th>
+    <td mat-cell *matCellDef="let w">{{ w.type }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="capacity">
+    <th mat-header-cell *matHeaderCellDef>{{ 'workspaceTable.headers.capacity' | translate }}</th>
+    <td mat-cell *matCellDef="let w">{{ w.capacity }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="pricePerDay">
+    <th mat-header-cell *matHeaderCellDef>{{ 'workspaceTable.headers.pricePerDay' | translate }}</th>
+    <td mat-cell *matCellDef="let w">{{ w.pricePerDay }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="isAvailable">
+    <th mat-header-cell *matHeaderCellDef>{{ 'workspaceTable.headers.isAvailable' | translate }}</th>
+    <td mat-cell *matCellDef="let w">
+      @if (w.isAvailable) {
+        {{ 'workspaceTable.availability.yes' | translate }}
+      } @else {
+        {{ 'workspaceTable.availability.no' | translate }}
+      }
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="averageRating">
+    <th mat-header-cell *matHeaderCellDef>{{ 'workspaceTable.headers.averageRating' | translate }}</th>
+    <td mat-cell *matCellDef="let w">{{ w.averageRating }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="address">
+    <th mat-header-cell *matHeaderCellDef>{{ 'workspaceTable.headers.address' | translate }}</th>
+    <td mat-cell *matCellDef="let w">
+      {{ w.address?.street }} {{ w.address?.number }},
+      {{ w.address?.district }}, {{ w.address?.city }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="owner">
+    <th mat-header-cell *matHeaderCellDef>{{ 'workspaceTable.headers.owner' | translate }}</th>
+    <td mat-cell *matCellDef="let w">
+      {{ w.owner?.firstName }} {{ w.owner?.lastName }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="services">
+    <th mat-header-cell *matHeaderCellDef>{{ 'workspaceTable.headers.services' | translate }}</th>
+    <td mat-cell *matCellDef="let w">
+      {{ getServicesNames(w) }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef>{{ 'workspaceTable.headers.actions' | translate }}</th>
+    <td mat-cell *matCellDef="let w" class="actions-cell">
+      <button mat-icon-button color="accent" (click)="editWorkspace(w.id)" matTooltip="Editar">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="deleteWorkspace(w.id)" matTooltip="Eliminar">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+
+  <!-- Filas -->
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<button mat-raised-button color="primary" (click)="router.navigate(['searching/workspaces/new'])">
+  {{ 'workspaceTable.buttons.add' | translate }}
+</button>

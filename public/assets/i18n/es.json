@@ -1,0 +1,134 @@
+{
+  "hero": {
+    "title": "Bienvenido a",
+    "highlight": "WorkStation",
+    "subtitle": "Encuentra, reserva y gestiona espacios de trabajo modernos para ti o tu equipo.",
+    "tagline": "Simple, rápido y totalmente flexible.",
+    "button": "Explorar Workspaces"
+  },
+  "features": {
+    "title1": "Reserva espacios",
+    "content1": "Oficinas privadas, coworkings y salas de reuniones adaptadas a tus necesidades.",
+    "title2": "Gestión flexible",
+    "content2": "Reserva por hora, día o mes, con disponibilidad en tiempo real.",
+    "title3": "Ubicaciones estratégicas",
+    "content3": "Espacios en San Isidro, Miraflores, Surco y más zonas clave.",
+    "title4": "Opiniones verificadas",
+    "content4": "Lee reseñas reales de otros usuarios antes de elegir tu espacio ideal."
+  },
+  "cta": {
+    "title": "¿Listo para comenzar?",
+    "subtitle": "Explora los mejores espacios de trabajo disponibles en Lima.",
+    "button": "Ver Workspaces"
+  },
+  "workspaceTable": {
+    "status": {
+      "loading": "Cargando datos...",
+      "error": "Error al cargar workspaces"
+    },
+    "headers": {
+      "id": "ID",
+      "name": "Nombre",
+      "description": "Descripción",
+      "type": "Tipo",
+      "capacity": "Capacidad",
+      "pricePerDay": "Precio/Día",
+      "isAvailable": "Disponible",
+      "averageRating": "Rating",
+      "address": "Dirección",
+      "owner": "Propietario",
+      "services": "Servicios",
+      "actions": "Acciones"
+    },
+    "availability": {
+      "yes": "Sí",
+      "no": "No"
+    },
+    "buttons": {
+      "add": "Añadir Workspace",
+      "edit": "Editar",
+      "delete": "Eliminar"
+    }
+  },
+  "workspaceForm": {
+    "title": {
+      "edit": "Editar Workspace",
+      "create": "Crear Nuevo Workspace"
+    },
+    "status": {
+      "loading": "Cargando datos...",
+      "error": "Error al procesar el workspace"
+    },
+    "fields": {
+      "name": {
+        "label": "Nombre",
+        "placeholder": "Ej. Oficina moderna San Isidro",
+        "requiredError": "El nombre es obligatorio"
+      },
+      "description": {
+        "label": "Descripción",
+        "placeholder": "Describe el espacio de trabajo"
+      },
+      "type": {
+        "label": "Tipo",
+        "options": {
+          "privateOffice": "Oficina Privada",
+          "coworking": "Coworking",
+          "meetingRoom": "Sala de Reuniones"
+        }
+      },
+      "capacity": {
+        "label": "Capacidad",
+        "placeholder": "Ej. 10"
+      },
+      "pricePerDay": {
+        "label": "Precio por día (S/)",
+        "placeholder": "Ej. 300"
+      },
+      "isAvailable": "Disponible",
+      "address": {
+        "subtitle": "Dirección",
+        "street": "Calle",
+        "number": "Número",
+        "district": "Distrito",
+        "city": "Ciudad"
+      },
+      "owner": {
+        "subtitle": "Propietario",
+        "firstName": "Nombre",
+        "lastName": "Apellido"
+      },
+      "services": {
+        "subtitle": "Servicios",
+        "serviceName": "Nombre del servicio",
+        "addButton": "+ Añadir servicio",
+        "removeButton": "Eliminar"
+      }
+    },
+    "actions": {
+      "update": "Actualizar",
+      "create": "Crear"
+    }
+  },
+  "notFound": {
+    "title": "404",
+    "heading": "Página no encontrada",
+    "messageLine1": "Lo sentimos, no pudimos encontrar la página que estás buscando.",
+    "messageLine2": "Puede que haya sido movida, eliminada o que nunca existiera.",
+    "button": "Ir al inicio"
+  },
+  "option": {
+    "home": "Home",
+    "about": "Sobre Nosotros",
+    "workspaces": "Espacios de Trabajo"
+  },
+  "footer": {
+    "brandName": "WorkStation",
+    "links": {
+      "home": "Inicio",
+      "aboutUs": "Sobre nosotros",
+      "contact": "Contacto"
+    },
+    "rights": "Todos los derechos reservados"
+  }
+}

@@ -1,0 +1,19 @@
+<div class="not-found-container">
+  <div class="not-found-content">
+    <mat-icon class="not-found-icon">search_off</mat-icon>
+
+    <h1>{{ 'notFound.title' | translate }}</h1>
+    <h2>{{ 'notFound.heading' | translate }}</h2>
+    <p>
+      {{ 'notFound.messageLine1' | translate }}<br>
+      {{ 'notFound.messageLine2' | translate }}
+    </p>
+
+    <div class="buttons">
+      <a mat-raised-button color="primary" routerLink="/">
+        <mat-icon>home</mat-icon>
+        {{ 'notFound.button' | translate }}
+      </a>
+    </div>
+  </div>
+</div>
