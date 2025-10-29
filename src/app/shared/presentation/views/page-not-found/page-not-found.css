@@ -1,0 +1,89 @@
+.not-found-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #ff7043, #ff8a65);
+  color: white;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  padding: 1.5rem;
+}
+
+.not-found-content {
+  max-width: 600px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 3rem 2rem;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+  animation: fadeIn 0.8s ease-out;
+}
+
+.not-found-icon {
+  font-size: 70px;
+  color: #fffde7;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: 5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+h2 {
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin-bottom: 0.8rem;
+}
+
+p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #fffde7;
+  margin-bottom: 2rem;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+a[mat-raised-button] {
+  background-color: #fff;
+  color: #ff7043;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+a[mat-raised-button]:hover {
+  background-color: #f5f5f5;
+}
+
+a[mat-stroked-button] {
+  border-color: #fff;
+  color: #fff;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+a[mat-stroked-button]:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Animación de aparición */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+

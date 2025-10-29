@@ -1,0 +1,11 @@
+<mat-button-toggle-group class="lang-toggle" appearance="legacy">
+  @for (language of availableLanguages; track language) {
+    <mat-button-toggle
+      class="lang-btn"
+      (click)="changeLanguage(language)"
+      [class.active]="language === currentLanguage"
+    >
+      {{ language.toUpperCase() }}
+    </mat-button-toggle>
+  }
+</mat-button-toggle-group>

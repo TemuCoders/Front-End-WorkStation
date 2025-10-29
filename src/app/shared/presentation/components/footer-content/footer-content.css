@@ -1,0 +1,79 @@
+/* Contenedor principal del footer */
+.footer {
+  width: 100%;
+  background: linear-gradient(135deg, #ff7043, #ff8a65); /* tonos coral */
+  color: #ffffff;
+  text-align: center;
+  padding: 1.5rem 1rem;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
+  font-family: 'Roboto', sans-serif;
+  margin-top: auto;
+  flex-shrink: 0;
+  min-height: 100px;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer-icon {
+  font-size: 28px;
+}
+
+.brand-name {
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+
+/* Enlaces del footer */
+.footer-links {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.footer-link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+  color: #212121; /* gris oscuro */
+}
+
+/* Derechos */
+.footer-rights {
+  font-size: 0.9rem;
+  color: #f5f5f5;
+  margin-top: 0.5rem;
+}
+
+/* Adaptabilidad para pantallas pequeñas */
+@media (max-width: 600px) {
+  .footer-links {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .brand-name {
+    font-size: 1rem;
+  }
+
+  .footer-rights {
+    font-size: 0.8rem;
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "hero": {
+    "title": "Welcome to",
+    "highlight": "WorkStation",
+    "subtitle": "Find, book, and manage modern workspaces for yourself or your team.",
+    "tagline": "Simple, fast, and fully flexible.",
+    "button": "Explore Workspaces"
+  },
+  "features": {
+    "title1": "Book spaces",
+    "content1": "Private offices, coworkings, and meeting rooms adapted to your needs.",
+    "title2": "Flexible management",
+    "content2": "Book by the hour, day, or month, with real-time availability.",
+    "title3": "Strategic locations",
+    "content3": "Spaces in San Isidro, Miraflores, Surco, and other key areas.",
+    "title4": "Verified reviews",
+    "content4": "Read real reviews from other users before choosing your ideal space."
+  },
+  "cta": {
+    "title": "Ready to get started?",
+    "subtitle": "Explore the best workspaces available in Lima.",
+    "button": "View Workspaces"
+  },
+  "workspaceTable": {
+    "status": {
+      "loading": "Loading data...",
+      "error": "Error loading workspaces"
+    },
+    "headers": {
+      "id": "ID",
+      "name": "Name",
+      "description": "Description",
+      "type": "Type",
+      "capacity": "Capacity",
+      "pricePerDay": "Price/Day",
+      "isAvailable": "Available",
+      "averageRating": "Rating",
+      "address": "Address",
+      "owner": "Owner",
+      "services": "Services",
+      "actions": "Actions"
+    },
+    "availability": {
+      "yes": "Yes",
+      "no": "No"
+    },
+    "buttons": {
+      "add": "Add Workspace",
+      "edit": "Edit",
+      "delete": "Delete"
+    }
+  },
+  "workspaceForm": {
+    "title": {
+      "edit": "Edit Workspace",
+      "create": "Create New Workspace"
+    },
+    "status": {
+      "loading": "Loading data...",
+      "error": "Error processing workspace"
+    },
+    "fields": {
+      "name": {
+        "label": "Name",
+        "placeholder": "Ex. Modern Office San Isidro",
+        "requiredError": "Name is required"
+      },
+      "description": {
+        "label": "Description",
+        "placeholder": "Describe the workspace"
+      },
+      "type": {
+        "label": "Type",
+        "options": {
+          "privateOffice": "Private Office",
+          "coworking": "Coworking",
+          "meetingRoom": "Meeting Room"
+        }
+      },
+      "capacity": {
+        "label": "Capacity",
+        "placeholder": "Ex. 10"
+      },
+      "pricePerDay": {
+        "label": "Price per Day ($)",
+        "placeholder": "Ex. 300"
+      },
+      "isAvailable": "Available",
+      "address": {
+        "subtitle": "Address",
+        "street": "Street",
+        "number": "Number",
+        "district": "District",
+        "city": "City"
+      },
+      "owner": {
+        "subtitle": "Owner",
+        "firstName": "First Name",
+        "lastName": "Last Name"
+      },
+      "services": {
+        "subtitle": "Services",
+        "serviceName": "Service Name",
+        "addButton": "+ Add service",
+        "removeButton": "Remove"
+      }
+    },
+    "actions": {
+      "update": "Update",
+      "create": "Create"
+    }
+  },
+  "notFound": {
+    "title": "404",
+    "heading": "Page Not Found",
+    "messageLine1": "Sorry, we couldn't find the page you're looking for.",
+    "messageLine2": "It might have been moved, deleted, or never existed.",
+    "button": "Go to Home"
+  },
+  "option": {
+    "home": "Home",
+    "about": "About Us",
+    "workspaces": "Workspaces"
+  },
+  "footer": {
+    "brandName": "WorkStation",
+    "links": {
+      "home": "Home",
+      "aboutUs": "About Us",
+      "contact": "Contact"
+    },
+    "rights": "All rights reserved"
+  }
+}

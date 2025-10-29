@@ -1,0 +1,75 @@
+.main-toolbar {
+  background-color: #ffffff;
+  color: #ff7043;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 0 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 2px solid #ffe0b2;
+}
+
+mat-toolbar-row {
+  display: flex;
+  align-items: center;
+  height: 64px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.brand-icon {
+  font-size: 22px;
+  color: #ff7043;
+}
+
+.brand-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin: 0;
+  color: #424242;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.nav-item {
+  color: #424242;
+  font-weight: 500;
+  font-size: 0.95rem;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  padding: 0.3rem 0.8rem;
+}
+
+.nav-item:hover {
+  background-color: rgba(255, 112, 67, 0.1);
+  color: #ff7043;
+}
+
+.nav-item.active {
+  background-color: #ff7043;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 3px 8px rgba(255, 112, 67, 0.25);
+}
+
+/* === Language Switcher Integration === */
+app-language-switcher {
+  margin-left: 1rem;
+}
+
+

@@ -1,0 +1,56 @@
+<section class="hero">
+  <h1>{{ 'hero.title' | translate }} <span class="highlight">{{ 'hero.highlight' | translate }}</span></h1>
+  <p>
+    {{ 'hero.subtitle' | translate }}
+    <br>
+    {{ 'hero.tagline' | translate }}
+  </p>
+
+  <a mat-raised-button color="primary" routerLink="/searching/workspaces">
+    {{ 'hero.button' | translate }}
+  </a>
+</section>
+
+
+<section class="features">
+  <mat-card>
+    <mat-icon>meeting_room</mat-icon>
+    <mat-card-title>{{ 'features.title1' | translate }}</mat-card-title>
+    <mat-card-content>
+      {{ 'features.content1' | translate }}
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-icon>schedule</mat-icon>
+    <mat-card-title>{{ 'features.title2' | translate }}</mat-card-title>
+    <mat-card-content>
+      {{ 'features.content2' | translate }}
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-icon>map</mat-icon>
+    <mat-card-title>{{ 'features.title3' | translate }}</mat-card-title>
+    <mat-card-content>
+      {{ 'features.content3' | translate }}
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-icon>star</mat-icon>
+    <mat-card-title>{{ 'features.title4' | translate }}</mat-card-title>
+    <mat-card-content>
+      {{ 'features.content4' | translate }}
+    </mat-card-content>
+  </mat-card>
+</section>
+
+
+<section class="cta">
+  <h2>{{ 'cta.title' | translate }}</h2>
+  <p>{{ 'cta.subtitle' | translate }}</p>
+  <a mat-stroked-button color="accent" routerLink="/searching/workspaces">
+    {{ 'cta.button' | translate }}
+  </a>
+</section>

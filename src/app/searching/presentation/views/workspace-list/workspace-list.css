@@ -1,0 +1,144 @@
+:host {
+  display: block;
+  padding: 2rem;
+  background-color: #f5f5f5;
+  font-family: 'Roboto', sans-serif;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  justify-content: center;
+}
+
+.workspace-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.workspace-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.workspace-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+mat-card-content {
+  padding: 1rem 1.5rem;
+  color: #424242;
+  font-size: 0.95rem;
+}
+
+.title-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title-section h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.badge {
+  padding: 0.3rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.available {
+  background-color: #c8e6c9;
+  color: #2e7d32;
+}
+
+.unavailable {
+  background-color: #ffcdd2;
+  color: #c62828;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin: 0.5rem 0;
+}
+
+.description {
+  margin: 0.5rem 0 1rem;
+}
+
+.price-rating {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.price {
+  font-weight: 600;
+  color: #ff7043;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  color: #ff7043;
+}
+
+.rating .star {
+  font-size: 1.2rem;
+  margin-right: 4px;
+}
+
+.address {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.services {
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.5rem 1rem 1rem;
+}
+
+button[mat-raised-button][color="primary"] {
+  background-color: #ff7043;
+  color: white;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+button[mat-raised-button][color="primary"]:hover {
+  background-color: #f4511e;
+}
+
+mat-spinner {
+  margin: 3rem auto;
+  display: block;
+}
+
+mat-error {
+  display: block;
+  color: #e53935;
+  text-align: center;
+  font-weight: 600;
+  margin-top: 1rem;
+}
