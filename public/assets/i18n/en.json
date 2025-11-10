@@ -130,5 +130,11 @@
       "contact": "Contact"
     },
     "rights": "All rights reserved"
+  },
+  "workspaceTypes": {
+    "title": "Explore by type of workspace",
+    "privateOffice": "Private Offices",
+    "coworking": "Coworking Spaces",
+    "meetingRoom": "Meeting Rooms"
   }
 }

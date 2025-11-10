@@ -1,7 +1,7 @@
 import {Routes} from '@angular/router';
 
-const workspaceList = () =>import('./workspace-list/workspace-list').then(m => m.WorkspaceList);
+const SpacesView = () =>import('../views/spaces-view/spaces-view').then(m => m.SpacesView);
 
 export const searchingRoutes: Routes = [
-  { path: 'workspaces',           loadComponent: workspaceList }
+  { path: 'workspaces',           loadComponent: SpacesView }
 ]

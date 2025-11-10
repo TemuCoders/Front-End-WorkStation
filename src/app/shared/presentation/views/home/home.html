@@ -2,8 +2,6 @@
   <h1>{{ 'hero.title' | translate }} <span class="highlight">{{ 'hero.highlight' | translate }}</span></h1>
   <p>
     {{ 'hero.subtitle' | translate }}
-    <br>
-    {{ 'hero.tagline' | translate }}
   </p>
 
   <a mat-raised-button color="primary" routerLink="/searching/workspaces">
@@ -12,45 +10,43 @@
 </section>
 
 
-<section class="features">
-  <mat-card>
-    <mat-icon>meeting_room</mat-icon>
-    <mat-card-title>{{ 'features.title1' | translate }}</mat-card-title>
-    <mat-card-content>
-      {{ 'features.content1' | translate }}
-    </mat-card-content>
-  </mat-card>
+<section class="featured-workspaces">
+  <h2> Destacados Espacios de Trabajo </h2>
 
-  <mat-card>
-    <mat-icon>schedule</mat-icon>
-    <mat-card-title>{{ 'features.title2' | translate }}</mat-card-title>
-    <mat-card-content>
-      {{ 'features.content2' | translate }}
-    </mat-card-content>
-  </mat-card>
+  <div class="card-grid">
+    @for (workspace of store.workspaces().slice(0, 4); track workspace.id) {
+      <mat-card class="workspace-card">
+        <img mat-card-image [src]="workspace.imageUrl || 'https://picsum.photos/seed/' + workspace.id + '/600/400'" alt="{{ workspace.name }}" class="workspace-image" />
 
-  <mat-card>
-    <mat-icon>map</mat-icon>
-    <mat-card-title>{{ 'features.title3' | translate }}</mat-card-title>
-    <mat-card-content>
-      {{ 'features.content3' | translate }}
-    </mat-card-content>
-  </mat-card>
-
-  <mat-card>
-    <mat-icon>star</mat-icon>
-    <mat-card-title>{{ 'features.title4' | translate }}</mat-card-title>
-    <mat-card-content>
-      {{ 'features.content4' | translate }}
-    </mat-card-content>
-  </mat-card>
+        <mat-card-content>
+          <div class="title-section">
+            <h3>{{ workspace.name }}</h3>
+          </div>
+          <p class="description">{{ workspace.description }}</p>
+        </mat-card-content>
+      </mat-card>
+    }
+  </div>
 </section>
 
 
-<section class="cta">
-  <h2>{{ 'cta.title' | translate }}</h2>
-  <p>{{ 'cta.subtitle' | translate }}</p>
-  <a mat-stroked-button color="accent" routerLink="/searching/workspaces">
-    {{ 'cta.button' | translate }}
-  </a>
+
+<section class="workspace-types">
+  <h2 class="section-title">{{ 'workspaceTypes.title' | translate }}</h2>
+  <div class="type-grid">
+    <div class="type-card">
+      <img src="https://picsum.photos/id/119/500/250" alt="Private Office">
+      <h3>{{ 'workspaceTypes.privateOffice' | translate }}</h3>
+    </div>
+    <div class="type-card">
+      <img src="https://picsum.photos/id/1060/500/250" alt="Coworking Space">
+      <h3>{{ 'workspaceTypes.coworking' | translate }}</h3>
+    </div>
+    <div class="type-card">
+      <img src="https://picsum.photos/id/1048/500/250" alt="Meeting Room">
+      <h3>{{ 'workspaceTypes.meetingRoom' | translate }}</h3>
+    </div>
+  </div>
 </section>
+
+

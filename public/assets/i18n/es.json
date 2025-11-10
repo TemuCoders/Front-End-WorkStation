@@ -130,5 +130,11 @@
       "contact": "Contacto"
     },
     "rights": "Todos los derechos reservados"
+  },
+  "workspaceTypes": {
+    "title": "Explora por tipo de espacio",
+    "privateOffice": "Oficinas Privadas",
+    "coworking": "Espacios Coworking",
+    "meetingRoom": "Salas de Reunión"
   }
 }
