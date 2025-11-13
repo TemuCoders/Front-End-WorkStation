@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>{{ 'payment.createPayment' | translate }}</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <mat-dialog-content>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{ 'payment.selectMethod' | translate }}</mat-label>
+      <mat-select formControlName="paymentMethodId" required>
+        @for (method of paymentMethodFacade.paymentMethods(); track method.id) {
+          <mat-option
+            [value]="method.id"
+            [disabled]="method.status === 'DISABLED'">
+            {{ method.type }}
+            @if (method.maskedPan) {
+              <span>({{ method.maskedPan }})</span>
+            }
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="close()">
+      {{ 'payment.cancel' | translate }}
+    </button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+      {{ 'payment.pay' | translate }}
+    </button>
+  </mat-dialog-actions>
+</form>

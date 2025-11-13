@@ -1,0 +1,69 @@
+<div class="payment-list-container">
+  <h3>{{ 'payment.paymentsList' | translate }}</h3>
+
+  @if (facade.payments().length > 0) {
+    <table mat-table [dataSource]="facade.payments()">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>#</th>
+        <td mat-cell *matCellDef="let payment">{{ payment.id }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="userId">
+        <th mat-header-cell *matHeaderCellDef>{{ 'payment.user' | translate }}</th>
+        <td mat-cell *matCellDef="let payment">User #{{ payment.userId }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef>{{ 'payment.amount' | translate }}</th>
+        <td mat-cell *matCellDef="let payment">
+          {{ payment.amount | number:'1.2-2' }} {{ payment.currency }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>{{ 'payment.status' | translate }}</th>
+        <td mat-cell *matCellDef="let payment">
+          <mat-chip [color]="getStatusColor(payment.status)" selected>
+            {{ payment.status }}
+          </mat-chip>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="paidAt">
+        <th mat-header-cell *matHeaderCellDef>{{ 'payment.paidAt' | translate }}</th>
+        <td mat-cell *matCellDef="let payment">
+          {{ payment.paidAt | date:'short' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>{{ 'payment.actions' | translate }}</th>
+        <td mat-cell *matCellDef="let payment">
+          <button
+            mat-stroked-button
+            color="warn"
+            (click)="refund(payment.id)"
+            [disabled]="payment.status === 'REFUNDED'">
+            <mat-icon>undo</mat-icon>
+            {{ 'payment.refund' | translate }}
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  }
+
+  @if (facade.payments().length === 0 && !facade.loading()) {
+    <div class="no-data">
+      {{ 'payment.noPayments' | translate }}
+    </div>
+  }
+
+  @if (facade.loading()) {
+    <div class="loading-container">
+      <mat-spinner></mat-spinner>
+    </div>
+  }
+</div>

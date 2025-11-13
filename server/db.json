@@ -233,5 +233,209 @@
         }
       ]
     }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "Ana González",
+      "email": "ana@example.com"
+    },
+    {
+      "id": 2,
+      "name": "Luis Rodríguez",
+      "email": "luis@example.com"
+    }
+  ],
+  "spaces": [
+    {
+      "id": 1,
+      "name": "Coworking Miraflores Hub",
+      "description": "Vibrante espacio en Miraflores",
+      "capacity": 30,
+      "price": 100
+    }
+  ],
+  "bookings": [
+    {
+      "id": 1,
+      "userId": 1,
+      "spaceId": 1,
+      "startDate": "2025-11-15",
+      "endDate": "2025-11-16",
+      "status": "CONFIRMED"
+    }
+  ],
+  "invoices": [
+    {
+      "id": 1,
+      "invoiceNumber": "INV-00001",
+      "bookingId": 1,
+      "userId": 1,
+      "currency": "USD",
+      "subtotal": 110,
+      "tax": 19.8,
+      "total": 129.8,
+      "status": "SENT",
+      "issuedAt": "2025-11-10T10:30:00Z",
+      "sentAt": "2025-11-13T03:15:14.916Z",
+      "lines": [
+        {
+          "id": 1,
+          "description": "Space rental - Coworking Area",
+          "quantity": 1,
+          "unitAmount": 100,
+          "tax": 18,
+          "subtotal": 100,
+          "total": 118
+        },
+        {
+          "id": 2,
+          "description": "WiFi premium",
+          "quantity": 1,
+          "unitAmount": 10,
+          "tax": 1.8,
+          "subtotal": 10,
+          "total": 11.8
+        }
+      ],
+      "createdAt": "2025-11-10T10:30:00Z",
+      "updatedAt": "2025-11-13T03:15:14.916Z"
+    }
+  ],
+  "paymentMethods": [
+    {
+      "id": 1,
+      "userId": 1,
+      "type": "CARD",
+      "maskedPan": "****1234",
+      "expMonth": 12,
+      "expYear": 2028,
+      "status": "ACTIVE",
+      "createdAt": "2025-11-10T10:00:00Z",
+      "updatedAt": "2025-11-10T10:00:00Z"
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "type": "TRANSFER_DEMO",
+      "maskedPan": null,
+      "expMonth": null,
+      "expYear": null,
+      "status": "ACTIVE",
+      "createdAt": "2025-11-10T10:05:00Z",
+      "updatedAt": "2025-11-10T10:05:00Z"
+    },
+    {
+      "userId": 1,
+      "type": "CARD",
+      "maskedPan": "121212",
+      "expMonth": 12,
+      "expYear": 2026,
+      "status": "DISABLED",
+      "createdAt": "2025-11-13T03:53:31.827Z",
+      "updatedAt": "2025-11-13T04:02:33.315Z",
+      "id": 3
+    },
+    {
+      "userId": 1,
+      "type": "CARD",
+      "maskedPan": "****9999",
+      "expMonth": 10,
+      "expYear": 2027,
+      "status": "DISABLED",
+      "createdAt": "2025-11-13T03:54:29.509Z",
+      "updatedAt": "2025-11-13T04:02:36.051Z",
+      "id": 4
+    },
+    {
+      "userId": 1,
+      "type": "CASH_DEMO",
+      "maskedPan": null,
+      "expMonth": null,
+      "expYear": null,
+      "status": "DISABLED",
+      "createdAt": "2025-11-13T03:54:37.051Z",
+      "updatedAt": "2025-11-13T04:02:37.579Z",
+      "id": 5
+    },
+    {
+      "userId": 1,
+      "type": "CASH_DEMO",
+      "maskedPan": null,
+      "expMonth": null,
+      "expYear": null,
+      "status": "DISABLED",
+      "createdAt": "2025-11-13T03:56:40.234Z",
+      "updatedAt": "2025-11-13T04:02:39.210Z",
+      "id": 6
+    }
+  ],
+  "payments": [
+    {
+      "id": 1,
+      "invoiceId": 1,
+      "bookingId": 1,
+      "userId": 1,
+      "amount": 129.8,
+      "currency": "USD",
+      "status": "REFUNDED",
+      "paymentMethodId": 1,
+      "paidAt": "2025-11-11T14:00:00Z",
+      "refundedAt": "2025-11-13T03:15:24.915Z",
+      "createdAt": "2025-11-11T14:00:00Z",
+      "updatedAt": "2025-11-13T03:15:24.915Z"
+    }
+  ],
+  "reviews": [
+    {
+      "id": 1,
+      "spaceId": 1,
+      "userId": 1,
+      "rating": 5,
+      "comment": "Excelente espacio, súper limpio y buena ubicación.",
+      "status": "PUBLISHED",
+      "createdAt": "2025-11-09T12:00:00Z",
+      "updatedAt": "2025-11-09T12:00:00Z"
+    },
+    {
+      "id": 2,
+      "spaceId": 1,
+      "userId": 2,
+      "rating": 4,
+      "comment": "Muy bueno, el WiFi podría ser más estable.",
+      "status": "PUBLISHED",
+      "createdAt": "2025-11-10T09:30:00Z",
+      "updatedAt": "2025-11-10T09:30:00Z"
+    },
+    {
+      "spaceId": 1,
+      "userId": 1,
+      "rating": 4,
+      "comment": "excelente",
+      "status": "PUBLISHED",
+      "createdAt": "2025-11-13T03:16:29.908Z",
+      "updatedAt": "2025-11-13T03:44:55.740Z",
+      "id": 3
+    },
+    {
+      "spaceId": 1,
+      "userId": 1,
+      "rating": 4,
+      "comment": "asasas",
+      "status": "DELETED",
+      "createdAt": "2025-11-13T03:37:19.004Z",
+      "updatedAt": "2025-11-13T03:37:22.563Z",
+      "id": 4
+    },
+    {
+      "spaceId": 1,
+      "userId": 1,
+      "rating": 4,
+      "comment": "qqwqwqwq",
+      "status": "PUBLISHED",
+      "createdAt": "2025-11-13T03:45:01.987Z",
+      "updatedAt": "2025-11-13T03:45:01.987Z",
+      "id": 5
+    }
   ]
 }

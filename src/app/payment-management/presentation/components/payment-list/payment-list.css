@@ -1,0 +1,23 @@
+.payment-list-container {
+  margin: 20px 0;
+}
+
+.no-data {
+  text-align: center;
+  padding: 40px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+table {
+  width: 100%;
+}
+
+td, th {
+  padding: 12px;
+}

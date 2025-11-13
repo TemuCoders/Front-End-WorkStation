@@ -1,0 +1,29 @@
+.form-card {
+  margin: 20px 0;
+}
+
+.full-width {
+  width: 100%;
+  margin: 16px 0;
+}
+
+.rating-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.rating-section label {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+mat-button-toggle-group {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+mat-button-toggle {
+  flex: 0 0 auto;
+}

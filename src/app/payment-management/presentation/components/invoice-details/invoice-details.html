@@ -1,0 +1,70 @@
+@if (facade.invoice(); as invoice) {
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>{{ 'payment.invoice' | translate }}</mat-card-title>
+      <mat-card-subtitle>{{ invoice.invoiceNumber }}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="invoice-status">
+        <mat-chip [color]="getStatusColor(invoice.status)" selected>
+          {{ 'payment.' + invoice.status.toLowerCase() | translate }}
+        </mat-chip>
+      </div>
+
+      <mat-list>
+        <mat-list-item>
+          <span matListItemTitle>{{ 'payment.subtotal' | translate }}</span>
+          <span matListItemLine>{{ invoice.subtotal | number:'1.2-2' }} {{ invoice.currency }}</span>
+        </mat-list-item>
+        <mat-list-item>
+          <span matListItemTitle>{{ 'payment.tax' | translate }}</span>
+          <span matListItemLine>{{ invoice.tax | number:'1.2-2' }} {{ invoice.currency }}</span>
+        </mat-list-item>
+        <mat-list-item>
+          <span matListItemTitle><strong>{{ 'payment.total' | translate }}</strong></span>
+          <span matListItemLine><strong>{{ invoice.total | number:'1.2-2' }} {{ invoice.currency }}</strong></span>
+        </mat-list-item>
+      </mat-list>
+
+      @if (invoice.lines.length > 0) {
+        <div class="invoice-lines">
+          <h4>{{ 'payment.invoice' | translate }} Details</h4>
+          <mat-list>
+            @for (line of invoice.lines; track line.id) {
+              <mat-list-item>
+                <span matListItemTitle>{{ line.description }}</span>
+                <span matListItemLine>
+                  {{ line.quantity }} x {{ line.unitAmount | number:'1.2-2' }} {{ invoice.currency }}
+                </span>
+              </mat-list-item>
+            }
+          </mat-list>
+        </div>
+      }
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="sendInvoice()"
+        [disabled]="invoice.status !== 'ISSUED'">
+        {{ 'payment.sendInvoice' | translate }}
+      </button>
+    </mat-card-actions>
+  </mat-card>
+}
+
+@if (facade.loading()) {
+  <div class="loading-container">
+    <mat-spinner></mat-spinner>
+    <p>{{ 'workspaceTable.status.loading' | translate }}</p>
+  </div>
+}
+
+@if (facade.error()) {
+  <div class="error-container">
+    <p>{{ facade.error() }}</p>
+  </div>
+}

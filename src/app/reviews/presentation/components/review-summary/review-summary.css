@@ -1,0 +1,14 @@
+.summary-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+mat-chip {
+  font-size: 16px;
+  padding: 8px 16px;
+}
+
+mat-icon {
+  margin-right: 4px;
+}

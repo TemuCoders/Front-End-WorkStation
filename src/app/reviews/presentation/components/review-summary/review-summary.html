@@ -1,0 +1,7 @@
+<div class="summary-container">
+  <mat-chip color="primary" selected>
+    <mat-icon>star</mat-icon>
+    {{ facade.averageRating() | number:'1.1-1' }}
+    ({{ facade.totalCount() }} {{ 'review.totalReviews' | translate }})
+  </mat-chip>
+</div>

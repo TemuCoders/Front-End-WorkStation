@@ -1,0 +1,41 @@
+<mat-list>
+  @for (method of facade.paymentMethods(); track method.id) {
+    <mat-list-item>
+      <mat-icon matListItemIcon>credit_card</mat-icon>
+
+      <div matListItemTitle>
+        {{ 'paymentMethod.' + method.type.toLowerCase() | translate }}
+        @if (method.maskedPan) {
+          <span> - {{ method.maskedPan }}</span>
+        }
+      </div>
+
+      @if (method.expMonth && method.expYear) {
+        <div matListItemLine>
+          {{ 'paymentMethod.expiration' | translate }}:
+          {{ method.expMonth }}/{{ method.expYear }}
+        </div>
+      }
+
+      <div matListItemMeta>
+        <mat-chip [color]="method.status === 'ACTIVE' ? 'primary' : 'warn'" selected>
+          {{ 'paymentMethod.' + method.status.toLowerCase() | translate }}
+        </mat-chip>
+
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="disable(method.id)"
+          [disabled]="method.status === 'DISABLED'">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </mat-list-item>
+  }
+</mat-list>
+
+@if (facade.paymentMethods().length === 0 && !facade.loading()) {
+  <div class="no-data">
+    No payment methods
+  </div>
+}

@@ -7,6 +7,16 @@ const baseTitle = 'WorkStation';
 export const routes: Routes = [
   { path: 'home', component: Home, title: `${baseTitle} - Home`  },
   { path: 'searching', loadChildren: () => import('./searching/presentation/views/searching.routes').then(m => m.searchingRoutes)},
+  {
+    path: 'payments',
+    loadChildren: () => import('./payment-management/presentation/views/payment-management.routes')
+      .then(m => m.paymentRoutes)
+  },
+  {
+    path: 'reviews',
+    loadChildren: () => import('./reviews/presentation/views/reviews.routes')
+      .then(m => m.reviewsRoutes)
+  },
   { path: '', redirectTo: '/home', pathMatch: 'full'  },
   { path: '**', loadComponent:  pageNotFound, title: `${baseTitle} - Page Not Found`  },
 ];

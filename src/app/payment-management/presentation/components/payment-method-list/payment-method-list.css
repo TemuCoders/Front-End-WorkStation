@@ -1,0 +1,9 @@
+.no-data {
+  text-align: center;
+  padding: 40px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+mat-list-item {
+  margin-bottom: 8px;
+}

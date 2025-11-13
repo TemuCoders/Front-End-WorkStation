@@ -1,0 +1,44 @@
+<h2 mat-dialog-title>{{ 'paymentMethod.add' | translate }}</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <mat-dialog-content>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{ 'paymentMethod.type' | translate }}</mat-label>
+      <mat-select formControlName="type" required (selectionChange)="onTypeChange()">
+        <mat-option value="CARD">{{ 'paymentMethod.card' | translate }}</mat-option>
+        <mat-option value="CASH_DEMO">{{ 'paymentMethod.cash' | translate }}</mat-option>
+        <mat-option value="TRANSFER_DEMO">{{ 'paymentMethod.transfer' | translate }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    @if (form.value.type === 'CARD') {
+      <div>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ 'paymentMethod.maskedPan' | translate }}</mat-label>
+          <input matInput formControlName="maskedPan" placeholder="****1234">
+        </mat-form-field>
+
+        <div class="row">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'paymentMethod.expMonth' | translate }}</mat-label>
+            <input matInput type="number" formControlName="expMonth" placeholder="12" min="1" max="12">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'paymentMethod.expYear' | translate }}</mat-label>
+            <input matInput type="number" formControlName="expYear" placeholder="2028" min="2025">
+          </mat-form-field>
+        </div>
+      </div>
+    }
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="close()">
+      {{ 'common.cancel' | translate }}
+    </button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+      {{ 'common.save' | translate }}
+    </button>
+  </mat-dialog-actions>
+</form>

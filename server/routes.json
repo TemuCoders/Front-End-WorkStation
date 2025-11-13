@@ -1,3 +1,5 @@
-{
-  "/api/v1/*": "/$1"
-}
+  {
+    "/api/v1/payment-methods/:id": "/paymentMethods/:id",
+    "/api/v1/payment-methods": "/paymentMethods",
+    "/api/v1/*": "/$1"
+  }
