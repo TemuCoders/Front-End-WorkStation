@@ -1,11 +1,29 @@
+/* Contenedor principal con flexbox */
+.layout {
+  display: flex;
+  min-height: 100vh;
+  background: #fafafa;
+}
+
+/* El container ahora ocupa el espacio restante */
 .container {
+  flex: 1;
   max-width: 1200px;
   margin: 0 auto;
   padding: 24px;
+  width: 100%;
+  overflow-y: auto;
 }
 
 .header {
   margin-bottom: 24px;
+}
+
+.header h1 {
+  font-size: 28px;
+  font-weight: 500;
+  color: #333;
+  margin: 0;
 }
 
 .tab-content {
@@ -17,4 +35,15 @@
   justify-content: flex-end;
   margin: 16px 0;
   gap: 8px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+  
+  .container {
+    padding: 16px;
+  }
 }

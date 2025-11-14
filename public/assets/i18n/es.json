@@ -123,7 +123,8 @@
   "option": {
     "home": "Home",
     "about": "Sobre Nosotros",
-    "workspaces": "Espacios de Trabajo"
+    "workspaces": "Espacios de Trabajo",
+    "profile": "Perfil"
   },
   "footer": {
     "brandName": "WorkStation",

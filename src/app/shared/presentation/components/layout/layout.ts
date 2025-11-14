@@ -17,7 +17,7 @@ import {MatIconModule} from '@angular/material/icon';
 export class Layout {
   options = [
     {link: '/home', label: 'option.home'},
-    {link: '/about', label: 'option.about'},
     {link: '/searching/workspaces', label: 'option.workspaces'},
+    {link: '/profile/1', label: 'option.profile'},
   ];
 }

@@ -1,17 +1,23 @@
-<div class="container">
-  <div class="header">
-    <h1>{{ 'review.title' | translate }}</h1>
-    <app-review-summary [spaceId]="spaceId"></app-review-summary>
+<div class="layout">
+  @if (currentUser(); as user) {
+    <app-sidebar [user]="user" [userId]="userId"></app-sidebar>
+  }
+  
+  <div class="container">
+    <div class="header">
+      <h1>{{ 'review.title' | translate }}</h1>
+      <app-review-summary [spaceId]="spaceId"></app-review-summary>
+    </div>
+
+    <app-review-create-form
+      [spaceId]="spaceId"
+      [userId]="userId"
+      (created)="onReviewCreated()">
+    </app-review-create-form>
+
+    <app-review-list
+      [spaceId]="spaceId"
+      [currentUserId]="userId">
+    </app-review-list>
   </div>
-
-  <app-review-create-form
-    [spaceId]="spaceId"
-    [userId]="userId"
-    (created)="onReviewCreated()">
-  </app-review-create-form>
-
-  <app-review-list
-    [spaceId]="spaceId"
-    [currentUserId]="userId">
-  </app-review-list>
 </div>

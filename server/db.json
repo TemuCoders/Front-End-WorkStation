@@ -459,6 +459,28 @@
       "updatedAt": "2025-11-14T14:35:12.768Z",
       "apiId": "v1",
       "id": 6
+    },
+    {
+      "spaceId": 1,
+      "userId": 1,
+      "rating": 1,
+      "comment": "Increiblemement horrible",
+      "status": "PUBLISHED",
+      "createdAt": "2025-11-14T19:59:15.613Z",
+      "updatedAt": "2025-11-14T19:59:15.613Z",
+      "apiId": "v1",
+      "id": 7
+    },
+    {
+      "spaceId": 1,
+      "userId": 1,
+      "rating": 5,
+      "comment": "La mejor",
+      "status": "PUBLISHED",
+      "createdAt": "2025-11-14T19:59:23.532Z",
+      "updatedAt": "2025-11-14T19:59:23.532Z",
+      "apiId": "v1",
+      "id": 8
     }
   ]
 }

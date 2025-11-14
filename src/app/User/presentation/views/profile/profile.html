@@ -1,37 +1,11 @@
 @if (editedUser(); as user) {
   <div class="layout">
 
-    <aside class="sidebar">
-      <div class="sidebar-user">
-        <img [src]="avatarUrl(user)" alt="avatar" class="avatar-sm" />
-        <span>Hi, {{ firstName(user.name) }}</span>
-      </div>
+    <app-sidebar [user]="user"></app-sidebar>
 
-      <nav class="side-nav">
-        <a class="item active"><mat-icon>home</mat-icon> Home</a>
-        <a class="item"><mat-icon>event</mat-icon> Bookings</a>
-      </nav>
-    </aside>
 
 
     <div class="main">
-
-      <header class="topbar">
-        <nav class="tabs">
-          <a class="tab active">Workspaces</a>
-          <a class="tab">Explore</a>
-          <a class="tab">Wishlists</a>
-          <a class="tab">Trips</a>
-        </nav>
-
-        <div class="search">
-          <mat-icon>search</mat-icon>
-          <input placeholder="Search" />
-        </div>
-
-        <img [src]="avatarUrl(user)" alt="avatar" class="avatar-sm" />
-      </header>
-
 
       <section class="profile-header">
         <img [src]="avatarUrl(user)" alt="avatar" class="avatar-xl" />

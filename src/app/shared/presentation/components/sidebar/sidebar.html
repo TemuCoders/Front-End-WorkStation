@@ -1,0 +1,27 @@
+<aside class="sidebar">
+  <div class="sidebar-user">
+    <img [src]="avatarUrl()" alt="avatar" class="avatar-sm" />
+    <span>Hi, {{ firstName() }}</span>
+  </div>
+
+  <nav class="side-nav">
+    <a 
+      class="item" 
+      [routerLink]="getProfileRoute()"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{exact: true}"
+    >
+      <mat-icon>person</mat-icon> Perfil
+    </a>
+    
+    @for (item of navItems.slice(1); track item.route) {
+      <a 
+        class="item" 
+        [routerLink]="item.route"
+        routerLinkActive="active"
+      >
+        <mat-icon>{{ item.icon }}</mat-icon> {{ item.label }}
+      </a>
+    }
+  </nav>
+</aside>

@@ -1,6 +1,6 @@
 import { Component, inject, signal, effect, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router'; 
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -10,6 +10,7 @@ import { User } from '../../../domain/model/user.entity';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SearchingStore } from '../../../../searching/application/searching-store';
 import { Workspace } from '../../../../searching/domain/model/workspace.entity';
+import { Sidebar } from '../../../../shared/presentation/components/sidebar/sidebar';
 
 type ReviewItem = {
   id: number; author: string; date: string; rating: number; text: string; likes: number; comments: number; avatar: string;
@@ -18,7 +19,7 @@ type ReviewItem = {
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule],
+  imports: [CommonModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, Sidebar ],
   templateUrl: './profile.html',
   styleUrls: ['./profile.css']
 })

@@ -1,33 +1,39 @@
-<div class="container">
-  <div class="header">
-    <h1>{{ 'payment.title' | translate }}</h1>
+<div class="layout">
+  @if (currentUser(); as user) {
+    <app-sidebar [user]="user" [userId]="userId"></app-sidebar>
+  }
+
+  <div class="container">
+    <div class="header">
+      <h1>{{ 'payment.title' | translate }}</h1>
+    </div>
+
+    <mat-tab-group>
+      <mat-tab [label]="'payment.invoice' | translate">
+        <div class="tab-content">
+          <app-invoice-details [invoiceId]="invoiceId"></app-invoice-details>
+
+          <div class="actions">
+            <button mat-raised-button color="primary" (click)="openCreatePayment()">
+              {{ 'payment.processPayment' | translate }}
+            </button>
+          </div>
+
+          <app-payment-list [invoiceId]="invoiceId"></app-payment-list>
+        </div>
+      </mat-tab>
+
+      <mat-tab [label]="'paymentMethod.title' | translate">
+        <div class="tab-content">
+          <div class="actions">
+            <button mat-raised-button color="accent" (click)="openAddPaymentMethod()">
+              {{ 'paymentMethod.add' | translate }}
+            </button>
+          </div>
+
+          <app-payment-method-list [userId]="userId"></app-payment-method-list>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
   </div>
-
-  <mat-tab-group>
-    <mat-tab [label]="'payment.invoice' | translate">
-      <div class="tab-content">
-        <app-invoice-details [invoiceId]="invoiceId"></app-invoice-details>
-
-        <div class="actions">
-          <button mat-raised-button color="primary" (click)="openCreatePayment()">
-            {{ 'payment.processPayment' | translate }}
-          </button>
-        </div>
-
-        <app-payment-list [invoiceId]="invoiceId"></app-payment-list>
-      </div>
-    </mat-tab>
-
-    <mat-tab [label]="'paymentMethod.title' | translate">
-      <div class="tab-content">
-        <div class="actions">
-          <button mat-raised-button color="accent" (click)="openAddPaymentMethod()">
-            {{ 'paymentMethod.add' | translate }}
-          </button>
-        </div>
-
-        <app-payment-method-list [userId]="userId"></app-payment-method-list>
-      </div>
-    </mat-tab>
-  </mat-tab-group>
 </div>

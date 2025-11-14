@@ -17,7 +17,6 @@ export const routes: Routes = [
     loadChildren: () => import('./reviews/presentation/views/reviews.routes')
       .then(m => m.reviewsRoutes)
   },
-  {path: 'Profile',loadChildren: () => import('./User/presentation/user.routers').then(m => m.users)},
   {path: 'profile',loadChildren: () => import('./User/presentation/user.routers').then(m => m.users)},
   { path: '', redirectTo: '/home', pathMatch: 'full'  },
   { path: '**', loadComponent:  pageNotFound, title: `${baseTitle} - Page Not Found`  },
