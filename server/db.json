@@ -233,5 +233,175 @@
         }
       ]
     }
+  ],
+  "spaces": [
+    {
+      "id": 100,
+      "created_at": "2025-11-01T10:00:00.000Z",
+      "updated_at": "2025-11-10T15:30:00.000Z",
+      "address_street": "Av. República de Panamá",
+      "address_number": "1234",
+      "address_city": "Lima",
+      "address_postal_code": "15047",
+      "available": true,
+      "capacity": 9,
+      "description": "Espacio de trabajo moderno y luminoso en el corazón de San Isidro.",
+      "name": "Oficina Moderna San Isidro",
+      "owner_id": 10,
+      "price": 300.0,
+      "space_type": "coworking"
+    },
+    {
+      "id": 101,
+      "created_at": "2025-11-02T09:00:00.000Z",
+      "updated_at": "2025-11-11T12:00:00.000Z",
+      "address_street": "Malecón 28 de Julio",
+      "address_number": "455",
+      "address_city": "Lima",
+      "address_postal_code": "15074",
+      "available": false,
+      "capacity": 4,
+      "description": "Sala privada con vista al mar en Miraflores.",
+      "name": "Sala Miraflores Vista Mar",
+      "owner_id": 11,
+      "price": 180.0,
+      "space_type": "private_room"
+    }
+  ],
+  "freelancers": [
+    {
+      "id": 1,
+      "created_at": "2025-10-20T08:10:00.000Z",
+      "updated_at": "2025-11-12T18:00:00.000Z",
+      "age": 24,
+      "email": "carlos.mendoza@example.com",
+      "location": "Lima",
+      "name": "Carlos Mendoza",
+      "password": "$2a$10$hashed_example_carlos",
+      "photo": "https://picsum.photos/seed/f1/300/300",
+      "register_date": "2025-10-20T08:10:00.000Z"
+    },
+    {
+      "id": 2,
+      "created_at": "2025-10-25T14:22:00.000Z",
+      "updated_at": "2025-11-10T10:05:00.000Z",
+      "age": 27,
+      "email": "andrea.lopez@example.com",
+      "location": "Arequipa",
+      "name": "Andrea López",
+      "password": "$2a$10$hashed_example_andrea",
+      "photo": "https://picsum.photos/seed/f2/300/300",
+      "register_date": "2025-10-25T14:22:00.000Z"
+    }
+  ],
+  "companies": [
+    {
+      "id": 10,
+      "created_at": "2025-09-01T12:00:00.000Z",
+      "updated_at": "2025-11-10T09:00:00.000Z",
+      "company": "Zeew Space SAC",
+      "ruc": "20601234567"
+    },
+    {
+      "id": 11,
+      "created_at": "2025-09-15T12:00:00.000Z",
+      "updated_at": "2025-11-08T09:00:00.000Z",
+      "company": "Cowork Hub Lima",
+      "ruc": "20509876543"
+    }
+  ],
+  "user_types": [
+    {
+      "id": 1,
+      "created_at": "2025-08-01T00:00:00.000Z",
+      "updated_at": "2025-08-01T00:00:00.000Z",
+      "user_type": "freelancer"
+    },
+    {
+      "id": 2,
+      "created_at": "2025-08-01T00:00:00.000Z",
+      "updated_at": "2025-08-01T00:00:00.000Z",
+      "user_type": "owner"
+    },
+    {
+      "id": 3,
+      "created_at": "2025-08-01T00:00:00.000Z",
+      "updated_at": "2025-08-01T00:00:00.000Z",
+      "user_type": "admin"
+    }
+  ],
+  "freelancer_tags": [
+    { "id": 1, "freelancer_id": 1, "tag": "react" },
+    { "id": 2, "freelancer_id": 1, "tag": "nextjs" },
+    { "id": 3, "freelancer_id": 1, "tag": "typescript" },
+    { "id": 4, "freelancer_id": 2, "tag": "ui/ux" },
+    { "id": 5, "freelancer_id": 2, "tag": "testing" }
+  ],
+  "favorite_spaces": [
+    { "id": 1, "freelancer_id": 1, "space_id": 100 },
+    { "id": 2, "freelancer_id": 1, "space_id": 101 },
+    { "id": 3, "freelancer_id": 2, "space_id": 101 }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "created_at": "2025-11-01T09:00:00.000Z",
+      "updated_at": "2025-11-12T16:10:00.000Z",
+      "age": 24,
+      "email": "carlos.mendoza@example.com",
+      "location": "Lima",
+      "name": "Carlos Mendoza",
+      "password": "$2a$10$hash_carlos",
+      "photo": "https://picsum.photos/seed/u1/300/300",
+      "register_date": "2025-11-01T09:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "created_at": "2025-11-02T10:15:00.000Z",
+      "updated_at": "2025-11-10T12:45:00.000Z",
+      "age": 27,
+      "email": "andrea.lopez@example.com",
+      "location": "Arequipa",
+      "name": "Andrea López",
+      "password": "$2a$10$hash_andrea",
+      "photo": "https://picsum.photos/seed/u2/300/300",
+      "register_date": "2025-11-02T10:15:00.000Z"
+    },
+    {
+      "id": 3,
+      "created_at": "2025-11-03T08:30:00.000Z",
+      "updated_at": "2025-11-11T11:20:00.000Z",
+      "age": 31,
+      "email": "sofia.ramirez@example.com",
+      "location": "Cusco",
+      "name": "Sofía Ramírez",
+      "password": "$2a$10$hash_sofia",
+      "photo": "https://picsum.photos/seed/u3/300/300",
+      "register_date": "2025-11-03T08:30:00.000Z"
+    },
+    {
+      "id": 4,
+      "created_at": "2025-11-04T14:05:00.000Z",
+      "updated_at": "2025-11-12T09:55:00.000Z",
+      "age": 22,
+      "email": "diego.perez@example.com",
+      "location": "Lima",
+      "name": "Diego Pérez",
+      "password": "$2a$10$hash_diego",
+      "photo": "https://picsum.photos/seed/u4/300/300",
+      "register_date": "2025-11-04T14:05:00.000Z"
+    },
+    {
+      "id": 5,
+      "created_at": "2025-11-05T07:40:00.000Z",
+      "updated_at": "2025-11-10T18:10:00.000Z",
+      "age": 29,
+      "email": "valeria.quispe@example.com",
+      "location": "Trujillo",
+      "name": "Valeria Quispe",
+      "password": "$2a$10$hash_valeria",
+      "photo": "https://picsum.photos/seed/u5/300/300",
+      "register_date": "2025-11-05T07:40:00.000Z"
+    }
   ]
 }
