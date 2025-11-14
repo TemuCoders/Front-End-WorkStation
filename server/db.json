@@ -248,7 +248,7 @@
       "description": "Espacio de trabajo moderno y luminoso en el corazón de San Isidro.",
       "name": "Oficina Moderna San Isidro",
       "owner_id": 10,
-      "price": 300.0,
+      "price": 300,
       "space_type": "coworking"
     },
     {
@@ -264,7 +264,7 @@
       "description": "Sala privada con vista al mar en Miraflores.",
       "name": "Sala Miraflores Vista Mar",
       "owner_id": 11,
-      "price": 180.0,
+      "price": 180,
       "space_type": "private_room"
     }
   ],
@@ -331,23 +331,55 @@
     }
   ],
   "freelancer_tags": [
-    { "id": 1, "freelancer_id": 1, "tag": "react" },
-    { "id": 2, "freelancer_id": 1, "tag": "nextjs" },
-    { "id": 3, "freelancer_id": 1, "tag": "typescript" },
-    { "id": 4, "freelancer_id": 2, "tag": "ui/ux" },
-    { "id": 5, "freelancer_id": 2, "tag": "testing" }
+    {
+      "id": 1,
+      "freelancer_id": 1,
+      "tag": "react"
+    },
+    {
+      "id": 2,
+      "freelancer_id": 1,
+      "tag": "nextjs"
+    },
+    {
+      "id": 3,
+      "freelancer_id": 1,
+      "tag": "typescript"
+    },
+    {
+      "id": 4,
+      "freelancer_id": 2,
+      "tag": "ui/ux"
+    },
+    {
+      "id": 5,
+      "freelancer_id": 2,
+      "tag": "testing"
+    }
   ],
   "favorite_spaces": [
-    { "id": 1, "freelancer_id": 1, "space_id": 100 },
-    { "id": 2, "freelancer_id": 1, "space_id": 101 },
-    { "id": 3, "freelancer_id": 2, "space_id": 101 }
+    {
+      "id": 1,
+      "freelancer_id": 1,
+      "space_id": 100
+    },
+    {
+      "id": 2,
+      "freelancer_id": 1,
+      "space_id": 101
+    },
+    {
+      "id": 3,
+      "freelancer_id": 2,
+      "space_id": 101
+    }
   ],
   "users": [
     {
       "id": 1,
       "created_at": "2025-11-01T09:00:00.000Z",
       "updated_at": "2025-11-12T16:10:00.000Z",
-      "age": 24,
+      "age": 13,
       "email": "carlos.mendoza@example.com",
       "location": "Lima",
       "name": "Carlos Mendoza",

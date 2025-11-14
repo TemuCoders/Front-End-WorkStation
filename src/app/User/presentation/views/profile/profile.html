@@ -10,6 +10,11 @@
       <nav class="side-nav">
         <a class="item active"><mat-icon>home</mat-icon> Home</a>
         <a class="item"><mat-icon>event</mat-icon> Bookings</a>
+        <a class="item"
+           [routerLink]="['/profile', user.id, 'edit']"
+           routerLinkActive="active">
+          <mat-icon>person</mat-icon> Profile
+        </a>
       </nav>
     </aside>
 

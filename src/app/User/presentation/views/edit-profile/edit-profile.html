@@ -1,0 +1,44 @@
+@if (editedUser(); as user) {
+  <div class="form-wrap">
+    <h2>Perfil — {{ user.name || '(sin nombre)' }}</h2>
+
+    <mat-form-field appearance="outline" class="field">
+      <mat-label>Nombre</mat-label>
+      <input matInput [value]="user.name" (input)="onFieldChange('name', $any($event.target).value)">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="field">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" [value]="user.email" (input)="onFieldChange('email', $any($event.target).value)">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="field">
+      <mat-label>Ubicación</mat-label>
+      <input matInput [value]="user.location" (input)="onFieldChange('location', $any($event.target).value)">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="field">
+      <mat-label>Edad</mat-label>
+      <input matInput type="number" [value]="user.age" (input)="onFieldChange('age', +$any($event.target).value)">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="field">
+      <mat-label>Foto (URL)</mat-label>
+      <input matInput [value]="user.photo" (input)="onFieldChange('photo', $any($event.target).value)">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="field">
+      <mat-label>Password (hash)</mat-label>
+      <input matInput [value]="user.password" (input)="onFieldChange('password', $any($event.target).value)">
+    </mat-form-field>
+
+    <div class="actions">
+      <button mat-stroked-button (click)="save()">Guardar</button>
+      <button mat-stroked-button (click)="delete()" [disabled]="!user.id">Eliminar</button>
+      <button mat-stroked-button (click)="goBack()">Volver</button>
+    </div>
+  </div>
+} @else {
+  <p class="empty">Usuario no encontrado.</p>
+  <button mat-stroked-button (click)="goBack()">Volver</button>
+}
