@@ -1,0 +1,104 @@
+@if (editedUser(); as user) {
+  <div class="layout">
+
+    <aside class="sidebar">
+      <div class="sidebar-user">
+        <img [src]="avatarUrl(user)" alt="avatar" class="avatar-sm" />
+        <span>Hi, {{ firstName(user.name) }}</span>
+      </div>
+
+      <nav class="side-nav">
+        <a class="item active"><mat-icon>home</mat-icon> Home</a>
+        <a class="item"><mat-icon>event</mat-icon> Bookings</a>
+      </nav>
+    </aside>
+
+
+    <div class="main">
+
+      <header class="topbar">
+        <nav class="tabs">
+          <a class="tab active">Workspaces</a>
+          <a class="tab">Explore</a>
+          <a class="tab">Wishlists</a>
+          <a class="tab">Trips</a>
+        </nav>
+
+        <div class="search">
+          <mat-icon>search</mat-icon>
+          <input placeholder="Search" />
+        </div>
+
+        <img [src]="avatarUrl(user)" alt="avatar" class="avatar-sm" />
+      </header>
+
+
+      <section class="profile-header">
+        <img [src]="avatarUrl(user)" alt="avatar" class="avatar-xl" />
+        <div class="head-text">
+          <h1 class="name">{{ user.name }}</h1>
+          <div class="meta">Joined in {{ joinedYear(user) }}</div>
+          <div class="submeta">{{ reviews().length }} reviews · Superhost</div>
+        </div>
+      </section>
+
+
+      <section class="section">
+        <h3 class="section-title">My Workspaces</h3>
+
+        @if (searchLoading()) {
+          <div class="loading">Loading workspaces…</div>
+        } @else if (searchError()) {
+          <div class="error">{{ searchError() }}</div>
+        } @else if (myWorkspaces().length === 0) {
+          <div class="empty">No workspaces.</div>
+        } @else {
+          @for (w of myWorkspaces(); track w.id) {
+            <article class="workspace-row">
+              <div class="w-info">
+                <span class="w-badge">{{ w.type }}</span>
+                <h4 class="w-title">{{ w.name }}</h4>
+                <div class="w-meta">
+                  {{ w.capacity }} guests · S/ {{ w.pricePerDay }}/día · {{ w.address.city }}
+                </div>
+              </div>
+              <img [src]="w.imageUrl" alt="workspace" class="w-thumb" />
+            </article>
+          }
+        }
+      </section>
+
+
+      <section class="section">
+        <h3 class="section-title">Reviews</h3>
+
+        @for (r of reviews(); track r.id) {
+          <article class="review-row">
+            <img [src]="r.avatar" class="rv-avatar" alt="reviewer" />
+            <div class="rv-body">
+              <div class="rv-head">
+                <strong>{{ r.author }}</strong>
+                <span class="rv-date">{{ r.date }}</span>
+              </div>
+
+              <div class="rv-stars">
+                @for (s of five; track s) {
+                  <mat-icon>{{ r.rating >= s ? 'star' : 'star_border' }}</mat-icon>
+                }
+              </div>
+
+              <p class="rv-text">{{ r.text }}</p>
+              <div class="rv-actions">
+                <span><mat-icon>favorite_border</mat-icon> {{ r.likes }}</span>
+                <span><mat-icon>chat_bubble_outline</mat-icon> {{ r.comments }}</span>
+              </div>
+            </div>
+          </article>
+        }
+      </section>
+    </div>
+  </div>
+} @else {
+  <p class="empty">Usuario no encontrado.</p>
+  <button mat-stroked-button (click)="goBack()">Volver</button>
+}
