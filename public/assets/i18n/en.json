@@ -21,6 +21,9 @@
     "subtitle": "Explore the best workspaces available in Lima.",
     "button": "View Workspaces"
   },
+  "workspace": {
+    "reserve": "Reserve"
+  },
   "workspaceTable": {
     "status": {
       "loading": "Loading data...",

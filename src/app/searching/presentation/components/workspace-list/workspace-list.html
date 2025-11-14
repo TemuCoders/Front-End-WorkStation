@@ -49,7 +49,7 @@
       <mat-card-actions align="end">
         @if (workspace.isAvailable) {
           <button mat-raised-button color="primary" (click)="router.navigate(['searching/workspaces/reserve', workspace.id])">
-            {{ 'workspaceTable.buttons.reserve' | translate }}
+            {{ 'workspace.reserve' | translate }}
           </button>
         }
       </mat-card-actions>

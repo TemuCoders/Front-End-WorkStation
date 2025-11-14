@@ -368,6 +368,18 @@
       "createdAt": "2025-11-13T03:56:40.234Z",
       "updatedAt": "2025-11-13T04:02:39.210Z",
       "id": 6
+    },
+    {
+      "userId": 1,
+      "type": "CARD",
+      "maskedPan": "2311241212",
+      "expMonth": 12,
+      "expYear": 2028,
+      "status": "ACTIVE",
+      "createdAt": "2025-11-14T14:36:04.482Z",
+      "updatedAt": "2025-11-14T14:36:04.482Z",
+      "apiId": "v1",
+      "id": 7
     }
   ],
   "payments": [
@@ -436,6 +448,17 @@
       "createdAt": "2025-11-13T03:45:01.987Z",
       "updatedAt": "2025-11-13T03:45:01.987Z",
       "id": 5
+    },
+    {
+      "spaceId": 1,
+      "userId": 1,
+      "rating": 4,
+      "comment": "Mala",
+      "status": "PUBLISHED",
+      "createdAt": "2025-11-14T14:35:12.768Z",
+      "updatedAt": "2025-11-14T14:35:12.768Z",
+      "apiId": "v1",
+      "id": 6
     }
   ]
 }

@@ -21,6 +21,9 @@
     "subtitle": "Explora los mejores espacios de trabajo disponibles en Lima.",
     "button": "Ver Workspaces"
   },
+  "workspace": {
+    "reserve": "Reservar"
+  },
   "workspaceTable": {
     "status": {
       "loading": "Cargando datos...",

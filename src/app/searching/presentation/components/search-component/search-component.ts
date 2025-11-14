@@ -6,6 +6,8 @@ import { MatIcon } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 
 
+
+
 @Component({
   selector: 'app-search-component',
   imports: [MatFormFieldModule, MatInputModule, FormsModule, MatIcon],
@@ -15,7 +17,7 @@ import { FormsModule } from '@angular/forms';
 export class SearchComponent {
   onSearch(value: string) {
     console.log('Buscando:', value);
-    
+
   }
 
 }
