@@ -1,0 +1,203 @@
+<div class="detail-container">
+  
+  <div class="header-actions">
+    <button mat-icon-button class="back-button" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1 class="page-title">Detalle del Espacio</h1>
+  </div>
+
+  @if (store.loading()) {
+    <div class="loading-container">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p>Cargando información...</p>
+    </div>
+  }
+
+  @if (!workspace() && !store.loading()) {
+    <div class="not-found">
+      <mat-icon class="not-found-icon">location_off</mat-icon>
+      <h2>Espacio no encontrado</h2>
+      <p>El espacio de trabajo que buscas no existe o ha sido eliminado.</p>
+      <button mat-raised-button color="primary" (click)="goBack()">
+        Volver a la búsqueda
+      </button>
+    </div>
+  }
+
+  @if (workspace(); as ws) {
+    <div class="detail-content">
+      <!-- Galería de imágenes -->
+      <section class="gallery-section">
+        <div class="main-image-container">
+          <img 
+            [src]="images()[currentImageIndex()]" 
+            [alt]="ws.name"
+            class="main-image">
+          
+          <!-- Navegación de galería -->
+          @if (images().length > 1) {
+            <button 
+              mat-icon-button 
+              class="gallery-nav prev"
+              (click)="previousImage()">
+              <mat-icon>chevron_left</mat-icon>
+            </button>
+            <button 
+              mat-icon-button 
+              class="gallery-nav next"
+              (click)="nextImage()">
+              <mat-icon>chevron_right</mat-icon>
+            </button>
+
+            <!-- Indicadores -->
+            <div class="gallery-indicators">
+              @for (img of images(); track $index) {
+                <button 
+                  class="indicator"
+                  [class.active]="currentImageIndex() === $index"
+                  (click)="selectImage($index)">
+                </button>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Miniaturas -->
+        <div class="thumbnails">
+          @for (img of images(); track $index) {
+            <img 
+              [src]="img" 
+              [alt]="ws.name + ' - ' + ($index + 1)"
+              class="thumbnail"
+              [class.active]="currentImageIndex() === $index"
+              (click)="selectImage($index)">
+          }
+        </div>
+      </section>
+
+      <!-- Información principal -->
+      <section class="info-section">
+        <div class="info-header">
+          <div>
+            <h1 class="workspace-name">{{ ws.name }}</h1>
+            <p class="workspace-type">
+              <mat-icon class="type-icon">category</mat-icon>
+              {{ ws.spaceType }}
+            </p>
+          </div>
+          
+          <div class="availability-badge" 
+               [class.available]="ws.available"
+               [class.unavailable]="!ws.available">
+            <mat-icon>{{ ws.available ? 'check_circle' : 'cancel' }}</mat-icon>
+            <span>{{ ws.available ? 'Disponible' : 'No disponible' }}</span>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <!-- Detalles rápidos -->
+        <div class="quick-details">
+          <div class="detail-card">
+            <mat-icon class="detail-icon">people</mat-icon>
+            <div class="detail-info">
+              <span class="detail-label">Capacidad</span>
+              <span class="detail-value">{{ ws.capacity }} personas</span>
+            </div>
+          </div>
+
+          <div class="detail-card">
+            <mat-icon class="detail-icon">monetization_on</mat-icon>
+            <div class="detail-info">
+              <span class="detail-label">Precio</span>
+              <span class="detail-value">S/ {{ ws.price }} /día</span>
+            </div>
+          </div>
+
+          <div class="detail-card">
+            <mat-icon class="detail-icon">star</mat-icon>
+            <div class="detail-info">
+              <span class="detail-label">Valoración</span>
+              <span class="detail-value">4.9 ★</span>
+            </div>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <!-- Descripción -->
+        <div class="description-section">
+          <h2 class="section-title">
+            <mat-icon>description</mat-icon>
+            Descripción
+          </h2>
+          <p class="description-text">{{ ws.description }}</p>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <!-- Ubicación -->
+        <div class="location-section">
+          <h2 class="section-title">
+            <mat-icon>place</mat-icon>
+            Ubicación
+          </h2>
+          <div class="location-details">
+            <p class="address">
+              <strong>Dirección:</strong><br>
+              {{ ws.address.street }} {{ ws.address.number }},<br>
+              {{ ws.address.city }}, {{ ws.address.postalCode }}
+            </p>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <!-- Servicios -->
+        <div class="services-section">
+          <h2 class="section-title">
+            <mat-icon>build</mat-icon>
+            Servicios incluidos
+          </h2>
+          <div class="services-grid">
+            @for (service of getServicesNames(ws); track service) {
+              <mat-chip class="service-chip">
+                <mat-icon>check_circle</mat-icon>
+                {{ service }}
+              </mat-chip>
+            }
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <!-- Botón de reserva -->
+        <div class="booking-section">
+          <div class="price-summary">
+            <span class="price-label">Precio total por día</span>
+            <span class="price-amount">S/ {{ ws.price }}</span>
+          </div>
+          
+          @if (ws.available) {
+            <button 
+              mat-raised-button 
+              class="reserve-button"
+              (click)="reserveWorkspace()">
+              <mat-icon>event_available</mat-icon>
+              Reservar ahora
+            </button>
+          } @else {
+            <button 
+              mat-raised-button 
+              class="unavailable-button" 
+              disabled>
+              <mat-icon>event_busy</mat-icon>
+              No disponible
+            </button>
+          }
+        </div>
+      </section>
+    </div>
+  }
+</div>

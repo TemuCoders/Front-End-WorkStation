@@ -1,34 +1,59 @@
-import {Component, inject} from '@angular/core';
-import {input, InputSignal} from '@angular/core';
-import {Workspace} from '../../../domain/model/workspace.entity';
-import {ChangeDetectionStrategy} from '@angular/core';
-import {MatButtonModule} from '@angular/material/button';
-import {MatCardModule} from '@angular/material/card';
-import {MatError} from '@angular/material/form-field';
-import {MatProgressSpinner} from '@angular/material/progress-spinner';
-import {SearchingStore} from '../../../application/searching-store';
-import {Router} from '@angular/router';
-import {TranslatePipe} from '@ngx-translate/core';
-import {MatIconModule} from '@angular/material/icon';
-
+import { Component, inject, input, computed } from '@angular/core';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatError } from '@angular/material/form-field';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
+import { SearchingStore } from '../../../application/searching-store';
 
 @Component({
   selector: 'app-workspace-list',
-  imports: [MatCardModule, MatButtonModule, MatError, MatProgressSpinner, TranslatePipe, MatIconModule],
+  imports: [
+    MatCardModule, 
+    MatButtonModule, 
+    MatError, 
+    MatProgressSpinner, 
+    TranslatePipe, 
+    MatIconModule
+  ],
   templateUrl: './workspace-list.html',
   styleUrl: './workspace-list.css',
-  standalone:true,
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WorkspaceList {
   readonly store = inject(SearchingStore);
   protected router = inject(Router);
-  workspace: InputSignal<Workspace> = input.required<Workspace>();
+
+  searchQuery = input<string>('');
+
+  filteredWorkspaces = computed(() => {
+    const query = this.searchQuery().toLowerCase().trim();
+    
+    if (!query) {
+      return this.store.workspaces(); 
+    }
+
+    return this.store.workspaces().filter(workspace => {
+
+      const servicesText = this.getServicesNames(workspace).toLowerCase();
+      
+ 
+      return (
+        workspace.name.toLowerCase().includes(query) ||
+        workspace.spaceType.toLowerCase().includes(query) ||
+        workspace.address.city.toLowerCase().includes(query) ||
+        workspace.address.street.toLowerCase().includes(query) ||
+        workspace.description.toLowerCase().includes(query) ||
+        servicesText.includes(query)
+      );
+    });
+  });
 
   getServicesNames(workspace: any): string {
     return workspace.services?.map((s: any) => s.name).join(', ') || '—';
   }
-
 }
-
-

@@ -1,5 +1,9 @@
 <div class="searching">
-    <app-search-component></app-search-component>
+    <app-search-component 
+        (searchTerm)="onSearchChange($event)">
+    </app-search-component>
 
-    <app-workspace-list [workspace]="workspace"></app-workspace-list>
+    <app-workspace-list 
+        [searchQuery]="searchQuery()">
+    </app-workspace-list>
 </div>

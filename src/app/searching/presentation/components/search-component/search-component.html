@@ -1,17 +1,46 @@
-<div class="search-container">
-        <mat-form-field appearance="outline" class="search-bar">
-            <mat-icon matPrefix class="search-icon">search</mat-icon>
-            <input 
-            #searchInput
-            matInput 
-            placeholder="Search for workspaces in Lima"
-            (keyup.enter)="onSearch(searchInput.value)">
-        </mat-form-field>
-        
+<div class="search-wrapper">
+  <div class="search-container">
+    <mat-form-field appearance="outline" class="search-bar">
+      <mat-icon matPrefix class="search-icon">search</mat-icon>
+      
+      <input 
+        #searchInput
+        matInput 
+        [value]="searchValue()"
+        placeholder="Buscar espacios de trabajo en Lima..."
+        (input)="onInputChange(searchInput.value)"
+        (keyup.enter)="onSearch(searchInput.value)"
+        autocomplete="off">
+      
+      @if (searchValue()) {
         <button 
-            mat-raised-button 
-            class="search-button"
-            (click)="onSearch(searchInput.value)">
-            Search
+          mat-icon-button 
+          matSuffix 
+          class="clear-button"
+          (click)="onClear()"
+          aria-label="Limpiar búsqueda">
+          <mat-icon>close</mat-icon>
         </button>
+      }
+    </mat-form-field>
+    
+    <button 
+      mat-raised-button 
+      class="search-button"
+      [disabled]="isSearching()"
+      (click)="onSearch(searchInput.value)">
+      @if (isSearching()) {
+        <mat-spinner diameter="20" class="button-spinner"></mat-spinner>
+      } @else {
+        <span>Buscar</span>
+      }
+    </button>
+  </div>
+  
+  @if (searchValue()) {
+    <div class="search-info">
+      <span class="search-label">Buscando:</span>
+      <span class="search-query">"{{ searchValue() }}"</span>
+    </div>
+  }
 </div>
