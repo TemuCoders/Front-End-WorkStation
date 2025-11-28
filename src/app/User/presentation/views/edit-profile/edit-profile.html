@@ -1,0 +1,162 @@
+@if (editedUser(); as user) {
+  <div class="layout">
+
+    <aside class="sidebar">
+      <div class="sidebar-user">
+        <img [src]="avatarUrl(user)" alt="avatar" class="avatar-sm" />
+        <span>Hi, {{ firstName(user.name) }}</span>
+      </div>
+
+      <nav class="side-nav">
+        <a class="item" (click)="goBack()">
+          <mat-icon>home</mat-icon>
+          Home
+        </a>
+        <a
+          class="item"
+          [routerLink]="['/bookings']"
+          routerLinkActive="active"
+        >
+          <mat-icon>event</mat-icon>
+          Bookings
+        </a>
+        <a
+          class="item"
+          [routerLink]="['/payments']"
+          routerLinkActive="active"
+        >
+          <mat-icon>payments</mat-icon>
+          Payments
+        </a>
+        <a
+          class="item active"
+          [routerLink]="['/profile', user.id, 'edit']"
+          routerLinkActive="active"
+        >
+          <mat-icon>person</mat-icon> Profile
+        </a>
+      </nav>
+    </aside>
+
+    <div class="main">
+
+
+      <section class="profile-edit-layout">
+
+        <article class="profile-card">
+          <div class="profile-cover">
+            <img
+              class="cover-img"
+              [src]="avatarUrl(user)"
+              alt="Cover"
+            />
+          </div>
+
+          <div class="profile-avatar-wrapper">
+            <img
+              class="profile-avatar"
+              [src]="avatarUrl(user)"
+              alt="Avatar"
+            />
+          </div>
+
+          <div class="profile-info">
+            <h2 class="profile-name">{{ user.name || '(sin nombre)' }}</h2>
+            <p class="profile-username">@{{ firstName(user.name) | lowercase }}</p>
+            <p class="profile-quote">
+              {{ user.location || '"I like the way you work it"' }}
+            </p>
+          </div>
+        </article>
+
+        <article class="profile-edit-card">
+          <h3 class="form-title">Edit Profile</h3>
+
+          <form class="profile-form" (ngSubmit)="save()">
+            <div class="form-grid">
+              <mat-form-field appearance="outline" class="field field-full">
+                <mat-label>Nombre</mat-label>
+                <input
+                  matInput
+                  [value]="user.name"
+                  (input)="onFieldChange('name', $any($event.target).value)"
+                />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="field">
+                <mat-label>Email address</mat-label>
+                <input
+                  matInput
+                  type="email"
+                  [value]="user.email"
+                  (input)="onFieldChange('email', $any($event.target).value)"
+                />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="field">
+                <mat-label>Edad</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  [value]="user.age"
+                  (input)="onFieldChange('age', +$any($event.target).value)"
+                />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="field field-full">
+                <mat-label>Ubicación</mat-label>
+                <input
+                  matInput
+                  [value]="user.location"
+                  (input)="onFieldChange('location', $any($event.target).value)"
+                />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="field field-full">
+                <mat-label>Foto (URL)</mat-label>
+                <input
+                  matInput
+                  [value]="user.photo"
+                  (input)="onFieldChange('photo', $any($event.target).value)"
+                />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="field field-full">
+                <mat-label>Password (hash)</mat-label>
+                <input
+                  matInput
+                  [value]="user.password"
+                  (input)="onFieldChange('password', $any($event.target).value)"
+                />
+              </mat-form-field>
+            </div>
+
+            <div class="form-actions">
+              <button mat-flat-button color="primary" type="submit">
+                Actualizar
+              </button>
+              <button
+                mat-stroked-button
+                type="button"
+                (click)="delete()"
+                [disabled]="!user.id"
+              >
+                Eliminar
+              </button>
+              <button
+                mat-stroked-button
+                type="button"
+                (click)="goBack()"
+              >
+                Volver
+              </button>
+            </div>
+          </form>
+        </article>
+      </section>
+    </div>
+  </div>
+} @else {
+  <p class="empty">Usuario no encontrado.</p>
+  <button mat-stroked-button (click)="goBack()">Volver</button>
+}

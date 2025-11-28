@@ -23,7 +23,7 @@ export class Sidebar {
   @Input() userId?: number;
 
   readonly navItems: SidebarItem[] = [
-    { route: '/profile/1', icon: 'person', label: 'Perfil' },
+    { route: '/profile', icon: 'person', label: 'Perfil' },
     { route: '/bookings', icon: 'event', label: 'Bookings' },
     { route: '/payments', icon: 'payments', label: 'Payments' },
     { route: '/reviews', icon: 'reviews', label: 'Reviews' }

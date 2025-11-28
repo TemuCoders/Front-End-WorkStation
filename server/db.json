@@ -405,9 +405,9 @@
       "userId": 1,
       "rating": 5,
       "comment": "Excelente espacio, súper limpio y buena ubicación.",
-      "status": "PUBLISHED",
+      "status": "DELETED",
       "createdAt": "2025-11-09T12:00:00Z",
-      "updatedAt": "2025-11-09T12:00:00Z"
+      "updatedAt": "2025-11-24T14:22:32.290Z"
     },
     {
       "id": 2,
