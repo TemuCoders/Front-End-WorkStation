@@ -2,236 +2,223 @@
   "workspaces": [
     {
       "id": 1,
+      "ownerId": 1,
       "name": "Oficina Moderna San Isidro",
       "description": "Espacio de trabajo moderno y luminoso en el corazón de San Isidro.",
-      "type": "coworking",
+      "spaceType": "coworking",
       "capacity": 9,
-      "pricePerDay": 300,
-      "isAvailable": true,
-      "averageRating": 4.7,
-      "imageUrl": "https://picsum.photos/seed/1/600/400",
+      "price": 300,
+      "available": true,
+      "img": "https://picsum.photos/seed/1/600/400",
       "address": {
         "street": "Av. República de Panamá",
-        "district": "San Isidro",
-        "city": "Lima"
-      },
-      "owner": {
-        "firstName": "Carlos",
-        "lastName": "Mendoza"
-      },
-      "services": [
-        {
-          "id": 0,
-          "name": "WiFi de Alta Velocidad",
-          "icon": "",
-          "description": ""
-        },
-        {
-          "id": 0,
-          "name": "Café y Snacks",
-          "icon": "",
-          "description": ""
-        },
-        {
-          "id": 0,
-          "name": "Estacionamiento",
-          "icon": "",
-          "description": ""
-        },
-        {
-          "id": 0,
-          "name": "Sala de Reuniones",
-          "icon": "",
-          "description": ""
-        },
-        {
-          "id": 0,
-          "name": "",
-          "icon": "",
-          "description": ""
-        }
-      ]
+        "number": 350,
+        "city": "Lima",
+        "postalCode": 15073
+      }
     },
     {
       "id": 2,
+      "ownerId": 2,
       "name": "Coworking Miraflores Hub",
       "description": "Espacio de coworking vibrante en Miraflores, perfecto para freelancers y startups.",
-      "type": "coworking",
+      "spaceType": "coworking",
       "capacity": 30,
-      "pricePerDay": 100,
-      "isAvailable": true,
-      "averageRating": 4.3,
-      "imageUrl": "https://picsum.photos/seed/2/600/400",
+      "price": 100,
+      "available": true,
+      "img": "https://picsum.photos/seed/2/600/400",
       "address": {
         "street": "Av. José Larco",
-        "number": "1232",
-        "district": "Miraflores",
-        "city": "Lima"
-      },
-      "owner": {
-        "firstName": "María",
-        "lastName": "Torres"
-      },
-      "services": [
-        {
-          "id": 1,
-          "name": "WiFi de Alta Velocidad",
-          "icon": "wifi",
-          "description": "Conexión a internet de fibra óptica con velocidad superior a 500 Mbps"
-        },
-        {
-          "id": 2,
-          "name": "Café y Snacks",
-          "icon": "coffee",
-          "description": "Servicio de café, té y snacks ilimitados durante tu estadía"
-        },
-        {
-          "id": 4,
-          "name": "Aire Acondicionado",
-          "icon": "air",
-          "description": "Sistema de climatización central para tu comodidad"
-        },
-        {
-          "id": 6,
-          "name": "Impresora/Escáner",
-          "icon": "printer",
-          "description": "Equipos de impresión y escaneo disponibles"
-        },
-        {
-          "id": 7,
-          "name": "Recepción",
-          "icon": "reception",
-          "description": "Servicio de recepción y gestión de correspondencia"
-        }
-      ]
+        "number": 1232,
+        "city": "Lima",
+        "postalCode": 15074
+      }
     },
     {
       "id": 3,
+      "ownerId": 2,
       "name": "Sala de Reuniones Premium",
       "description": "Sala de reuniones ejecutiva con tecnología de punta.",
-      "type": "meeting-room",
+      "spaceType": "meeting-room",
       "capacity": 12,
-      "pricePerDay": 500,
-      "isAvailable": true,
-      "averageRating": 4.9,
-      "imageUrl": "https://picsum.photos/seed/3/600/400",
+      "price": 500,
+      "available": true,
+      "img": "https://picsum.photos/seed/3/600/400",
       "address": {
         "street": "Calle Las Begonias",
-        "number": "441",
-        "district": "San Isidro",
-        "city": "Lima"
-      },
-      "owner": {
-        "firstName": "Carlos",
-        "lastName": "Méndez"
-      },
-      "services": [
-        {
-          "id": 1,
-          "name": "WiFi de Alta Velocidad",
-          "icon": "wifi",
-          "description": "Conexión a internet de fibra óptica con velocidad superior a 500 Mbps"
-        },
-        {
-          "id": 2,
-          "name": "Café y Snacks",
-          "icon": "coffee",
-          "description": "Servicio de café, té y snacks ilimitados durante tu estadía"
-        },
-        {
-          "id": 3,
-          "name": "Estacionamiento",
-          "icon": "car",
-          "description": "Espacios de estacionamiento disponibles para inquilinos"
-        },
-        {
-          "id": 8,
-          "name": "Proyector/Pantalla",
-          "icon": "projector",
-          "description": "Equipamiento audiovisual profesional para presentaciones"
-        }
-      ]
+        "number": 441,
+        "city": "Lima",
+        "postalCode": 15073
+      }
     },
     {
       "id": 4,
+      "ownerId": 2,
       "name": "Oficina Compartida Barranco",
       "description": "Espacio bohemio y creativo en Barranco.",
-      "type": "coworking",
+      "spaceType": "coworking",
       "capacity": 15,
-      "pricePerDay": 120,
-      "isAvailable": false,
-      "averageRating": 4.2,
-      "imageUrl": "https://picsum.photos/seed/4/600/400",
+      "price": 120,
+      "available": false,
+      "img": "https://picsum.photos/seed/4/600/400",
       "address": {
         "street": "Jr. Colina",
-        "number": "150",
-        "district": "Barranco",
-        "city": "Lima"
-      },
-      "owner": {
-        "firstName": "Luis",
-        "lastName": "Rodríguez"
-      },
-      "services": [
-        {
-          "id": 1,
-          "name": "WiFi de Alta Velocidad",
-          "icon": "wifi",
-          "description": "Conexión a internet de fibra óptica con velocidad superior a 500 Mbps"
-        },
-        {
-          "id": 2,
-          "name": "Café y Snacks",
-          "icon": "coffee",
-          "description": "Servicio de café, té y snacks ilimitados durante tu estadía"
-        },
-        {
-          "id": 6,
-          "name": "Impresora/Escáner",
-          "icon": "printer",
-          "description": "Equipos de impresión y escaneo disponibles"
-        }
-      ]
+        "number": 150,
+        "city": "Lima",
+        "postalCode": 15063
+      }
     },
     {
       "id": 5,
+      "ownerId": 2,
       "name": "Estudio Privado Surco",
       "description": "Estudio privado ideal para profesionales independientes.",
-      "type": "coworking",
+      "spaceType": "coworking",
       "capacity": 4,
-      "pricePerDay": 180,
-      "isAvailable": true,
-      "averageRating": 4.5,
-      "imageUrl": "https://picsum.photos/seed/5/600/400",
+      "price": 180,
+      "available": true,
+      "img": "https://picsum.photos/seed/5/600/400",
       "address": {
         "street": "Av. Primavera",
-        "district": "Surco",
-        "city": "Lima"
-      },
-      "owner": {
-        "firstName": "María",
-        "lastName": "Torres"
-      },
-      "services": [
-        {
-          "id": 0,
-          "name": "WiFi de Alta Velocidad",
-          "icon": "",
-          "description": ""
-        },
-        {
-          "id": 0,
-          "name": "Café y Snacks",
-          "icon": "",
-          "description": ""
-        },
-        {
-          "id": 0,
-          "name": "Aire Acondicionado",
-          "icon": "",
-          "description": ""
-        }
-      ]
+        "number": 20,
+        "city": "Lima",
+        "postalCode": 15023
+      }
+    }
+  ],
+  "services": [
+    {
+      "id": 1,
+      "workspaceId": 1,
+      "name": "WiFi de Alta Velocidad",
+      "icon": "",
+      "description": ""
+    },
+    {
+      "id": 2,
+      "workspaceId": 1,
+      "name": "Café y Snacks",
+      "icon": "",
+      "description": ""
+    },
+    {
+      "id": 3,
+      "workspaceId": 1,
+      "name": "Estacionamiento",
+      "icon": "",
+      "description": ""
+    },
+    {
+      "id": 4,
+      "workspaceId": 1,
+      "name": "Sala de Reuniones",
+      "icon": "",
+      "description": ""
+    },
+    {
+      "id": 5,
+      "workspaceId": 2,
+      "name": "WiFi de Alta Velocidad",
+      "icon": "wifi",
+      "description": "Conexión a internet de fibra óptica con velocidad superior a 500 Mbps"
+    },
+    {
+      "id": 6,
+      "workspaceId": 2,
+      "name": "Café y Snacks",
+      "icon": "coffee",
+      "description": "Servicio de café, té y snacks ilimitados durante tu estadía"
+    },
+    {
+      "id": 7,
+      "workspaceId": 2,
+      "name": "Aire Acondicionado",
+      "icon": "air",
+      "description": "Sistema de climatización central para tu comodidad"
+    },
+    {
+      "id": 8,
+      "workspaceId": 2,
+      "name": "Impresora/Escáner",
+      "icon": "printer",
+      "description": "Equipos de impresión y escaneo disponibles"
+    },
+    {
+      "id": 9,
+      "workspaceId": 2,
+      "name": "Recepción",
+      "icon": "reception",
+      "description": "Servicio de recepción y gestión de correspondencia"
+    },
+    {
+      "id": 10,
+      "workspaceId": 3,
+      "name": "WiFi de Alta Velocidad",
+      "icon": "wifi",
+      "description": "Conexión a internet de fibra óptica con velocidad superior a 500 Mbps"
+    },
+    {
+      "id": 11,
+      "workspaceId": 3,
+      "name": "Café y Snacks",
+      "icon": "coffee",
+      "description": "Servicio de café, té y snacks ilimitados durante tu estadía"
+    },
+    {
+      "id": 12,
+      "workspaceId": 3,
+      "name": "Estacionamiento",
+      "icon": "car",
+      "description": "Espacios de estacionamiento disponibles para inquilinos"
+    },
+    {
+      "id": 13,
+      "workspaceId": 3,
+      "name": "Proyector/Pantalla",
+      "icon": "projector",
+      "description": "Equipamiento audiovisual profesional para presentaciones"
+    },
+    {
+      "id": 14,
+      "workspaceId": 4,
+      "name": "WiFi de Alta Velocidad",
+      "icon": "wifi",
+      "description": "Conexión a internet de fibra óptica con velocidad superior a 500 Mbps"
+    },
+    {
+      "id": 15,
+      "workspaceId": 4,
+      "name": "Café y Snacks",
+      "icon": "coffee",
+      "description": "Servicio de café, té y snacks ilimitados durante tu estadía"
+    },
+    {
+      "id": 16,
+      "workspaceId": 4,
+      "name": "Impresora/Escáner",
+      "icon": "printer",
+      "description": "Equipos de impresión y escaneo disponibles"
+    },
+    {
+      "id": 17,
+      "workspaceId": 5,
+      "name": "WiFi de Alta Velocidad",
+      "icon": "",
+      "description": ""
+    },
+    {
+      "id": 18,
+      "workspaceId": 5,
+      "name": "Café y Snacks",
+      "icon": "",
+      "description": ""
+    },
+    {
+      "id": 19,
+      "workspaceId": 5,
+      "name": "Aire Acondicionado",
+      "icon": "",
+      "description": ""
     }
   ],
   "spaces": [
