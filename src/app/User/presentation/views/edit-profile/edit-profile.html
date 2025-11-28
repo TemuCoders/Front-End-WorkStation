@@ -1,42 +1,7 @@
 @if (editedUser(); as user) {
   <div class="layout">
 
-    <aside class="sidebar">
-      <div class="sidebar-user">
-        <img [src]="avatarUrl(user)" alt="avatar" class="avatar-sm" />
-        <span>Hi, {{ firstName(user.name) }}</span>
-      </div>
-
-      <nav class="side-nav">
-        <a class="item" (click)="goBack()">
-          <mat-icon>home</mat-icon>
-          Home
-        </a>
-        <a
-          class="item"
-          [routerLink]="['/bookings']"
-          routerLinkActive="active"
-        >
-          <mat-icon>event</mat-icon>
-          Bookings
-        </a>
-        <a
-          class="item"
-          [routerLink]="['/payments']"
-          routerLinkActive="active"
-        >
-          <mat-icon>payments</mat-icon>
-          Payments
-        </a>
-        <a
-          class="item active"
-          [routerLink]="['/profile', user.id, 'edit']"
-          routerLinkActive="active"
-        >
-          <mat-icon>person</mat-icon> Profile
-        </a>
-      </nav>
-    </aside>
+    <app-sidebar [user]="user"></app-sidebar>
 
     <div class="main">
 

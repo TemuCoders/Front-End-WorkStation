@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Sidebar } from '../../../../shared/presentation/components/sidebar/sidebar';
 
 import { UserStore } from '../../../application/User-store';
 import { User } from '../../../domain/model/user.entity';
@@ -21,7 +22,8 @@ import {FormsModule} from '@angular/forms';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    FormsModule
+    FormsModule,
+    Sidebar
   ],
   templateUrl: './edit-profile.html',
   styleUrls: ['./edit-profile.css']

@@ -5,20 +5,12 @@
   </div>
 
   <nav class="side-nav">
-    <a 
-      class="item" 
-      [routerLink]="getProfileRoute()"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{exact: true}"
-    >
-      <mat-icon>person</mat-icon> Perfil
-    </a>
-    
-    @for (item of navItems.slice(1); track item.route) {
+    @for (item of navItems(); track item.route) {
       <a 
         class="item" 
         [routerLink]="item.route"
         routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact: item.exact}"
       >
         <mat-icon>{{ item.icon }}</mat-icon> {{ item.label }}
       </a>
