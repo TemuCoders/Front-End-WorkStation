@@ -16,7 +16,7 @@
   <div class="card-grid">
     @for (workspace of store.workspaces().slice(0, 4); track workspace.id) {
       <mat-card class="workspace-card">
-        <img mat-card-image [src]="workspace.imageUrl || 'https://picsum.photos/seed/' + workspace.id + '/600/400'" alt="{{ workspace.name }}" class="workspace-image" />
+        <img mat-card-image [src]="workspace.img || 'https://picsum.photos/seed/' + workspace.id + '/600/400'" alt="{{ workspace.name }}" class="workspace-image" />
 
         <mat-card-content>
           <div class="title-section">

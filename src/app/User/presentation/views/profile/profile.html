@@ -28,13 +28,13 @@
           @for (w of myWorkspaces(); track w.id) {
             <article class="workspace-row">
               <div class="w-info">
-                <span class="w-badge">{{ w.type }}</span>
+                <span class="w-badge">{{ w.spaceType }}</span>
                 <h4 class="w-title">{{ w.name }}</h4>
                 <div class="w-meta">
-                  {{ w.capacity }} guests · S/ {{ w.pricePerDay }}/día · {{ w.address.city }}
+                  {{ w.capacity }} guests · S/ {{ w.price }}/día · {{ w.address.city }}
                 </div>
               </div>
-              <img [src]="w.imageUrl" alt="workspace" class="w-thumb" />
+              <img [src]="w.img" alt="workspace" class="w-thumb" />
             </article>
           }
         }

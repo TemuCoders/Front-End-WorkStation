@@ -1,7 +1,6 @@
 import {BaseResource, BaseResponse} from '../../shared/infrastructure/base-response';
-import {AddressesResource, AddressesResponse} from './addresses-response';
-import {UsersResource, UsersResponse} from './users-response';
-import {ServicesResource, ServicesResponse} from './services-response';
+import {AddressesResource} from './addresses-response';
+import {ServicesResource} from './services-response';
 
 export interface WorkspacesResponse extends BaseResponse {
   workspaces: WorkspacesResource[];
@@ -10,13 +9,11 @@ export interface WorkspacesResponse extends BaseResponse {
 export interface WorkspacesResource extends BaseResource {
   name: string;
   description: string;
-  type: string;
+  spaceType: string;
   capacity: number;
-  pricePerDay: number;
-  imageUrl: string;
-  isAvailable: boolean;
-  averageRating: number;
+  price: number;
+  img: string;          
+  available: boolean;   
   address: AddressesResource;
-  owner: UsersResource;
-  services: ServicesResource[];
+  ownerId: number;     
 }

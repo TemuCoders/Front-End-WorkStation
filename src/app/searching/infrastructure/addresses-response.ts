@@ -1,15 +1,15 @@
 export interface AddressesResponse{
   street: string;
-  district: string;
   number: number;
   city: string;
+  postalCode: number;
 }
 
 export interface AddressesResource{
   street: string;
-  district: string;
   number: number;
   city: string;
+  postalCode: number;
 }
 
 

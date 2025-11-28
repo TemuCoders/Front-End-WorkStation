@@ -4,6 +4,7 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {retry} from 'rxjs';
 import {Workspace} from '../domain/model/workspace.entity';
 import {SearchingApi} from '../infrastructure/searching-api';
+import { Service } from '../domain/model/service.entity';
 
 @Injectable({
   providedIn: 'root'

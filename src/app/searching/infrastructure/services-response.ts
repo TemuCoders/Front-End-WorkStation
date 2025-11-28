@@ -3,14 +3,16 @@ import {BaseResource, BaseResponse} from '../../shared/infrastructure/base-respo
 
 export interface ServicesResponse extends BaseResponse {
   id: number;
+  spaceId: number;
   name: string;
-  icon: string;
   description: string;
+  price: number;
 }
 
 export interface ServicesResource extends BaseResource {
+  spaceId: number;
   name: string;
-  icon: string;
   description: string;
+  price: number;
 }
 

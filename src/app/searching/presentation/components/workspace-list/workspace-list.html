@@ -11,32 +11,28 @@
     <mat-card class="workspace-card">
 
       <!-- Imagen destacada -->
-      <img mat-card-image [src]="workspace.imageUrl || 'https://picsum.photos/seed/' + workspace.id + '/600/400'" alt="{{ workspace.name }}" class="workspace-image" />
+      <img mat-card-image [src]="workspace.img || 'https://picsum.photos/seed/' + workspace.id + '/600/400'" alt="{{ workspace.name }}" class="workspace-image" />
 
       <!-- Contenido -->
       <mat-card-content>
         <div class="title-section">
           <h2>{{ workspace.name }}</h2>
-          <span class="badge" [class.available]="workspace.isAvailable" [class.unavailable]="!workspace.isAvailable">
-            {{ workspace.isAvailable ? ('workspaceTable.availability.yes' | translate) : ('workspaceTable.availability.no' | translate) }}
+          <span class="badge" [class.available]="workspace.available" [class.unavailable]="!workspace.available">
+            {{ workspace.available ? ('workspaceTable.availability.yes' | translate) : ('workspaceTable.availability.no' | translate) }}
           </span>
         </div>
 
-        <p class="subtitle">{{ workspace.type }} • {{ workspace.capacity }} {{ 'workspaceTable.headers.capacity' | translate }}</p>
+        <p class="subtitle">{{ workspace.spaceType }} • {{ workspace.capacity }} {{ 'workspaceTable.headers.capacity' | translate }}</p>
 
         <p class="description">{{ workspace.description }}</p>
 
         <div class="price-rating">
-          <span class="price">S/ {{ workspace.pricePerDay }} /día</span>
-          <span class="rating">
-            <mat-icon class="star">star</mat-icon>
-            {{ workspace.averageRating }}
-          </span>
+          <span class="price">S/ {{ workspace.price }} /día</span>
         </div>
 
         <p class="address">
           {{ workspace.address.street }} {{ workspace.address.number }},
-          {{ workspace.address.district }}, {{ workspace.address.city }}
+          {{ workspace.address.city }}, {{ workspace.address.postalCode }}
         </p>
 
         <p class="services">
@@ -47,7 +43,7 @@
 
       <!-- Acción -->
       <mat-card-actions align="end">
-        @if (workspace.isAvailable) {
+        @if (workspace.available) {
           <button mat-raised-button color="primary" (click)="router.navigate(['searching/workspaces/reserve', workspace.id])">
             {{ 'workspace.reserve' | translate }}
           </button>
