@@ -379,10 +379,10 @@
       "id": 1,
       "created_at": "2025-11-01T09:00:00.000Z",
       "updated_at": "2025-11-12T16:10:00.000Z",
-      "age": 13,
-      "email": "carlos.mendoza@example.com",
+      "age": 24,
+      "email": "carlossd.mendoza@example.com",
       "location": "Lima",
-      "name": "Carlos Mendoza",
+      "name": "Carlos Mendoze",
       "password": "$2a$10$hash_carlos",
       "photo": "https://picsum.photos/seed/u1/300/300",
       "register_date": "2025-11-01T09:00:00.000Z"

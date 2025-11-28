@@ -9,7 +9,22 @@
 
       <nav class="side-nav">
         <a class="item active"><mat-icon>home</mat-icon> Home</a>
-        <a class="item"><mat-icon>event</mat-icon> Bookings</a>
+        <a
+          class="item"
+          [routerLink]="['/bookings']"
+          routerLinkActive="active"
+        >
+          <mat-icon>event</mat-icon>
+          Bookings
+        </a>
+        <a
+          class="item"
+          [routerLink]="['/payments']"
+          routerLinkActive="active"
+        >
+          <mat-icon>payments</mat-icon>
+          Payments
+        </a>
         <a class="item"
            [routerLink]="['/profile', user.id, 'edit']"
            routerLinkActive="active">
@@ -21,24 +36,7 @@
 
     <div class="main">
 
-      <header class="topbar">
-        <nav class="tabs">
-          <a class="tab active">Workspaces</a>
-          <a class="tab">Explore</a>
-          <a class="tab">Wishlists</a>
-          <a class="tab">Trips</a>
-        </nav>
-
-        <div class="search">
-          <mat-icon>search</mat-icon>
-          <input placeholder="Search" />
-        </div>
-
-        <img [src]="avatarUrl(user)" alt="avatar" class="avatar-sm" />
-      </header>
-
-
-      <section class="profile-header">
+   <section class="profile-header">
         <img [src]="avatarUrl(user)" alt="avatar" class="avatar-xl" />
         <div class="head-text">
           <h1 class="name">{{ user.name }}</h1>
