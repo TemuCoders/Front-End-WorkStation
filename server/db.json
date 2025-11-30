@@ -434,6 +434,24 @@
       "password": "$2a$10$hash_valeria",
       "photo": "https://picsum.photos/seed/u5/300/300",
       "register_date": "2025-11-05T07:40:00.000Z"
+    },
+    {
+      "id": 6,
+      "age": 19,
+      "email": "artax1605@gmail.com",
+      "location": "Lima los olivos",
+      "name": "pepe",
+      "password": "123456",
+      "photo": "https://picsum.photos/seed/u6/300/300"
+    },
+    {
+      "id": 7,
+      "age": 28,
+      "email": "tonito@gmail.com",
+      "location": "pueblo libre",
+      "name": "tonito",
+      "password": "123456",
+      "photo": "https://picsum.photos/seed/u7/300/300"
     }
   ]
 }
