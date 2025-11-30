@@ -14,12 +14,6 @@ interface RegisterForm {
     tipoUsuario: 'Hoster' | 'Comprador' | '';
     fechaNacimiento: string;
   };
-  financialInfo: {
-    ingresoMensual: number;
-    ocupacion: string;
-    banco: string;
-    tipoCuenta: string;
-  };
 }
 
 @Component({
@@ -30,7 +24,6 @@ interface RegisterForm {
   styleUrls: ['./register.css'],
 })
 export class Register {
-  currentStep = 1;
   errorMessage = '';
   successMessage = '';
 
@@ -43,12 +36,6 @@ export class Register {
       tipoUsuario: '',
       fechaNacimiento: '',
     },
-    financialInfo: {
-      ingresoMensual: 0,
-      ocupacion: '',
-      banco: '',
-      tipoCuenta: '',
-    },
   };
 
   confirmPassword = '';
@@ -58,11 +45,9 @@ export class Register {
   private readonly userStore = inject(UserStore);
 
 
-  nextStep(): void {
+  onSubmit(): void {
     this.errorMessage = '';
     this.successMessage = '';
-
-    if (this.currentStep !== 1) return;
 
     if (!this.userData.email) {
       this.errorMessage = 'El email es obligatorio';
@@ -74,18 +59,8 @@ export class Register {
       return;
     }
 
-    if (!this.confirmPassword) {
-      this.errorMessage = 'Debes confirmar la contraseña';
-      return;
-    }
-
     if (this.userData.password !== this.confirmPassword) {
       this.errorMessage = 'Las contraseñas no coinciden';
-      return;
-    }
-
-    if (this.userData.password.length < 6) {
-      this.errorMessage = 'La contraseña debe tener al menos 6 caracteres';
       return;
     }
 
@@ -112,31 +87,15 @@ export class Register {
       return;
     }
 
-    this.currentStep = 2;
-    window.scrollTo(0, 0);
-  }
-
-  onSubmit(): void {
-    this.errorMessage = '';
-    this.successMessage = '';
-
-    if (this.birthError) {
-      this.errorMessage = this.birthError;
-      this.currentStep = 1;
-      return;
-    }
-
-    // resto igual, pero usa ubicacion y edad calculada:
     const now = new Date().toISOString();
-    const users = this.userStore.users();
     const nextSeed = users.length + 1;
 
     const age = this.userData.personalInfo.fechaNacimiento
       ? this.calculateAge(this.userData.personalInfo.fechaNacimiento)
       : 0;
+
     if (age < 0) {
       this.errorMessage = 'La fecha de nacimiento no puede ser futura.';
-      this.currentStep = 1;
       return;
     }
 
@@ -171,16 +130,7 @@ export class Register {
 
   private calculateAge(dateString: string): number {
     if (!dateString) return 0;
-    let birth: Date;
-
-    if (dateString.includes('-')) {
-      birth = new Date(dateString);
-    } else if (dateString.includes('/')) {
-      const [dd, mm, yyyy] = dateString.split('/');
-      birth = new Date(Number(yyyy), Number(mm) - 1, Number(dd));
-    } else {
-      return 0;
-    }
+    let birth = new Date(dateString);
 
     const today = new Date();
     let age = today.getFullYear() - birth.getFullYear();
@@ -188,12 +138,6 @@ export class Register {
     if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
       age--;
     }
-    return Number.isNaN(age) ? 0 : age;
-  }
-  previousStep(): void {
-    this.currentStep = 1;
-    this.errorMessage = '';
-    this.successMessage = '';
-    window.scrollTo(0, 0);
+    return age;
   }
 }
