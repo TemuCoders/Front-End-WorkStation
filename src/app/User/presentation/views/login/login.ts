@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { UserStore } from '../../../application/User-store';
 import { User } from '../../../domain/model/user.entity';
+import { AuthService } from '../../../infrastructure/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,7 @@ export class Login {
 
   private readonly router = inject(Router);
   private readonly userStore = inject(UserStore);
+  private readonly authService = inject(AuthService);
 
   onLogin(): void {
     this.errorMessage = '';
@@ -46,6 +48,8 @@ export class Login {
       this.errorMessage = 'Email o contraseña incorrectos';
       return;
     }
+
+    this.authService.login(found);
 
     this.successMessage = '¡Inicio de sesión exitoso!';
 

@@ -7,10 +7,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Sidebar } from '../../../../shared/presentation/components/sidebar/sidebar';
-
 import { UserStore } from '../../../application/User-store';
 import { User } from '../../../domain/model/user.entity';
-import {FormsModule} from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../../infrastructure/auth.service';
 
 @Component({
   selector: 'app-edit-profile',
@@ -32,6 +32,7 @@ export class EditProfile {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private store = inject(UserStore);
+  private authService = inject(AuthService);
 
   private routeId = signal<number | null>(null);
   readonly editedUser = signal<User | undefined>(undefined);
@@ -75,15 +76,34 @@ export class EditProfile {
   save(): void {
     const u = this.editedUser();
     if (!u) return;
-    if (u.id && u.id > 0) this.store.updateUser(u);
-    else this.store.addUser(u);
+    
+    if (u.id && u.id > 0) {
+      this.store.updateUser(u);
+    } else {
+      this.store.addUser(u);
+    }
+
+    const currentUser = this.authService.currentUser();
+    if (currentUser && currentUser.id === u.id) {
+      this.authService.updateUser(u);
+    }
+
     this.goBack();
   }
 
   delete(): void {
     const u = this.editedUser();
     if (!u || !u.id) return;
+    
     this.store.deleteUser(u.id);
+
+    const currentUser = this.authService.currentUser();
+    if (currentUser && currentUser.id === u.id) {
+      this.authService.logout();
+      this.router.navigate(['/login']);
+      return;
+    }
+
     this.goBack();
   }
 

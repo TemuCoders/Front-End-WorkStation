@@ -1,8 +1,8 @@
-import { Component, Input, computed } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { User } from '../../../../User/domain/model/user.entity'; 
+import { AuthService } from '../../../../User/infrastructure/auth.service';
 
 interface SidebarItem {
   route: string | any[]; 
@@ -19,34 +19,49 @@ interface SidebarItem {
   styleUrl: './sidebar.css'
 })
 export class Sidebar {
-  @Input({ required: true }) user!: User;
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  
+  user = this.authService.currentUser;
 
-  readonly navItems = computed<SidebarItem[]>(() => [
-    { 
-      route: `/profile/${this.user?.id || 1}`, 
-      icon: 'house', 
-      label: 'Home',
-      exact: true 
-    },
-    { route: '/bookings', icon: 'event', label: 'Bookings', exact: false },
-    { route: '/payments', icon: 'payments', label: 'Payments', exact: false },
-    { route: '/reviews', icon: 'reviews', label: 'Reviews', exact: false },
-    { 
-      route: ['/profile', this.user?.id || 1, 'edit'], 
-      icon: 'person', 
-      label: 'Profile',
-      exact: false 
-    },
-  ]);
+  readonly navItems = computed<SidebarItem[]>(() => {
+    const currentUser = this.user();
+    const userId = currentUser?.id || 1;
+    
+    return [
+      { 
+        route: `/profile/${userId}`, 
+        icon: 'house', 
+        label: 'Home',
+        exact: true 
+      },
+      { route: '/bookings', icon: 'event', label: 'Bookings', exact: false },
+      { route: '/payments', icon: 'payments', label: 'Payments', exact: false },
+      { route: '/reviews', icon: 'reviews', label: 'Reviews', exact: false },
+      { 
+        route: ['/profile', userId, 'edit'], 
+        icon: 'person', 
+        label: 'Profile',
+        exact: false 
+      },
+    ];
+  });
 
   readonly firstName = computed(() => {
-    const name = this.user?.name || '';
-    return name.split(' ')[0] || '';
+    const currentUser = this.user();
+    const name = currentUser?.name || '';
+    return name.split(' ')[0] || 'Guest';
   });
 
   readonly avatarUrl = computed(() => {
-    const u = this.user;
-    if (!u) return 'https://i.pravatar.cc/120';
-    return u.photo || `https://i.pravatar.cc/120?u=${encodeURIComponent(u.email || String(u.id))}`;
+    const currentUser = this.user();
+    if (!currentUser) return 'https://i.pravatar.cc/120';
+    return currentUser.photo || 
+           `https://i.pravatar.cc/120?u=${encodeURIComponent(currentUser.email || String(currentUser.id))}`;
   });
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 }

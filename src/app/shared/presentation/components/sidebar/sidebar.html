@@ -15,5 +15,13 @@
         <mat-icon>{{ item.icon }}</mat-icon> {{ item.label }}
       </a>
     }
+
+    <button 
+      class="item logout-btn" 
+      (click)="logout()"
+      type="button"
+    >
+      <mat-icon>logout</mat-icon> Logout
+    </button>
   </nav>
 </aside>
