@@ -6,23 +6,22 @@
     </div>
 
     <span class="spacer"></span>
-
+    
     <nav class="nav-links">
-      @for (option of options; track option.label) {
-        <a
-          mat-button
-          [routerLink]="option.link"
-          routerLinkActive="active"
+      @for (opt of options(); track opt.link) {
+        <a 
+          mat-button 
+          [routerLink]="opt.link" 
+          routerLinkActive="active-link"
           class="nav-item"
         >
-          {{ option.label | translate }}
+          {{ opt.label | translate }}
         </a>
       }
     </nav>
-
-    <app-language-switcher />
+    <app-language-switcher></app-language-switcher>
   </mat-toolbar-row>
 </mat-toolbar>
 
-<router-outlet />
-<app-footer-content />
+<router-outlet></router-outlet>
+<app-footer-content></app-footer-content>
