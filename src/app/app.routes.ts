@@ -21,7 +21,7 @@ export const routes: Routes = [
   // Layout con navbar/footer
   {
     path: '',
-    component: Layout, 
+    component: Layout,
     children: [
       { path: 'home', component: Home, title: `${baseTitle} - Home` },
       { path: 'searching', loadChildren: () => import('./searching/presentation/views/searching.routes').then(m => m.searchingRoutes)},
@@ -30,6 +30,8 @@ export const routes: Routes = [
       { path: 'reviews', loadChildren: () => import('./reviews/presentation/views/reviews.routes')
       .then(m => m.reviewsRoutes) },
       { path: 'profile', loadChildren: () => import('./User/presentation/user.routers').then(m => m.users) },
+      {path: 'bookings', loadChildren: () => import('./bookings/presentation/bookings.routes').then(m => m.bookingsRoutes),
+      }
     ],
   },
 
