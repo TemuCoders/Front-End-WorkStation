@@ -42,9 +42,9 @@ export class WorkspaceDetailPage implements OnInit {
   images = computed(() => {
     const ws = this.workspace();
     if (!ws) return [];
-    
+
     const mainImage = ws.img || `https://picsum.photos/seed/${ws.id}/1200/800`;
- 
+
     return [
       mainImage,
       `https://picsum.photos/seed/${ws.id}-2/1200/800`,
@@ -86,8 +86,8 @@ export class WorkspaceDetailPage implements OnInit {
   reserveWorkspace() {
     const ws = this.workspace();
     if (!ws) return;
-    
-    console.log('Reservando workspace:', ws.id);
+
+    this.router.navigate(['/bookings/create', ws.id])
 
   }
 
