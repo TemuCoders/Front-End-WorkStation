@@ -1,0 +1,137 @@
+<div class="filters-container">
+  <div class="filters-header">
+    <h3 class="filters-title">
+      <mat-icon>filter_list</mat-icon>
+      Filtros
+      @if (activeFiltersCount() > 0) {
+        <span class="filter-badge">{{ activeFiltersCount() }}</span>
+      }
+    </h3>
+    @if (activeFiltersCount() > 0) {
+      <button 
+        mat-button 
+        color="warn" 
+        (click)="clearAllFilters()"
+        class="clear-button">
+        <mat-icon>clear</mat-icon>
+        Limpiar todo
+      </button>
+    }
+  </div>
+
+  <mat-accordion multi>
+    <!-- Filtro de Capacidad -->
+    <mat-expansion-panel expanded>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon class="panel-icon">people</mat-icon>
+          Capacidad
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      
+      <div class="filter-content">
+        <div class="range-values">
+          <span class="range-label">{{ minCapacity() }} - {{ maxCapacity() }} personas</span>
+        </div>
+        
+        <div class="slider-group">
+          <label class="slider-label">Mínimo</label>
+          <mat-slider 
+            min="1" 
+            max="50" 
+            step="1"
+            discrete
+            [displayWith]="formatCapacityLabel">
+            <input 
+              matSliderThumb 
+              [(ngModel)]="minCapacity"
+              (ngModelChange)="onCapacityChange()" />
+          </mat-slider>
+        </div>
+
+        <div class="slider-group">
+          <label class="slider-label">Máximo</label>
+          <mat-slider 
+            min="1" 
+            max="50" 
+            step="1"
+            discrete
+            [displayWith]="formatCapacityLabel">
+            <input 
+              matSliderThumb 
+              [(ngModel)]="maxCapacity"
+              (ngModelChange)="onCapacityChange()" />
+          </mat-slider>
+        </div>
+      </div>
+    </mat-expansion-panel>
+
+    <!-- Filtro de Precio -->
+    <mat-expansion-panel expanded>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon class="panel-icon">attach_money</mat-icon>
+          Precio por día
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      
+      <div class="filter-content">
+        <div class="range-values">
+          <span class="range-label">S/ {{ minPrice() }} - S/ {{ maxPrice() }}</span>
+        </div>
+        
+        <div class="slider-group">
+          <label class="slider-label">Mínimo</label>
+          <mat-slider 
+            min="0" 
+            max="500" 
+            step="10"
+            discrete
+            [displayWith]="formatPriceLabel">
+            <input 
+              matSliderThumb 
+              [(ngModel)]="minPrice"
+              (ngModelChange)="onPriceChange()" />
+          </mat-slider>
+        </div>
+
+        <div class="slider-group">
+          <label class="slider-label">Máximo</label>
+          <mat-slider 
+            min="0" 
+            max="500" 
+            step="10"
+            discrete
+            [displayWith]="formatPriceLabel">
+            <input 
+              matSliderThumb 
+              [(ngModel)]="maxPrice"
+              (ngModelChange)="onPriceChange()" />
+          </mat-slider>
+        </div>
+      </div>
+    </mat-expansion-panel>
+
+    <!-- Filtro de Tipo de Espacio -->
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon class="panel-icon">category</mat-icon>
+          Tipo de espacio
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      
+      <div class="filter-content">
+        <mat-chip-listbox class="space-type-chips">
+          @for (type of availableSpaceTypes; track type.value) {
+            <mat-chip-option
+              [selected]="isSpaceTypeSelected(type.value)"
+              (click)="toggleSpaceType(type.value)">
+              {{ type.label }}
+            </mat-chip-option>
+          }
+        </mat-chip-listbox>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
