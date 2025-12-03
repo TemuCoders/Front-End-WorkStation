@@ -12,77 +12,103 @@
   </div>
 }
 
-<div class="card-grid">
-  @for (workspace of filteredWorkspaces(); track workspace.spaceId) {
+<div class="workspace-content">
+  <aside class="filters-sidebar">
+    <app-workspace-filters 
+      (filtersChanged)="onFiltersChange($event)">
+    </app-workspace-filters>
+  </aside>
 
-    <mat-card class="workspace-card">
-      <div class="image-container">
-        <img 
-          mat-card-image 
-          [src]="workspace.images[0] || 'assets/placeholder.jpg'" 
-          alt="{{ workspace.name }}" 
-          class="workspace-image" 
-        />
+
+  <main class="results-section">
+    <div class="results-header">
+      <h2 class="results-title">
+      {{ filteredWorkspaces().length }}
+      {{ filteredWorkspaces().length === 1 
+          ? ('searching.noResults' | translate) 
+          : ('searching.results' | translate) }}
+    </h2>
+
+    </div>
+
+    @if (filteredWorkspaces().length === 0 && !store.loading()) {
+      <div class="no-results">
+        <mat-icon class="no-results-icon">search_off</mat-icon>
+        <h3>{{ 'searching.noResults' | translate }}</h3>
+        <p>{{ 'searching.tryAdjust' | translate }}</p>
       </div>
+    }
 
-      <mat-card-content>
-        <div class="header-section">
-          <h2 class="workspace-title">{{ workspace.name }}</h2>
-          <div class="meta-info">
-            <span class="meta-item">
-              <mat-icon class="meta-icon">category</mat-icon>
-              {{ workspace.spaceType }}
-            </span>
-            <span class="meta-item">
-              <mat-icon class="meta-icon">people</mat-icon>
-              {{ workspace.capacity }}
-            </span>
-          </div>
-        </div>
-
-        <p class="description">{{ workspace.description }}</p>
-
-        <div class="info-section">
-          <div class="info-item">
-            <mat-icon class="info-icon">place</mat-icon>
-            <span class="info-text">{{ workspace.address }}</span>
+    <div class="card-grid">
+      @for (workspace of filteredWorkspaces(); track workspace.spaceId) {
+        <mat-card class="workspace-card">
+          <div class="image-container">
+            <img 
+              mat-card-image 
+              [src]="workspace.images[0] || 'assets/placeholder.jpg'" 
+              alt="{{ workspace.name }}" 
+              class="workspace-image" 
+            />
+            @if (!workspace.available) {
+              <div class="unavailable-badge">
+                <mat-icon>event_busy</mat-icon>
+                {{ 'searching.unavailable' | translate }}
+              </div>
+            }
           </div>
 
-          <!--
-          <div class="info-item">
-            <mat-icon class="info-icon">build</mat-icon>
-            <span class="info-text">{{ getServicesNames(workspace) }}</span>
-          </div>
-          -->
-        </div>
+          <mat-card-content>
+            <div class="header-section">
+              <h2 class="workspace-title">{{ workspace.name }}</h2>
+              <div class="meta-info">
+                <span class="meta-item">
+                  <mat-icon class="meta-icon">category</mat-icon>
+                  {{ workspace.spaceType }}
+                </span>
+                <span class="meta-item">
+                  <mat-icon class="meta-icon">people</mat-icon>
+                  {{ workspace.capacity }}
+                </span>
+              </div>
+            </div>
 
-        <div class="price-section">
-          <div class="price-tag">
-            <span class="currency">S/</span>
-            <span class="amount">{{ workspace.price }}</span>
-            <span class="period">/día</span>
-          </div>
-        </div>
-      </mat-card-content>
+            <p class="description">{{ workspace.description }}</p>
 
-      <mat-card-actions>
-        @if (workspace.available) {
-          <button 
-            mat-raised-button 
-            color="primary" 
-            class="reserve-button"
-            (click)="router.navigate(['searching/workspaces/reserve', workspace.spaceId])">
-            <!-- ✅ Cambio: workspace.id → workspace.spaceId -->
-            <mat-icon>event_available</mat-icon>
-            {{ 'workspace.reserve' | translate }}
-          </button>
-        } @else {
-          <button mat-stroked-button disabled class="unavailable-button">
-            <mat-icon>event_busy</mat-icon>
-            No disponible
-          </button>
-        }
-      </mat-card-actions>
-    </mat-card>
-  }
+            <div class="info-section">
+              <div class="info-item">
+                <mat-icon class="info-icon">place</mat-icon>
+                <span class="info-text">{{ workspace.address }}</span>
+              </div>
+            </div>
+
+            <div class="price-section">
+              <div class="price-tag">
+                <span class="currency">S/</span>
+                <span class="amount">{{ workspace.price }}</span>
+                <span class="period">/día</span>
+              </div>
+            </div>
+          </mat-card-content>
+
+          <mat-card-actions>
+            @if (workspace.available) {
+              <button 
+                mat-raised-button 
+                color="primary" 
+                class="reserve-button"
+                (click)="router.navigate(['searching/workspaces/reserve', workspace.spaceId])">
+                <mat-icon>event_available</mat-icon>
+                {{ 'workspace.reserve' | translate }}
+              </button>
+            } @else {
+              <button mat-stroked-button disabled class="unavailable-button">
+                <mat-icon>event_busy</mat-icon>
+                {{ 'searching.unavailable' | translate }}
+              </button>
+            }
+          </mat-card-actions>
+        </mat-card>
+      }
+    </div>
+  </main>
 </div>

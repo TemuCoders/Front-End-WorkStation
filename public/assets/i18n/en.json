@@ -217,5 +217,31 @@
     "confirm": "Confirm",
     "close": "Close",
     "edit": "Edit"
+  },
+  "filters": {
+    "name": "Filters",
+    "clean": "Clean All",
+    "capacity": "Capacity",
+    "people": "People",
+    "price": "Price",
+    "min": "Minimum",
+    "max": "Maximum",
+    "spaceType": "Space Type"
+  },
+  "searching": {
+    "search":"Search",
+    "searching": "Searching...",
+    "searchplaceholder": "Search spaces",
+    "noResults": "No spaces found",
+    "results": "spaces found",
+    "unavailable": "Unavailable",
+    "tryAdjust": "Try adjusting filters or perform a new search",
+    "detailSpace": "Space Detail",
+    "valuation": "Rating",
+    "description": "Description",
+    "ubication": "Location",
+    "address": "Address",
+    "pricePerDay": "Price per Day",
+    "reserveNow": "Reserve Now"
   }
 }

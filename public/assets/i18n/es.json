@@ -24,35 +24,6 @@
   "workspace": {
     "reserve": "Reservar"
   },
-  "workspaceTable": {
-    "status": {
-      "loading": "Cargando datos...",
-      "error": "Error al cargar workspaces"
-    },
-    "headers": {
-      "id": "ID",
-      "name": "Nombre",
-      "description": "Descripción",
-      "type": "Tipo",
-      "capacity": "Capacidad",
-      "pricePerDay": "Precio/Día",
-      "isAvailable": "Disponible",
-      "averageRating": "Rating",
-      "address": "Dirección",
-      "owner": "Propietario",
-      "services": "Servicios",
-      "actions": "Acciones"
-    },
-    "availability": {
-      "yes": "Sí",
-      "no": "No"
-    },
-    "buttons": {
-      "add": "Añadir Workspace",
-      "edit": "Editar",
-      "delete": "Eliminar"
-    }
-  },
   "workspaceForm": {
     "title": {
       "edit": "Editar Workspace",
@@ -217,5 +188,32 @@
     "confirm": "Confirmar",
     "close": "Cerrar",
     "edit": "Editar"
+  },
+  "filters": {
+    "name": "Filtros",
+    "clean": "Limpiar Todo",
+    "capacity": "Capacidad",
+    "people": "Personas",
+    "price": "Precio",
+    "min": "Mínimo",
+    "max": "Máximo",
+    "spaceType": "Tipo de espacio"
+  },
+  "searching": {
+    "search":"Buscar",
+    "searching": "Buscando...",
+    "searchplaceholder": "Buscar espacios",
+    "noResults": "No se encontraron espacios",
+    "results": "espacios encontrados",
+    "unavailable": "No disponible",
+    "tryAdjust": "Intenta ajustar los filtros o realizar una nueva búsqueda",
+    "detailSpace": "Detalle del espacio",
+    "valuation": "Valoración",
+    "description": "Descripción",
+    "location": "Ubicación",
+    "address": "Dirección",
+    "pricePerDay": "Precio por día",
+    "reserveNow": "Reservar ahora"
   }
 }
+
