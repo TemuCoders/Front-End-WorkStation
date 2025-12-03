@@ -12,8 +12,6 @@ const BookingListPage = () =>
 export const bookingsRoutes: Routes = [
   { path: 'list', loadComponent: BookingListPage },
   { path: 'create/:id', loadComponent: BookingFormPage },
-
-  // MUY IMPORTANTE → siempre AL FINAL
   { path: ':bookingId', loadComponent: BookingDetailPage }
 ];
 

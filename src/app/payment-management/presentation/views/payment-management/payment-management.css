@@ -1,11 +1,9 @@
-/* Contenedor principal con flexbox */
 .layout {
   display: flex;
   min-height: 100vh;
   background: #fafafa;
 }
 
-/* El container ahora ocupa el espacio restante */
 .container {
   flex: 1;
   max-width: 1200px;

@@ -1,22 +1,37 @@
-import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, OnInit, signal,ChangeDetectorRef, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BookingsApi } from '../../../infrastructure/bookings-api';
 import { SearchingApi } from '../../../../searching/infrastructure/searching-api';
 import { AuthService } from '../../../../User/infrastructure/auth.service';
+import { Sidebar } from '../../../../shared/presentation/components/sidebar/sidebar';
+import { UserStore } from '../../../../User/application/User-store'; 
+import { User } from '../../../../User/domain/model/user.entity';
 
 @Component({
   selector: 'app-booking-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, Sidebar],
   templateUrl: './booking-list.html',
   styleUrls: ['./booking-list.css']
 })
 export class BookingListPage implements OnInit {
+  private userStore = inject(UserStore);
 
   private bookingsApi = inject(BookingsApi);
   private searchingApi = inject(SearchingApi);
   private auth = inject(AuthService);
   private cdr = inject(ChangeDetectorRef);
+
+  readonly currentUser = signal<User | undefined>(undefined);
+  constructor() {
+      // Efecto para obtener el usuario actual
+      effect(() => {
+        const users = this.userStore.users();
+        const found = users.find(u => u.id === this.userId);
+        this.currentUser.set(found);
+      });
+  }
+
 
   bookings: any[] = [];
   loading: boolean = true;

@@ -1,60 +1,68 @@
-<div class="booking-list-container">
-  <h1>Mis Reservas</h1>
+<div class="layout">
+  
+  @if (currentUser(); as user) {
+      <app-sidebar></app-sidebar>
+    }
 
-  <!-- Loading State -->
-  <div *ngIf="loading" class="loading">
-    <p>Cargando tus reservas...</p>
-  </div>
+  <div class="booking-list-container">
 
-  <!-- Empty State - Solo si NO está loading Y no hay bookings -->
-  <div *ngIf="!loading && bookings.length === 0" class="empty-state">
-    <p>No tienes reservas aún</p>
-    <a routerLink="/searching">Explorar espacios</a>
-  </div>
+    <h1>Mis Reservas</h1>
 
-  <!-- Bookings List - Solo renderiza cuando loading=false Y hay datos -->
-  <div *ngIf="!loading && bookings.length > 0" class="bookings-grid">
-    <div *ngFor="let booking of bookings" class="booking-card">
-
-      <!-- Imagen del workspace - Usa *ngIf como en booking-form -->
-      <div class="booking-image" *ngIf="booking.workspace">
-        <img
-          [src]="booking.workspace.img"
-          [alt]="booking.workspace.name"
-        />
-      </div>
-
-      <!-- Información del booking - Solo si workspace existe -->
-      <div class="booking-info" *ngIf="booking.workspace">
-        <h2 class="ws-title">{{ booking.workspace.name }}</h2>
-
-        <p class="ws-description">{{ booking.workspace.description }}</p>
-
-        <hr>
-
-        <div class="dates">
-          <p><strong>Check-in:</strong> {{ booking.startDate }}</p>
-          <p><strong>Check-out:</strong> {{ booking.endDate }}</p>
-          <p><strong>Reservado:</strong> {{ booking.bookingDate }}</p>
-        </div>
-
-        <hr>
-
-        <p class="total-text">
-          <strong>Total:</strong> S/ {{ booking.total }}
-        </p>
-
-        <div class="booking-id">
-          <small>Booking ID: #{{ booking.id }}</small>
-        </div>
-      </div>
-
-      <!-- Fallback si no hay workspace -->
-      <div class="booking-info" *ngIf="!booking.workspace">
-        <p>⚠️ Espacio no encontrado (ID: {{ booking.spaceId }})</p>
-      </div>
-
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading">
+      <p>Cargando tus reservas...</p>
     </div>
-  </div>
 
+    <!-- Empty State - Solo si NO está loading Y no hay bookings -->
+    <div *ngIf="!loading && bookings.length === 0" class="empty-state">
+      <p>No tienes reservas aún</p>
+      <a routerLink="/searching">Explorar espacios</a>
+    </div>
+
+    <!-- Bookings List - Solo renderiza cuando loading=false Y hay datos -->
+    <div *ngIf="!loading && bookings.length > 0" class="bookings-grid">
+      <div *ngFor="let booking of bookings" class="booking-card">
+
+        <!-- Imagen del workspace - Usa *ngIf como en booking-form -->
+        <div class="booking-image" *ngIf="booking.workspace">
+          <img
+            [src]="booking.workspace.img"
+            [alt]="booking.workspace.name"
+          />
+        </div>
+
+        <!-- Información del booking - Solo si workspace existe -->
+        <div class="booking-info" *ngIf="booking.workspace">
+          <h2 class="ws-title">{{ booking.workspace.name }}</h2>
+
+          <p class="ws-description">{{ booking.workspace.description }}</p>
+
+          <hr>
+
+          <div class="dates">
+            <p><strong>Check-in:</strong> {{ booking.startDate }}</p>
+            <p><strong>Check-out:</strong> {{ booking.endDate }}</p>
+            <p><strong>Reservado:</strong> {{ booking.bookingDate }}</p>
+          </div>
+
+          <hr>
+
+          <p class="total-text">
+            <strong>Total:</strong> S/ {{ booking.total }}
+          </p>
+
+          <div class="booking-id">
+            <small>Booking ID: #{{ booking.id }}</small>
+          </div>
+        </div>
+
+        <!-- Fallback si no hay workspace -->
+        <div class="booking-info" *ngIf="!booking.workspace">
+          <p>⚠️ Espacio no encontrado (ID: {{ booking.spaceId }})</p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
 </div>
