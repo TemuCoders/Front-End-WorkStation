@@ -7,7 +7,7 @@
         #searchInput
         matInput 
         [value]="searchValue()"
-        placeholder="Buscar espacios de trabajo en Lima..."
+        placeholder="{{ 'searching.searchplaceholder' | translate }}"
         (input)="onInputChange(searchInput.value)"
         (keyup.enter)="onSearch(searchInput.value)"
         autocomplete="off">
@@ -32,14 +32,14 @@
       @if (isSearching()) {
         <mat-spinner diameter="20" class="button-spinner"></mat-spinner>
       } @else {
-        <span>Buscar</span>
+        <span>{{ 'searching.search' | translate }}</span>
       }
     </button>
   </div>
   
   @if (searchValue()) {
     <div class="search-info">
-      <span class="search-label">Buscando:</span>
+      <span class="search-label">{{ 'searching.searching' | translate }}</span>
       <span class="search-query">"{{ searchValue() }}"</span>
     </div>
   }

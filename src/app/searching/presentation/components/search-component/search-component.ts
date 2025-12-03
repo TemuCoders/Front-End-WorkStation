@@ -5,6 +5,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-search-component',
@@ -15,7 +16,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     FormsModule, 
     MatIcon,
     MatButtonModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    TranslatePipe
   ],
   templateUrl: './search-component.html',
   styleUrl: './search-component.css'
@@ -28,7 +30,7 @@ export class SearchComponent {
   
   onSearch(value: string) {
     if (!value.trim()) {
-      // Si está vacío, emite string vacío para mostrar todos
+
       this.searchTerm.emit('');
       return;
     }
@@ -36,7 +38,7 @@ export class SearchComponent {
     this.isSearching.set(true);
     this.searchValue.set(value);
     
-    // Simula un pequeño delay para UX (opcional)
+  
     setTimeout(() => {
       this.searchTerm.emit(value.trim());
       this.isSearching.set(false);
@@ -51,7 +53,6 @@ export class SearchComponent {
   onInputChange(value: string) {
     this.searchValue.set(value);
     
-    // Si el usuario borra todo, limpia los resultados inmediatamente
     if (!value.trim()) {
       this.searchTerm.emit('');
     }
