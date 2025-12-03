@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
-import {Home} from './shared/presentation/views/home/home';
 import {AuthLayout} from './shared/presentation/components/layout-auth/layout-auth';
 import { Layout } from './shared/presentation/components/layout/layout';
 
 const pageNotFound = () => import('./shared/presentation/views/page-not-found/page-not-found').then(m => m.PageNotFound);
 const login =()=> import('./User/presentation/views/login/login').then(m => m.Login);
 const register = ()=>import('./User/presentation/views/register/register').then(m => m.Register);
+const workspaceForm = () => import('./searching/presentation/components/workspace-form/workspace-form.component').then(m => m.WorkspaceFormComponent);
 const baseTitle = 'WorkStation';
 
 export const routes: Routes = [
@@ -23,8 +23,8 @@ export const routes: Routes = [
     path: '',
     component: Layout,
     children: [
-      { path: 'home', component: Home, title: `${baseTitle} - Home` },
       { path: 'searching', loadChildren: () => import('./searching/presentation/views/searching.routes').then(m => m.searchingRoutes)},
+      { path: 'create', loadComponent: workspaceForm, title: `${baseTitle} - Crear Espacio` },
       { path: 'payments', loadChildren: () => import('./payment-management/presentation/views/payment-management.routes')
       .then(m => m.paymentRoutes) },
       { path: 'reviews', loadChildren: () => import('./reviews/presentation/views/reviews.routes')
