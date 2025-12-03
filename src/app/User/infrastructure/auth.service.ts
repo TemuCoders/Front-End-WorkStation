@@ -9,7 +9,7 @@ export class AuthService {
 
   currentUser = computed(() => this.currentUserSignal());
   isAuthenticated = computed(() => this.currentUserSignal() !== null);
-  
+
   constructor() {
     this.loadUserFromStorage();
   }
@@ -45,5 +45,19 @@ export class AuthService {
   updateUser(user: User): void {
     this.currentUserSignal.set(user);
     localStorage.setItem('currentUser', JSON.stringify(user));
+  }
+
+  getUserId(): number | null {
+    const user = this.currentUserSignal();
+    return user ? user.id : null;
+  }
+
+  getUser(): User | null {
+    return this.currentUserSignal();
+  }
+
+  getUserName(): string | null {
+    const user = this.currentUserSignal();
+    return user ? user.name : null;
   }
 }

@@ -5,10 +5,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../../../User/infrastructure/auth.service';
 
 interface SidebarItem {
-  route: string | any[]; 
+  route: string | any[];
   icon: string;
   label: string;
-  exact: boolean; 
+  exact: boolean;
 }
 
 @Component({
@@ -21,28 +21,28 @@ interface SidebarItem {
 export class Sidebar {
   private authService = inject(AuthService);
   private router = inject(Router);
-  
+
   user = this.authService.currentUser;
 
   readonly navItems = computed<SidebarItem[]>(() => {
     const currentUser = this.user();
     const userId = currentUser?.id || 1;
-    
+
     return [
-      { 
-        route: `/profile/${userId}`, 
-        icon: 'house', 
+      {
+        route: `/profile/${userId}`,
+        icon: 'house',
         label: 'Home',
-        exact: true 
+        exact: true
       },
-      { route: '/bookings', icon: 'event', label: 'Bookings', exact: false },
+      { route: '/bookings/list', icon: 'event', label: 'Bookings', exact: false },
       { route: '/payments', icon: 'payments', label: 'Payments', exact: false },
       { route: '/reviews', icon: 'reviews', label: 'Reviews', exact: false },
-      { 
-        route: ['/profile', userId, 'edit'], 
-        icon: 'person', 
+      {
+        route: ['/profile', userId, 'edit'],
+        icon: 'person',
         label: 'Profile',
-        exact: false 
+        exact: false
       },
     ];
   });
@@ -56,7 +56,7 @@ export class Sidebar {
   readonly avatarUrl = computed(() => {
     const currentUser = this.user();
     if (!currentUser) return 'https://i.pravatar.cc/120';
-    return currentUser.photo || 
+    return currentUser.photo ||
            `https://i.pravatar.cc/120?u=${encodeURIComponent(currentUser.email || String(currentUser.id))}`;
   });
 

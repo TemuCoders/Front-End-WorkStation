@@ -8,18 +8,16 @@ import { BookingResponse } from './booking-response';
 export class BookingsApi {
   private http = inject(HttpClient);
 
-  createBooking(payload: {
-    freelancerId: number;
-    spaceId: number;
-    bookingDate: string;
-    startDate: string;
-    endDate: string;
-  }) {
-    return this.http.post<BookingResponse>(BookingsEndpoint.create(), payload);
+  createBooking(payload: any) {
+    return this.http.post<any>('http://localhost:3000/bookings', payload);
+  }
+
+  getBooking(id: number) {
+    return this.http.get<any>(`http://localhost:3000/bookings/${id}`);
   }
 
   getBookings() {
-    return this.http.get<any[]>('http://localhost:3000/bookings');
+    return this.http.get<any[]>(`http://localhost:3000/bookings`);
   }
-
 }
+

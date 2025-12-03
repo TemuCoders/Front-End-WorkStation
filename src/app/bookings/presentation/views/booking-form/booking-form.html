@@ -1,54 +1,46 @@
 <div class="booking-container">
 
-  <div class="header">
-    <h2>Reservar Workspace</h2>
-    <p>Completa tu información para continuar</p>
-  </div>
+  <!-- LEFT: WORKSPACE SUMMARY -->
+  <div class="summary-card" *ngIf="workspace">
+    <img class="ws-img" [src]="workspace.img" alt="workspace" />
 
-  <form [formGroup]="form" (ngSubmit)="submit()">
+    <h2 class="ws-title">{{ workspace.name }}</h2>
+    <p class="ws-description">{{ workspace.description }}</p>
 
-    <div class="form-grid">
-
-      <mat-form-field appearance="outline">
-        <mat-label>Nombre</mat-label>
-        <input matInput formControlName="firstName">
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Apellido</mat-label>
-        <input matInput formControlName="lastName">
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full">
-        <mat-label>Email</mat-label>
-        <input matInput formControlName="email">
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full">
-        <mat-label>Teléfono</mat-label>
-        <input matInput formControlName="phone">
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Fecha inicio</mat-label>
-        <input matInput [matDatepicker]="picker1" formControlName="startDate">
-        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-        <mat-datepicker #picker1></mat-datepicker>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Fecha fin</mat-label>
-        <input matInput [matDatepicker]="picker2" formControlName="endDate">
-        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-        <mat-datepicker #picker2></mat-datepicker>
-      </mat-form-field>
-
+    <div class="price-line">
+      <span class="price">S/ {{ workspace.price }}</span>
+      <span>/ día</span>
     </div>
 
-    <button mat-raised-button color="primary" (click)="submit()">
-      Realizar pago
-    </button>
+    <hr>
 
+    <div class="dates">
+      <p><strong>Inicio:</strong> {{ form.value.startDate || "—" }}</p>
+      <p><strong>Fin:</strong> {{ form.value.endDate || "—" }}</p>
+    </div>
 
-  </form>
+    <hr>
+
+    <p class="total-text">
+      <strong>Total:</strong> S/ {{ total }}
+    </p>
+  </div>
+
+  <!-- RIGHT: FORM -->
+  <div class="form-card">
+    <h2>Selecciona tus fechas</h2>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <label>Fecha de inicio</label>
+      <input type="date" formControlName="startDate" />
+
+      <label>Fecha de fin</label>
+      <input type="date" formControlName="endDate" />
+
+      <button type="submit" class="reserve-btn">
+        Reservar
+      </button>
+    </form>
+  </div>
+
 </div>
