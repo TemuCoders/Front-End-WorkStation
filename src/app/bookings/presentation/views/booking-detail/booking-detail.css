@@ -1,0 +1,34 @@
+.details-card {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 25px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+}
+
+.preview {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 16px;
+  margin-bottom: 20px;
+}
+
+.row, .price-box {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+}
+
+.pay-btn {
+  width: 100%;
+  margin-top: 25px;
+  padding: 14px;
+  background: #ff385c;
+  border: none;
+  color: white;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}

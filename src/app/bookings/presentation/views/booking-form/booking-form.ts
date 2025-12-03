@@ -1,108 +1,98 @@
-import {Component, inject, signal} from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { SearchingStore } from '../../../../searching/application/searching-store';
-import { BookingResponse } from '../../../infrastructure/booking-response';
-import { BookingFacade } from '../../../application/booking-facade.service';
-import { AuthService } from '../../../../User/infrastructure/auth.service';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatNativeDateModule } from '@angular/material/core';
+import { SearchingApi } from '../../../../searching/infrastructure/searching-api';
+import { BookingsApi } from '../../../infrastructure/bookings-api';
+import { AuthService } from '../../../../User/infrastructure/auth.service';
 
 @Component({
   selector: 'app-booking-form',
   standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './booking-form.html',
-  styleUrls: ['./booking-form.css'],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatNativeDateModule
-  ],
+  styleUrls: ['./booking-form.css']
 })
 export class BookingFormPage {
 
   private route = inject(ActivatedRoute);
-  private router = inject(Router);
-  private facade = inject(BookingFacade);
-  private auth = inject(AuthService);
-  private searchingStore = inject(SearchingStore);
+  private searchingApi = inject(SearchingApi);
+  private bookingsApi = inject(BookingsApi);
   private fb = inject(FormBuilder);
+  private router = inject(Router);
+  private auth = inject(AuthService);
 
-  spaceId = signal<number | null>(null);
-  userId = signal<number | null>(null);
-  userName = signal<string>('');
+  workspace: any = null;
+  spaceId!: number;
+  userId = this.auth.getUserId();
+
+  total = 0;
 
   form = this.fb.group({
-    firstName: ['', Validators.required],
-    lastName: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
-    phone: ['', Validators.required],
     startDate: ['', Validators.required],
-    endDate: ['', Validators.required],
+    endDate: ['', Validators.required]
   });
 
-  workspace = signal<any>(null);
-
   ngOnInit() {
-    // Workspace ID
-    this.route.params.subscribe(params => {
-      const id = Number(params['id']);
-      if (!isNaN(id)) {
-        this.spaceId.set(id);
-        this.workspace.set(this.searchingStore.getWorkspaceById(id)());
+    this.route.params.subscribe((params: any) => {
+      this.spaceId = Number(params['id']);
+      console.log("📌 SPACE ID:", this.spaceId);
+
+      if (!this.spaceId || isNaN(this.spaceId)) {
+        console.error("❌ ID inválido, redirigiendo...");
+        this.router.navigate(['/searching']);
+        return;
       }
+
+      this.loadWorkspace();
     });
 
-    // User info
-    const user = this.auth.currentUser();
-    if (user) {
-      this.userId.set(user.id);
-      this.userName.set(user.name);
-      this.form.patchValue({
-        firstName: user.name.split(" ")[0] ?? '',
-        lastName: user.name.split(" ")[1] ?? '',
-        email: user.email ?? '',
-      });
-    }
+    this.form.valueChanges.subscribe(() => this.calculateTotal());
   }
 
-  submit() {
-    console.log("FORM VALIDO:", this.form.valid);
-    console.log("SPACE:", this.spaceId());
-    console.log("USER:", this.userId());
+  loadWorkspace() {
+    this.searchingApi.getWorkspace(this.spaceId).subscribe({
+      next: (ws) => {
+        console.log("📌 WORKSPACE recibido:", ws);
+        this.workspace = ws;
+      }
+    });
+  }
 
-    if (this.form.invalid || !this.spaceId() || !this.userId()) {
-      console.warn("FORM INVALIDO");
+  calculateTotal() {
+    if (!this.workspace) return;
+
+    const start = this.form.value.startDate;
+    const end = this.form.value.endDate;
+
+    if (!start || !end) {
+      this.total = 0;
       return;
     }
 
-    const today = new Date().toISOString().split('T')[0];
+    const d1 = new Date(start);
+    const d2 = new Date(end);
+    const diff = (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24);
 
-    const payload = {
-      freelancerId: this.userId()!,
-      spaceId: this.spaceId()!,
-      bookingDate: today,
-      startDate: this.form.value.startDate!,
-      endDate: this.form.value.endDate!,
-    };
-
-    console.log("POST →", payload);
-
-    this.facade.createBooking(payload).subscribe({
-      next: res => {
-        console.log("RESPUESTA JSON-SERVER →", res);
-        this.router.navigate(['/payments']);
-      },
-      error: err => console.error("ERROR DEL POST:", err)
-    });
+    this.total = Math.max(1, diff) * this.workspace.price;
   }
 
+  submit() {
+    if (this.form.invalid) return;
+
+    const payload = {
+      freelancerId: this.userId!,
+      spaceId: this.spaceId,
+      bookingDate: new Date().toISOString().split('T')[0],
+      startDate: this.form.value.startDate!,
+      endDate: this.form.value.endDate!
+    };
+
+    this.bookingsApi.createBooking(payload).subscribe({
+      next: (res) => {
+        // Redirigir a la lista
+        this.router.navigate(['/bookings/list']);
+      }
+    });
+  }
 }

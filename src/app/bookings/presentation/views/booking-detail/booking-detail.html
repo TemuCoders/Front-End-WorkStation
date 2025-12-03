@@ -1,0 +1,36 @@
+<div class="details-card" *ngIf="booking && workspace">
+
+  <img class="preview" [src]="workspace.imageUrl" alt="workspace">
+
+  <h2>{{ workspace.name }}</h2>
+  <p class="location">{{ workspace.location }}</p>
+
+  <hr />
+
+  <div class="row">
+    <span>Fecha de inicio</span>
+    <strong>{{ booking.startDate | date }}</strong>
+  </div>
+
+  <div class="row">
+    <span>Fecha de fin</span>
+    <strong>{{ booking.endDate | date }}</strong>
+  </div>
+
+  <hr />
+
+  <div class="price-box">
+    <span>Precio por día</span>
+    <strong>S/ {{ workspace.price }}</strong>
+  </div>
+
+  <div class="price-box">
+    <span>Total (auto)</span>
+    <strong>S/ {{ workspace.price }}</strong>
+  </div>
+
+  <button class="pay-btn" (click)="goToPayment()">
+    Continuar al pago
+  </button>
+
+</div>
