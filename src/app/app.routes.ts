@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import {Home} from './shared/presentation/views/home/home';
 import {AuthLayout} from './shared/presentation/components/layout-auth/layout-auth';
 import { Layout } from './shared/presentation/components/layout/layout';
 
@@ -23,7 +22,6 @@ export const routes: Routes = [
     path: '',
     component: Layout,
     children: [
-      { path: 'home', component: Home, title: `${baseTitle} - Home` },
       { path: 'searching', loadChildren: () => import('./searching/presentation/views/searching.routes').then(m => m.searchingRoutes)},
       { path: 'payments', loadChildren: () => import('./payment-management/presentation/views/payment-management.routes')
       .then(m => m.paymentRoutes) },

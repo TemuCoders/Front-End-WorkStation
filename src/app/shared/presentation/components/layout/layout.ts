@@ -33,7 +33,6 @@ export class Layout {
     const profileId = user?.id || 1; 
 
     return [
-      { link: '/home', label: 'option.home' },
       { link: '/searching/workspaces', label: 'option.workspaces' },
       { link: `/profile/${profileId}`, label: 'option.profile' },
     ];
