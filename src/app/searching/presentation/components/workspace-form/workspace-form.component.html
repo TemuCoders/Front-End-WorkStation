@@ -1,0 +1,308 @@
+<div class="form-container">
+  <div class="form-header">
+    <button mat-icon-button class="back-button" (click)="cancel()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="header-content">
+      <h1 class="form-title">Crear Nuevo Espacio de Trabajo</h1>
+      <p class="form-subtitle">Completa la información para publicar tu espacio</p>
+    </div>
+  </div>
+
+  <mat-stepper [linear]="true" #stepper class="workspace-stepper">
+    <!-- Paso 1: Información Básica -->
+    <mat-step [completed]="isStepValid(0)">
+      <ng-template matStepLabel>Información Básica</ng-template>
+      
+      <mat-card class="step-card">
+        <mat-card-content>
+          <form [formGroup]="workspaceForm">
+            <div class="form-section">
+              <h2 class="section-title">
+                <mat-icon class="section-icon">info</mat-icon>
+                Datos del Espacio
+              </h2>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Nombre del espacio</mat-label>
+                <input 
+                  matInput 
+                  formControlName="name" 
+                  placeholder="Ej: Oficina Moderna en San Isidro"
+                  maxlength="100">
+                <mat-icon matPrefix>business</mat-icon>
+                <mat-hint align="end">{{ name?.value?.length || 0 }}/100</mat-hint>
+                @if (name?.invalid && name?.touched) {
+                  <mat-error>
+                    @if (name?.errors?.['required']) {
+                      El nombre es requerido
+                    }
+                    @if (name?.errors?.['minlength']) {
+                      Mínimo 3 caracteres
+                    }
+                  </mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Tipo de espacio</mat-label>
+                <mat-select formControlName="spaceType">
+                  <mat-icon matPrefix>category</mat-icon>
+                  @for (type of spaceTypes; track type) {
+                    <mat-option [value]="type">{{ type }}</mat-option>
+                  }
+                </mat-select>
+                @if (spaceType?.invalid && spaceType?.touched) {
+                  <mat-error>Selecciona un tipo de espacio</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Capacidad</mat-label>
+                <input 
+                  matInput 
+                  type="number" 
+                  formControlName="capacity"
+                  placeholder="Número de personas"
+                  min="1"
+                  max="100">
+                <mat-icon matPrefix>people</mat-icon>
+                <mat-hint>Número máximo de personas</mat-hint>
+                @if (capacity?.invalid && capacity?.touched) {
+                  <mat-error>
+                    @if (capacity?.errors?.['required']) {
+                      La capacidad es requerida
+                    }
+                    @if (capacity?.errors?.['min']) {
+                      Mínimo 1 persona
+                    }
+                    @if (capacity?.errors?.['max']) {
+                      Máximo 100 personas
+                    }
+                  </mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+
+      <div class="step-actions">
+        <button mat-button (click)="cancel()">Cancelar</button>
+        <button 
+          mat-raised-button 
+          color="primary" 
+          matStepperNext
+          [disabled]="!isStepValid(0)"
+          class="next-button">
+          Siguiente
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+    </mat-step>
+
+    <!-- Paso 2: Descripción y Ubicación -->
+    <mat-step [completed]="isStepValid(1)">
+      <ng-template matStepLabel>Descripción y Ubicación</ng-template>
+      
+      <mat-card class="step-card">
+        <mat-card-content>
+          <form [formGroup]="workspaceForm">
+            <div class="form-section">
+              <h2 class="section-title">
+                <mat-icon class="section-icon">description</mat-icon>
+                Detalles
+              </h2>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Descripción</mat-label>
+                <textarea 
+                  matInput 
+                  formControlName="description"
+                  placeholder="Describe tu espacio de trabajo, características, servicios incluidos..."
+                  rows="5"
+                  maxlength="500"></textarea>
+                <mat-icon matPrefix>edit_note</mat-icon>
+                <mat-hint align="end">{{ description?.value?.length || 0 }}/500</mat-hint>
+                @if (description?.invalid && description?.touched) {
+                  <mat-error>
+                    @if (description?.errors?.['required']) {
+                      La descripción es requerida
+                    }
+                    @if (description?.errors?.['minlength']) {
+                      Mínimo 10 caracteres
+                    }
+                  </mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Dirección</mat-label>
+                <input 
+                  matInput 
+                  formControlName="address"
+                  placeholder="Ej: Av. Javier Prado Este 476, San Isidro, Lima">
+                <mat-icon matPrefix>place</mat-icon>
+                <mat-hint>Dirección completa del espacio</mat-hint>
+                @if (address?.invalid && address?.touched) {
+                  <mat-error>
+                    @if (address?.errors?.['required']) {
+                      La dirección es requerida
+                    }
+                    @if (address?.errors?.['minlength']) {
+                      Mínimo 5 caracteres
+                    }
+                  </mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+
+      <div class="step-actions">
+        <button mat-button matStepperPrevious>Atrás</button>
+        <button 
+          mat-raised-button 
+          color="primary" 
+          matStepperNext
+          [disabled]="!isStepValid(1)"
+          class="next-button">
+          Siguiente
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+    </mat-step>
+
+    <!-- Paso 3: Precio, Disponibilidad e Imágenes -->
+    <mat-step [completed]="isStepValid(2) && imageUrls().length > 0">
+      <ng-template matStepLabel>Precio e Imágenes</ng-template>
+      
+      <mat-card class="step-card">
+        <mat-card-content>
+          <form [formGroup]="workspaceForm">
+            <div class="form-section">
+              <h2 class="section-title">
+                <mat-icon class="section-icon">attach_money</mat-icon>
+                Precio y Disponibilidad
+              </h2>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Precio por día (S/)</mat-label>
+                <input 
+                  matInput 
+                  type="number" 
+                  formControlName="price"
+                  placeholder="0.00"
+                  min="0"
+                  step="0.01">
+                <span matPrefix>S/&nbsp;</span>
+                <mat-hint>Precio de alquiler diario</mat-hint>
+                @if (price?.invalid && price?.touched) {
+                  <mat-error>
+                    @if (price?.errors?.['required']) {
+                      El precio es requerido
+                    }
+                    @if (price?.errors?.['min']) {
+                      El precio debe ser mayor a 0
+                    }
+                  </mat-error>
+                }
+              </mat-form-field>
+
+              <div class="checkbox-field">
+                <mat-checkbox formControlName="available" color="primary">
+                  <span class="checkbox-label">Espacio disponible para reservas</span>
+                </mat-checkbox>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h2 class="section-title">
+                <mat-icon class="section-icon">photo_library</mat-icon>
+                Imágenes del Espacio
+              </h2>
+
+              <div class="image-upload-section">
+                <p class="upload-instructions">
+                  <mat-icon class="info-icon">info</mat-icon>
+                  Ingresa las URLs de las imágenes de tu espacio (máximo 5). La primera imagen será la principal.
+                </p>
+
+                <div class="url-input-container">
+                  <mat-form-field appearance="outline" class="url-field">
+                    <mat-label>URL de imagen</mat-label>
+                    <input 
+                      matInput 
+                      [(ngModel)]="currentImageUrl"
+                      [ngModelOptions]="{standalone: true}"
+                      placeholder="https://ejemplo.com/imagen.jpg"
+                      (keyup.enter)="addImageUrl()">
+                    <mat-icon matPrefix>link</mat-icon>
+                    <mat-hint>Presiona Enter o haz clic en Agregar</mat-hint>
+                  </mat-form-field>
+                  <button 
+                    mat-raised-button 
+                    type="button"
+                    (click)="addImageUrl()"
+                    [disabled]="!currentImageUrl() || imageUrls().length >= 5"
+                    class="add-url-button">
+                    <mat-icon>add_photo_alternate</mat-icon>
+                    Agregar
+                  </button>
+                </div>
+
+                <!-- Lista de imágenes agregadas -->
+                @if (imageUrls().length > 0) {
+                  <div class="image-preview-section">
+                    <h3 class="preview-title">Imágenes agregadas ({{ imageUrls().length }}/5)</h3>
+                    <div class="image-grid">
+                      @for (url of imageUrls(); track $index) {
+                        <div class="image-preview-card">
+                          <img [src]="url" [alt]="'Imagen ' + ($index + 1)" class="preview-image">
+                          <button 
+                            mat-icon-button 
+                            type="button"
+                            (click)="removeImageUrl($index)"
+                            class="remove-image-button">
+                            <mat-icon>close</mat-icon>
+                          </button>
+                          @if ($index === 0) {
+                            <div class="primary-badge">Principal</div>
+                          }
+                        </div>
+                      }
+                    </div>
+                  </div>
+                } @else {
+                  <div class="no-images-message">
+                    <mat-icon class="no-images-icon">add_photo_alternate</mat-icon>
+                    <p>Agrega al menos una imagen de tu espacio</p>
+                  </div>
+                }
+              </div>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+
+      <div class="step-actions">
+        <button mat-button matStepperPrevious>Atrás</button>
+        <button 
+          mat-raised-button 
+          color="primary" 
+          (click)="onSubmit()"
+          [disabled]="workspaceForm.invalid || imageUrls().length === 0 || isSubmitting()"
+          class="submit-button">
+          @if (isSubmitting()) {
+            <mat-icon class="spinner">sync</mat-icon>
+            Creando...
+          } @else {
+            <mat-icon>check_circle</mat-icon>
+            Crear Espacio
+          }
+        </button>
+      </div>
+    </mat-step>
+  </mat-stepper>
+</div>
