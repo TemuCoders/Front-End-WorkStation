@@ -4,7 +4,7 @@
     <button mat-icon-button class="back-button" (click)="goBack()">
       <mat-icon>arrow_back</mat-icon>
     </button>
-    <h1 class="page-title">Detalle del Espacio</h1>
+    <h1 class="page-title">{{ 'searching.detailSpace' | translate }}</h1>
   </div>
 
   @if (store.loading()) {
@@ -27,7 +27,6 @@
 
   @if (workspace(); as ws) {
     <div class="detail-content">
-      <!-- Galería de imágenes -->
       <section class="gallery-section">
         <div class="main-image-container">
           <img 
@@ -35,7 +34,6 @@
             [alt]="ws.name"
             class="main-image">
           
-          <!-- Navegación de galería -->
           @if (images().length > 1) {
             <button 
               mat-icon-button 
@@ -50,7 +48,6 @@
               <mat-icon>chevron_right</mat-icon>
             </button>
 
-            <!-- Indicadores -->
             <div class="gallery-indicators">
               @for (img of images(); track $index) {
                 <button 
@@ -63,7 +60,6 @@
           }
         </div>
 
-        <!-- Miniaturas -->
         <div class="thumbnails">
           @for (img of images(); track $index) {
             <img 
@@ -76,7 +72,6 @@
         </div>
       </section>
 
-      <!-- Información principal -->
       <section class="info-section">
         <div class="info-header">
           <div>
@@ -97,20 +92,19 @@
 
         <mat-divider></mat-divider>
 
-        <!-- Detalles rápidos -->
         <div class="quick-details">
           <div class="detail-card">
             <mat-icon class="detail-icon">people</mat-icon>
             <div class="detail-info">
-              <span class="detail-label">Capacidad</span>
-              <span class="detail-value">{{ ws.capacity }} personas</span>
+              <span class="detail-label">{{ 'filters.capacity' | translate }}</span>
+              <span class="detail-value">{{ ws.capacity }} {{ 'filters.people' | translate }}</span>
             </div>
           </div>
 
           <div class="detail-card">
             <mat-icon class="detail-icon">monetization_on</mat-icon>
             <div class="detail-info">
-              <span class="detail-label">Precio</span>
+              <span class="detail-label">{{ 'filters.price' | translate }}</span>
               <span class="detail-value">S/ {{ ws.price }} /día</span>
             </div>
           </div>
@@ -118,7 +112,7 @@
           <div class="detail-card">
             <mat-icon class="detail-icon">star</mat-icon>
             <div class="detail-info">
-              <span class="detail-label">Valoración</span>
+              <span class="detail-label">{{ 'searching.valuation' | translate }}</span>
               <span class="detail-value">4.9 ★</span>
             </div>
           </div>
@@ -126,26 +120,24 @@
 
         <mat-divider></mat-divider>
 
-        <!-- Descripción -->
         <div class="description-section">
           <h2 class="section-title">
             <mat-icon>description</mat-icon>
-            Descripción
+            {{ 'searching.description' | translate }}
           </h2>
           <p class="description-text">{{ ws.description }}</p>
         </div>
 
         <mat-divider></mat-divider>
 
-        <!-- Ubicación -->
         <div class="location-section">
           <h2 class="section-title">
             <mat-icon>place</mat-icon>
-            Ubicación
+            {{ 'searching.ubication' | translate }}
           </h2>
           <div class="location-details">
             <p class="address">
-              <strong>Dirección:</strong><br>
+              <strong>{{ 'searching.address' | translate }}:</strong><br>
               {{ ws.address }}
             </p>
           </div>
@@ -153,29 +145,12 @@
 
         <mat-divider></mat-divider>
 
-        <!-- Servicios 
-        <div class="services-section">
-          <h2 class="section-title">
-            <mat-icon>build</mat-icon>
-            Servicios incluidos
-          </h2>
-          <div class="services-grid">
-            @for (service of getServicesNames(ws); track service) {
-              <mat-chip class="service-chip">
-                <mat-icon>check_circle</mat-icon>
-                {{ service }}
-              </mat-chip>
-            }
-          </div>
-        </div>
-        -->
 
         <mat-divider></mat-divider>
 
-        <!-- Botón de reserva -->
         <div class="booking-section">
           <div class="price-summary">
-            <span class="price-label">Precio total por día</span>
+            <span class="price-label">{{ 'searching.pricePerDay' | translate }}</span>
             <span class="price-amount">S/ {{ ws.price }}</span>
           </div>
           
@@ -185,7 +160,7 @@
               class="reserve-button"
               (click)="reserveWorkspace()">
               <mat-icon>event_available</mat-icon>
-              Reservar ahora
+              {{ 'searching.reserveNow' | translate }}
             </button>
           } @else {
             <button 

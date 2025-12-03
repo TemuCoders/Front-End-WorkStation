@@ -19,20 +19,23 @@
     </app-workspace-filters>
   </aside>
 
-  <!-- Columna de Resultados -->
+
   <main class="results-section">
     <div class="results-header">
       <h2 class="results-title">
-        {{ filteredWorkspaces().length }} 
-        {{ filteredWorkspaces().length === 1 ? 'espacio encontrado' : 'espacios encontrados' }}
-      </h2>
+      {{ filteredWorkspaces().length }}
+      {{ filteredWorkspaces().length === 1 
+          ? ('searching.noResults' | translate) 
+          : ('searching.results' | translate) }}
+    </h2>
+
     </div>
 
     @if (filteredWorkspaces().length === 0 && !store.loading()) {
       <div class="no-results">
         <mat-icon class="no-results-icon">search_off</mat-icon>
-        <h3>No se encontraron espacios</h3>
-        <p>Intenta ajustar los filtros o realizar una nueva búsqueda</p>
+        <h3>{{ 'searching.noResults' | translate }}</h3>
+        <p>{{ 'searching.tryAdjust' | translate }}</p>
       </div>
     }
 
@@ -49,7 +52,7 @@
             @if (!workspace.available) {
               <div class="unavailable-badge">
                 <mat-icon>event_busy</mat-icon>
-                No disponible
+                {{ 'searching.unavailable' | translate }}
               </div>
             }
           </div>
@@ -100,7 +103,7 @@
             } @else {
               <button mat-stroked-button disabled class="unavailable-button">
                 <mat-icon>event_busy</mat-icon>
-                No disponible
+                {{ 'searching.unavailable' | translate }}
               </button>
             }
           </mat-card-actions>

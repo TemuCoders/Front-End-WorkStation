@@ -9,7 +9,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SearchingStore } from '../../../application/searching-store';
-import { WorkspaceMinimalResource } from '../../../infrastructure/workspace-minimal.resource';
 
 @Component({
   selector: 'app-workspace-detail',
@@ -22,6 +21,7 @@ import { WorkspaceMinimalResource } from '../../../infrastructure/workspace-mini
     MatChipsModule,
     MatProgressSpinnerModule,
     MatDividerModule,
+    TranslatePipe
   ],
   templateUrl: './space-detail.html',
   styleUrl: './space-detail.css'

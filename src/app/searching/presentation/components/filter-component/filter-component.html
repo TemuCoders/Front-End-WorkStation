@@ -2,7 +2,7 @@
   <div class="filters-header">
     <h3 class="filters-title">
       <mat-icon>filter_list</mat-icon>
-      Filtros
+      {{ 'filters.name' | translate }}
       @if (activeFiltersCount() > 0) {
         <span class="filter-badge">{{ activeFiltersCount() }}</span>
       }
@@ -14,7 +14,7 @@
         (click)="clearAllFilters()"
         class="clear-button">
         <mat-icon>clear</mat-icon>
-        Limpiar todo
+        {{ 'filters.clean' | translate }}
       </button>
     }
   </div>
@@ -25,17 +25,17 @@
       <mat-expansion-panel-header>
         <mat-panel-title>
           <mat-icon class="panel-icon">people</mat-icon>
-          Capacidad
+          {{ 'filters.capacity' | translate }}
         </mat-panel-title>
       </mat-expansion-panel-header>
       
       <div class="filter-content">
         <div class="range-values">
-          <span class="range-label">{{ minCapacity() }} - {{ maxCapacity() }} personas</span>
+          <span class="range-label">{{ minCapacity() }} - {{ maxCapacity() }} {{ 'filters.people' | translate }}</span>
         </div>
         
         <div class="slider-group">
-          <label class="slider-label">Mínimo</label>
+          <label class="slider-label">{{ 'filters.min' | translate }}</label>
           <mat-slider 
             min="1" 
             max="50" 
@@ -50,7 +50,7 @@
         </div>
 
         <div class="slider-group">
-          <label class="slider-label">Máximo</label>
+          <label class="slider-label">{{ 'filters.max' | translate }}</label>
           <mat-slider 
             min="1" 
             max="50" 
@@ -71,7 +71,7 @@
       <mat-expansion-panel-header>
         <mat-panel-title>
           <mat-icon class="panel-icon">attach_money</mat-icon>
-          Precio por día
+          {{ 'filters.price' | translate }}
         </mat-panel-title>
       </mat-expansion-panel-header>
       
@@ -81,7 +81,7 @@
         </div>
         
         <div class="slider-group">
-          <label class="slider-label">Mínimo</label>
+          <label class="slider-label">{{ 'filters.min' | translate }}</label>
           <mat-slider 
             min="0" 
             max="500" 
@@ -96,7 +96,7 @@
         </div>
 
         <div class="slider-group">
-          <label class="slider-label">Máximo</label>
+          <label class="slider-label">{{ 'filters.max' | translate }}</label>
           <mat-slider 
             min="0" 
             max="500" 
@@ -117,7 +117,7 @@
       <mat-expansion-panel-header>
         <mat-panel-title>
           <mat-icon class="panel-icon">category</mat-icon>
-          Tipo de espacio
+          {{ 'filters.spaceType' | translate }}
         </mat-panel-title>
       </mat-expansion-panel-header>
       
