@@ -25,7 +25,7 @@ export class SearchingStore {
   }
 
   /**
-   * Obtiene un workspace por su ID como Signal reactivo (minimal).
+   * Obtiene un workspace por su ID
    */
   getWorkspaceById(id: number | null | undefined): Signal<WorkspaceMinimalResource | undefined> {
     return computed(() => id ? this.workspaces().find(w => w.spaceId === id) : undefined);
