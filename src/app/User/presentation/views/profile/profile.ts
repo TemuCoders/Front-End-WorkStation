@@ -9,7 +9,7 @@ import { UserStore } from '../../../application/User-store';
 import { User } from '../../../domain/model/user.entity';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SearchingStore } from '../../../../searching/application/searching-store';
-import { Workspace } from '../../../../searching/domain/model/workspace.entity';
+import { WorkspaceMinimalResource } from '../../../../searching/infrastructure/workspace-minimal.resource';
 import { Sidebar } from '../../../../shared/presentation/components/sidebar/sidebar';
 
 type ReviewItem = {
@@ -50,20 +50,17 @@ export class Profile {
   readonly searchError = this.searchingStore.error;
   private readonly allWorkspaces = this.searchingStore.workspaces;
 
-  readonly myWorkspaces = computed<Workspace[]>(() => {
-    const u = this.editedUser();
-    const list = this.allWorkspaces() || [];
-    if (!u) return [];
-    const full = (u.name || '').trim().toLowerCase();
-    const owned = list.filter(w => {
-      const owner = (w as any).owner;
-      const ownerFull = owner 
-        ? `${owner.firstName ?? ''} ${owner.lastName ?? ''}`.trim().toLowerCase() 
-        : '';
-      return ownerFull && ownerFull === full;
-    });
-    return owned.length ? owned : list.slice(0, 3);
-  });
+  readonly myWorkspaces = computed<WorkspaceMinimalResource[]>(() => {  // ← Cambia tipo
+  const u = this.editedUser();
+  const list = this.allWorkspaces() || [];
+  if (!u || !u.id) return [];
+
+  // Filtra por ownerId directamente
+  const owned = list.filter(w => w.ownerId === u.id);
+
+  // Si no hay workspaces del usuario, devuelve los primeros 3
+  return owned.length ? owned : list.slice(0, 3);
+});
 
   readonly reviews = signal<ReviewItem[]>([
     {

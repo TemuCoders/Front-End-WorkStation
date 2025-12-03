@@ -9,6 +9,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SearchingStore } from '../../../application/searching-store';
+import { WorkspaceMinimalResource } from '../../../infrastructure/workspace-minimal.resource';
 
 @Component({
   selector: 'app-workspace-detail',
@@ -36,25 +37,20 @@ export class WorkspaceDetailPage implements OnInit {
   workspace = computed(() => {
     const id = this.workspaceId();
     if (!id) return null;
-    return this.store.workspaces().find(w => w.id === id);
+    return this.store.workspaces().find(w => w.spaceId === id);
   });
 
   images = computed(() => {
     const ws = this.workspace();
     if (!ws) return [];
+    
 
-    const mainImage = ws.img || `https://picsum.photos/seed/${ws.id}/1200/800`;
-
-    return [
-      mainImage,
-      `https://picsum.photos/seed/${ws.id}-2/1200/800`,
-      `https://picsum.photos/seed/${ws.id}-3/1200/800`,
-      `https://picsum.photos/seed/${ws.id}-4/1200/800`
-    ];
+    return ws.images && ws.images.length > 0 
+      ? ws.images 
+      : ['assets/placeholder.jpg'];
   });
 
   ngOnInit() {
-    // Obtiene el ID de la URL
     this.route.params.subscribe(params => {
       const id = parseInt(params['id']);
       if (!isNaN(id)) {
@@ -87,11 +83,7 @@ export class WorkspaceDetailPage implements OnInit {
     const ws = this.workspace();
     if (!ws) return;
 
-    this.router.navigate(['/bookings/create', ws.id])
-
+    this.router.navigate(['/bookings/create', ws.spaceId]);
   }
 
-  getServicesNames(workspace: any): string[] {
-    return workspace.services?.map((s: any) => s.name) || [];
-  }
 }

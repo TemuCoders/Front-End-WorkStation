@@ -13,12 +13,13 @@
 }
 
 <div class="card-grid">
-  @for (workspace of filteredWorkspaces(); track workspace.id) {
+  @for (workspace of filteredWorkspaces(); track workspace.spaceId) {
+
     <mat-card class="workspace-card">
       <div class="image-container">
         <img 
           mat-card-image 
-          [src]="workspace.img || 'https://picsum.photos/seed/' + workspace.id + '/600/400'" 
+          [src]="workspace.images[0] || 'assets/placeholder.jpg'" 
           alt="{{ workspace.name }}" 
           class="workspace-image" 
         />
@@ -44,16 +45,15 @@
         <div class="info-section">
           <div class="info-item">
             <mat-icon class="info-icon">place</mat-icon>
-            <span class="info-text">
-              {{ workspace.address.street }} {{ workspace.address.number }},
-              {{ workspace.address.city }}, {{ workspace.address.postalCode }}
-            </span>
+            <span class="info-text">{{ workspace.address }}</span>
           </div>
 
+          <!--
           <div class="info-item">
             <mat-icon class="info-icon">build</mat-icon>
             <span class="info-text">{{ getServicesNames(workspace) }}</span>
           </div>
+          -->
         </div>
 
         <div class="price-section">
@@ -71,7 +71,8 @@
             mat-raised-button 
             color="primary" 
             class="reserve-button"
-            (click)="router.navigate(['searching/workspaces/reserve', workspace.id])">
+            (click)="router.navigate(['searching/workspaces/reserve', workspace.spaceId])">
+            <!-- ✅ Cambio: workspace.id → workspace.spaceId -->
             <mat-icon>event_available</mat-icon>
             {{ 'workspace.reserve' | translate }}
           </button>

@@ -1,62 +1,65 @@
 import { Injectable } from '@angular/core';
-import {BaseApi} from '../../shared/infrastructure/base-api';
-import {HttpClient} from '@angular/common/http';
-import {WorkspacesApiEndpoint} from './workspaces-api-endpoint';
-import {Observable} from 'rxjs';
-import {Workspace} from '../domain/model/workspace.entity';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { WorkspaceMinimalResource } from './workspace-minimal.resource';
+import { WorkspaceResource } from './workspace-resource';
+import { CreateWorkspaceRequest } from './create-workspace.request';
+import { UpdateWorkspaceRequest } from './update-workspace.request';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SearchingApi extends BaseApi{
-  private readonly workspacesEndpoint: WorkspacesApiEndpoint;
+export class SearchingApi {
+  private baseUrl = `${environment.platformProviderApiBaseUrl}${environment.platformProviderWorkspacesEndpointPath}`;
 
-  constructor(http: HttpClient) {
-    super();
-    this.workspacesEndpoint = new WorkspacesApiEndpoint(http);
-  }
+  constructor(private http: HttpClient) {}
 
   /**
-   * Retrieves all workspaces from the API.
-   * @returns An Observable for an array of Workspace entities.
+   * GET /api/v1/spaces
+   * @returns Lista de workspaces (minimal)
    */
-  getWorkspaces(): Observable<Workspace[]> {
-    return this.workspacesEndpoint.getAll();
+  getWorkspaces(): Observable<WorkspaceMinimalResource[]> {
+    return this.http.get<WorkspaceMinimalResource[]>(this.baseUrl);
   }
 
   /**
-   * Retrieves a single workspace by its ID.
-   * @param id - The ID of the workspace.
-   * @returns An Observable for the Workspace entity.
+   * GET /api/v1/spaces/{id}
+   * @returns Workspace completo
    */
-  getWorkspace(id: number): Observable<Workspace> {
-    return this.workspacesEndpoint.getById(id);
+  getWorkspaceById(id: number): Observable<WorkspaceResource> {
+    return this.http.get<WorkspaceResource>(`${this.baseUrl}/${id}`);
   }
 
   /**
-   * Creates a new workspace in the API.
-   * @param workspace - The workspace entity to create.
-   * @returns An Observable for the created Workspace.
+   * GET /api/v1/spaces/{ownerId}/owner
+   * @returns Lista de workspaces por owner
    */
-  createWorkspace(workspace: Workspace): Observable<Workspace> {
-    return this.workspacesEndpoint.create(workspace);
+  getWorkspacesByOwnerId(ownerId: number): Observable<WorkspaceMinimalResource[]> {
+    return this.http.get<WorkspaceMinimalResource[]>(`${this.baseUrl}/${ownerId}/owner`);
   }
 
   /**
-   * Updates an existing workspace in the API.
-   * @param workspace - The workspace entity to update.
-   * @returns An Observable for the updated Workspace.
+   * POST /api/v1/spaces
+   * @returns Workspace creado (minimal)
    */
-  updateWorkspace(workspace: Workspace): Observable<Workspace> {
-    return this.workspacesEndpoint.update(workspace, workspace.id);
+  createWorkspace(request: CreateWorkspaceRequest): Observable<WorkspaceMinimalResource> {
+    return this.http.post<WorkspaceMinimalResource>(this.baseUrl, request);
   }
 
   /**
-   * Deletes a workspace by its ID.
-   * @param id - The ID of the workspace to delete.
-   * @returns An Observable of void.
+   * PUT /api/v1/spaces/{id}
+   * @returns Workspace actualizado (completo)
+   */
+  updateWorkspace(id: number, request: UpdateWorkspaceRequest): Observable<WorkspaceResource> {
+    return this.http.put<WorkspaceResource>(`${this.baseUrl}/${id}`, request);
+  }
+
+  /**
+   * DELETE /api/v1/spaces/{id}
+   * @returns void (204 No Content)
    */
   deleteWorkspace(id: number): Observable<void> {
-    return this.workspacesEndpoint.delete(id);
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 }

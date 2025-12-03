@@ -1,9 +1,9 @@
 <div class="details-card" *ngIf="booking && workspace">
 
-  <img class="preview" [src]="workspace.imageUrl" alt="workspace">
+  <img class="preview" [src]="workspace.images[0]" alt="workspace">
 
   <h2>{{ workspace.name }}</h2>
-  <p class="location">{{ workspace.location }}</p>
+  <p class="location">{{ workspace.street }} {{ workspace.streetNumber }}, {{ workspace.city }}</p>
 
   <hr />
 

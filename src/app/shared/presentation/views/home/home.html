@@ -10,24 +10,6 @@
 </section>
 
 
-<section class="featured-workspaces">
-  <h2> Destacados Espacios de Trabajo </h2>
-
-  <div class="card-grid">
-    @for (workspace of store.workspaces().slice(0, 4); track workspace.id) {
-      <mat-card class="workspace-card">
-        <img mat-card-image [src]="workspace.img || 'https://picsum.photos/seed/' + workspace.id + '/600/400'" alt="{{ workspace.name }}" class="workspace-image" />
-
-        <mat-card-content>
-          <div class="title-section">
-            <h3>{{ workspace.name }}</h3>
-          </div>
-          <p class="description">{{ workspace.description }}</p>
-        </mat-card-content>
-      </mat-card>
-    }
-  </div>
-</section>
 
 
 

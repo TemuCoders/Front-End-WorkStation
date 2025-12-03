@@ -1,8 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookingsApi } from '../../../infrastructure/bookings-api';
 import { SearchingApi } from '../../../../searching/infrastructure/searching-api';
-import { DatePipe, NgIf, NgFor } from '@angular/common';
+import { DatePipe, NgIf } from '@angular/common';
+import { WorkspaceResource } from '../../../../searching/infrastructure/workspace-resource';
 
 @Component({
   selector: 'app-booking-detail',
@@ -10,10 +11,11 @@ import { DatePipe, NgIf, NgFor } from '@angular/common';
   templateUrl: './booking-detail.html',
   styleUrls: ['./booking-detail.css'],
   imports: [
-    DatePipe
+    DatePipe,
+    NgIf  
   ],
 })
-export class BookingDetailPage {
+export class BookingDetailPage implements OnInit {  
 
   private route = inject(ActivatedRoute);
   private api = inject(BookingsApi);
@@ -23,12 +25,12 @@ export class BookingDetailPage {
   bookingId = Number(this.route.snapshot.paramMap.get('bookingId'));
 
   booking: any;
-  workspace: any;
+  workspace: WorkspaceResource | null = null;
 
   ngOnInit() {
     this.api.getBooking(this.bookingId).subscribe(b => {
       this.booking = b;
-      this.searchingApi.getWorkspace(b.spaceId).subscribe(ws => {
+      this.searchingApi.getWorkspaceById(b.spaceId).subscribe(ws => {
         this.workspace = ws;
       });
     });

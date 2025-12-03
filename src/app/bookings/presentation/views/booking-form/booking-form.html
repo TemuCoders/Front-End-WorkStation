@@ -2,7 +2,7 @@
 
   <!-- LEFT: WORKSPACE SUMMARY -->
   <div class="summary-card" *ngIf="workspace">
-    <img class="ws-img" [src]="workspace.img" alt="workspace" />
+    <img class="ws-img" [src]="workspace.images[0]" alt="workspace" />
 
     <h2 class="ws-title">{{ workspace.name }}</h2>
     <p class="ws-description">{{ workspace.description }}</p>

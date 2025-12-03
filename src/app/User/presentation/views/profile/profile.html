@@ -25,16 +25,16 @@
         } @else if (myWorkspaces().length === 0) {
           <div class="empty">No workspaces.</div>
         } @else {
-          @for (w of myWorkspaces(); track w.id) {
+          @for (w of myWorkspaces(); track w.spaceId) {  
             <article class="workspace-row">
               <div class="w-info">
                 <span class="w-badge">{{ w.spaceType }}</span>
                 <h4 class="w-title">{{ w.name }}</h4>
                 <div class="w-meta">
-                  {{ w.capacity }} guests · S/ {{ w.price }}/día · {{ w.address.city }}
+                  {{ w.capacity }} guests · S/ {{ w.price }}/día · {{ w.address }}
                 </div>
               </div>
-              <img [src]="w.img" alt="workspace" class="w-thumb" />
+              <img [src]="w.images[0] || 'assets/placeholder.jpg'" alt="workspace" class="w-thumb" />
             </article>
           }
         }

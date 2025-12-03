@@ -1,39 +1,35 @@
 import { Injectable } from '@angular/core';
-import {computed, Signal, signal} from '@angular/core';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {retry} from 'rxjs';
-import {Workspace} from '../domain/model/workspace.entity';
-import {SearchingApi} from '../infrastructure/searching-api';
-import { Service } from '../domain/model/service.entity';
+import { computed, Signal, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { retry } from 'rxjs';
+import { WorkspaceMinimalResource } from '../infrastructure/workspace-minimal.resource';
+import { CreateWorkspaceRequest } from '../infrastructure/create-workspace.request';
+import { UpdateWorkspaceRequest } from '../infrastructure/update-workspace.request';
+import { SearchingApi } from '../infrastructure/searching-api';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SearchingStore {
-  private readonly workspacesSignal = signal<Workspace[]>([]);
+  private readonly workspacesSignal = signal<WorkspaceMinimalResource[]>([]);
   private readonly loadingSignal = signal<boolean>(false);
   private readonly errorSignal = signal<string | null>(null);
 
   readonly workspaces = this.workspacesSignal.asReadonly();
   readonly loading = this.loadingSignal.asReadonly();
   readonly error = this.errorSignal.asReadonly();
-
   readonly workspaceCount = computed(() => this.workspaces().length);
 
   constructor(private searchingApi: SearchingApi) {
     this.loadWorkspaces();
   }
 
-
   /**
-   * Obtiene un workspace por su ID como Signal reactivo.
-   * @param id - ID del workspace
-   * @returns Signal con el Workspace encontrado o undefined
+   * Obtiene un workspace por su ID como Signal reactivo (minimal).
    */
-  getWorkspaceById(id: number | null | undefined): Signal<Workspace | undefined> {
-    return computed(() => id ? this.workspaces().find(w => w.id === id) : undefined);
+  getWorkspaceById(id: number | null | undefined): Signal<WorkspaceMinimalResource | undefined> {
+    return computed(() => id ? this.workspaces().find(w => w.spaceId === id) : undefined);
   }
-
 
   /**
    * Carga todos los workspaces desde el API.
@@ -57,11 +53,11 @@ export class SearchingStore {
   /**
    * Crea un nuevo workspace.
    */
-  addWorkspace(workspace: Workspace): void {
+  addWorkspace(request: CreateWorkspaceRequest): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
 
-    this.searchingApi.createWorkspace(workspace).pipe(retry(2)).subscribe({
+    this.searchingApi.createWorkspace(request).pipe(retry(2)).subscribe({
       next: created => {
         this.workspacesSignal.update(list => [...list, created]);
         this.loadingSignal.set(false);
@@ -76,14 +72,29 @@ export class SearchingStore {
   /**
    * Actualiza un workspace existente.
    */
-  updateWorkspace(updated: Workspace): void {
+  updateWorkspace(id: number, request: UpdateWorkspaceRequest): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
 
-    this.searchingApi.updateWorkspace(updated).pipe(retry(2)).subscribe({
-      next: workspace => {
+    this.searchingApi.updateWorkspace(id, request).pipe(retry(2)).subscribe({
+      next: workspaceComplete => {
+        // El backend devuelve WorkspaceResource (completo)
+        // Convertimos a minimal para actualizar la lista
+        const minimal: WorkspaceMinimalResource = {
+          spaceId: workspaceComplete.spaceId,
+          name: workspaceComplete.name,
+          ownerId: workspaceComplete.ownerId,
+          spaceType: workspaceComplete.spaceType,
+          capacity: workspaceComplete.capacity,
+          price: workspaceComplete.price,
+          description: workspaceComplete.description,
+          available: workspaceComplete.available,
+          address: `${workspaceComplete.street} ${workspaceComplete.streetNumber}, ${workspaceComplete.city}`,
+          images: workspaceComplete.images
+        };
+
         this.workspacesSignal.update(list =>
-          list.map(w => w.id === workspace.id ? workspace : w)
+          list.map(w => w.spaceId === minimal.spaceId ? minimal : w)
         );
         this.loadingSignal.set(false);
       },
@@ -103,7 +114,7 @@ export class SearchingStore {
 
     this.searchingApi.deleteWorkspace(id).pipe(retry(2)).subscribe({
       next: () => {
-        this.workspacesSignal.update(list => list.filter(w => w.id !== id));
+        this.workspacesSignal.update(list => list.filter(w => w.spaceId !== id));
         this.loadingSignal.set(false);
       },
       error: err => {
@@ -112,7 +123,6 @@ export class SearchingStore {
       }
     });
   }
-
 
   /**
    * Formatea mensajes de error para mostrar en UI.

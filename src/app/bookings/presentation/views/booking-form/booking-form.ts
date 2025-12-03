@@ -1,10 +1,12 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SearchingApi } from '../../../../searching/infrastructure/searching-api';
 import { BookingsApi } from '../../../infrastructure/bookings-api';
 import { AuthService } from '../../../../User/infrastructure/auth.service';
+import { WorkspaceResource } from '../../../../searching/infrastructure/workspace-resource';
+
 
 @Component({
   selector: 'app-booking-form',
@@ -13,7 +15,7 @@ import { AuthService } from '../../../../User/infrastructure/auth.service';
   templateUrl: './booking-form.html',
   styleUrls: ['./booking-form.css']
 })
-export class BookingFormPage {
+export class BookingFormPage implements OnInit {
 
   private route = inject(ActivatedRoute);
   private searchingApi = inject(SearchingApi);
@@ -22,7 +24,7 @@ export class BookingFormPage {
   private router = inject(Router);
   private auth = inject(AuthService);
 
-  workspace: any = null;
+  workspace: WorkspaceResource | null = null;
   spaceId!: number;
   userId = this.auth.getUserId();
 
@@ -50,8 +52,8 @@ export class BookingFormPage {
     this.form.valueChanges.subscribe(() => this.calculateTotal());
   }
 
-  loadWorkspace() {
-    this.searchingApi.getWorkspace(this.spaceId).subscribe({
+   loadWorkspace() {
+    this.searchingApi.getWorkspaceById(this.spaceId).subscribe({  
       next: (ws) => {
         console.log("📌 WORKSPACE recibido:", ws);
         this.workspace = ws;

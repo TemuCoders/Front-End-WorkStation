@@ -38,22 +38,18 @@ export class WorkspaceList {
     }
 
     return this.store.workspaces().filter(workspace => {
-
-      const servicesText = this.getServicesNames(workspace).toLowerCase();
-      
- 
+      // ✅ workspace.address es un string, no un objeto
       return (
         workspace.name.toLowerCase().includes(query) ||
         workspace.spaceType.toLowerCase().includes(query) ||
-        workspace.address.city.toLowerCase().includes(query) ||
-        workspace.address.street.toLowerCase().includes(query) ||
-        workspace.description.toLowerCase().includes(query) ||
-        servicesText.includes(query)
+        workspace.address.toLowerCase().includes(query) ||
+        workspace.description.toLowerCase().includes(query)
       );
     });
   });
 
-  getServicesNames(workspace: any): string {
-    return workspace.services?.map((s: any) => s.name).join(', ') || '—';
-  }
+  // ❌ ELIMINAR - WorkspaceMinimalResource no tiene services
+  // getServicesNames(workspace: any): string {
+  //   return workspace.services?.map((s: any) => s.name).join(', ') || '—';
+  // }
 }
