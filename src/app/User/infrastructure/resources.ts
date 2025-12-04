@@ -11,5 +11,8 @@ export interface UserResource extends BaseResource {
   photo: string;
   age: number;
   location: string;
-  registerDate: string; 
+  role: {
+    roleName: string;
+  };
+  registerDate: string;
 }

@@ -50,15 +50,13 @@ export class Profile {
   readonly searchError = this.searchingStore.error;
   private readonly allWorkspaces = this.searchingStore.workspaces;
 
-  readonly myWorkspaces = computed<WorkspaceMinimalResource[]>(() => {  // ← Cambia tipo
+  readonly myWorkspaces = computed<WorkspaceMinimalResource[]>(() => {  
   const u = this.editedUser();
   const list = this.allWorkspaces() || [];
   if (!u || !u.id) return [];
 
-  // Filtra por ownerId directamente
   const owned = list.filter(w => w.ownerId === u.id);
 
-  // Si no hay workspaces del usuario, devuelve los primeros 3
   return owned.length ? owned : list.slice(0, 3);
 });
 
@@ -101,7 +99,7 @@ export class Profile {
         return; 
       }
       const found = users.find(u => u.id === id);
-      this.editedUser.set(found ? { ...found } : undefined);
+      this.editedUser.set(found); 
     });
   }
 

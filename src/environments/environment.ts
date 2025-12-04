@@ -8,5 +8,7 @@ export const environment = {
   platformProviderReviewsEndpointPath: '/reviews',
   platformProviderUsersEndpointPath: '/users',
   platformProviderSpacesEndpointPath: '/spaces',
-  platformProviderBookingsEndpointPath: '/bookings'
+  platformProviderBookingsEndpointPath: '/bookings',
+  platformProviderFreelancersEndpointPath: '/freelancers',
+  platformProviderOwnersEndpointPath: '/owners' 
 };

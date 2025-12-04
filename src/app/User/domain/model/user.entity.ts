@@ -1,4 +1,4 @@
-import { UserResource } from '../../infrastructure/resources';
+import { UserResource } from "../../infrastructure/resources";
 
 export class User {
   id!: number;
@@ -7,7 +7,10 @@ export class User {
   photo!: string;
   age!: number;
   location!: string;
-  registerDate!: string;  
+  role!: {
+    roleName: string;  
+  };
+  registerDate!: string;
 
   constructor(resource?: UserResource) {
     if (resource) {
@@ -17,7 +20,20 @@ export class User {
       this.photo = resource.photo;
       this.age = resource.age;
       this.location = resource.location;
+      this.role = resource.role;
       this.registerDate = resource.registerDate;
     }
+  }
+
+  isOwner(): boolean {
+    return this.role?.roleName === 'OWNER';
+  }
+
+  isFreelancer(): boolean {
+    return this.role?.roleName === 'FREELANCER';
+  }
+
+  isAdmin(): boolean {
+    return this.role?.roleName === 'ADMIN';
   }
 }

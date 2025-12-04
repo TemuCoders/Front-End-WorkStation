@@ -53,7 +53,7 @@ export class EditProfile {
         return;
       }
       const found = users.find(u => u.id === id);
-      this.editedUser.set(found ? { ...found } : undefined);
+       this.editedUser.set(found); 
     });
   }
 

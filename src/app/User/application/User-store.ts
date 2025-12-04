@@ -23,17 +23,10 @@ export class UserStore {
 
   private loadUsers(): void {
     this.api.getUsers()
-      .pipe(
-        retry(2),
-        takeUntilDestroyed(this.destroyRef)  
-      )
+      .pipe(retry(2), takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (list: User[]) => {
-          this.usersSignal.set(list);
-        },
-        error: (err: any) => {
-          console.error('Error loading users', err);
-        }
+        next: (list: User[]) => this.usersSignal.set(list),
+        error: (err) => console.error('Error loading users', err)
       });
   }
 
@@ -43,48 +36,34 @@ export class UserStore {
 
   addUser(request: RegisterUserRequest): void {
     this.api.createUser(request)
-      .pipe(
-        takeUntilDestroyed(this.destroyRef)  
-      )
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (newUser: User) => {
-          this.usersSignal.update(users => [...users, newUser]);
-        },
-        error: (err: any) => {
-          console.error('Error creating user', err);
-        }
+        next: (newUser: User) => this.usersSignal.update(users => [...users, newUser]),
+        error: (err) => console.error('Error creating user', err)
       });
   }
 
   updateUser(id: number, request: UpdateUserProfileRequest): void {
     this.api.updateUser(id, request)
-      .pipe(
-        takeUntilDestroyed(this.destroyRef)  
-      )
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (updatedUser: User) => {
           this.usersSignal.update(users =>
             users.map(u => u.id === updatedUser.id ? updatedUser : u)
           );
         },
-        error: (err: any) => {
-          console.error('Error updating user', err);
-        }
+        error: (err) => console.error('Error updating user', err)
       });
   }
 
   deleteUser(id: number): void {
     this.api.deleteUser(id)
-      .pipe(
-        takeUntilDestroyed(this.destroyRef) 
-      )
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
           this.usersSignal.update(users => users.filter(u => u.id !== id));
         },
-        error: (err: any) => {
-          console.error('Error deleting user', err);
-        }
+        error: (err) => console.error('Error deleting user', err)
       });
   }
 }

@@ -11,7 +11,7 @@ import { BookingAssembler } from './booking-assembler';
 
 @Injectable({ providedIn: 'root' })
 export class BookingApiEndpoint {
-    private readonly baseUrl = `${environment.platformProviderApiBaseUrl}${environment.platformProviderBookingsEndpointPath}`;
+    private readonly baseUrl = `https://backend-3iv0.onrender.com/api/v1/bookings`;
   private readonly assembler = new BookingAssembler();
 
   constructor(private http: HttpClient) {}

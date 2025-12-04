@@ -15,6 +15,7 @@ export class UserAssembler implements BaseAssembler<User, UserResource, UserResp
       photo: resource.photo,
       age: resource.age,
       location: resource.location,
+      role: resource.role, 
       registerDate: resource.registerDate
     });
   }
@@ -27,6 +28,7 @@ export class UserAssembler implements BaseAssembler<User, UserResource, UserResp
       photo: entity.photo,
       age: entity.age,
       location: entity.location,
+      role: entity.role,  
       registerDate: entity.registerDate
     };
   }
