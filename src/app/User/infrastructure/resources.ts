@@ -6,13 +6,10 @@ export interface UserResponse extends BaseResponse {
 
 export interface UserResource extends BaseResource {
   id: number;
-  created_at: string;   // ISO
-  updated_at: string;   // ISO
-  age: number;
-  email: string;
-  location: string;
   name: string;
-  password: string;     // hashed
-  photo?: string;
-  register_date: string; // ISO
+  email: string;
+  photo: string;
+  age: number;
+  location: string;
+  registerDate: string; 
 }

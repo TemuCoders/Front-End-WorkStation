@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import {BaseApi} from '../../shared/infrastructure/base-api';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { BaseApi } from '../../shared/infrastructure/base-api';
 import { User } from '../domain/model/user.entity';
-import {HttpClient} from '@angular/common/http';
-import {UserApiEndpoint} from './user-api.endpoint';
-import {Observable} from 'rxjs';
-import {UserAssembler} from './user.assembler';
+import { UserApiEndpoint } from './user-api.endpoint';
+import { RegisterUserRequest } from './register-user.request';
+import { UpdateUserProfileRequest } from './update-user-profile';
 
 @Injectable({ providedIn: 'root' })
 export class UserApi extends BaseApi {
@@ -18,15 +19,19 @@ export class UserApi extends BaseApi {
   getUsers(): Observable<User[]> {
     return this.usersEndpoint.getAll();
   }
+
   getUser(id: number): Observable<User> {
     return this.usersEndpoint.getById(id);
   }
-  createUser(user: User): Observable<User> {
-    return this.usersEndpoint.create(user);
+
+  createUser(request: RegisterUserRequest): Observable<User> {
+    return this.usersEndpoint.create(request);
   }
-  updateUser(user: User): Observable<User> {
-    return this.usersEndpoint.update(user, user.id);
+
+  updateUser(id: number, request: UpdateUserProfileRequest): Observable<User> {
+    return this.usersEndpoint.update(id, request);
   }
+
   deleteUser(id: number): Observable<void> {
     return this.usersEndpoint.delete(id);
   }

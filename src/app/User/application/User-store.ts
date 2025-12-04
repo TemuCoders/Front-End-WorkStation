@@ -2,6 +2,8 @@ import { Injectable, DestroyRef, inject } from '@angular/core';
 import { computed, Signal, signal } from '@angular/core';
 import { UserApi } from '../infrastructure/user-api.service';
 import { User } from '../domain/model/user.entity';
+import { RegisterUserRequest } from '../infrastructure/register-user.request';
+import { UpdateUserProfileRequest } from '../infrastructure/update-user-profile';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { retry } from 'rxjs';
 
@@ -39,8 +41,8 @@ export class UserStore {
     return computed(() => this.users().find(user => user.id === id));
   }
 
-  addUser(user: User): void {
-    this.api.createUser(user)
+  addUser(request: RegisterUserRequest): void {
+    this.api.createUser(request)
       .pipe(
         takeUntilDestroyed(this.destroyRef)  
       )
@@ -54,8 +56,8 @@ export class UserStore {
       });
   }
 
-  updateUser(user: User): void {
-    this.api.updateUser(user)
+  updateUser(id: number, request: UpdateUserProfileRequest): void {
+    this.api.updateUser(id, request)
       .pipe(
         takeUntilDestroyed(this.destroyRef)  
       )

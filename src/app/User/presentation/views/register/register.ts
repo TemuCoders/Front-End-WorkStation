@@ -1,9 +1,9 @@
-import {Component, inject} from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserStore } from '../../../application/User-store';
-import { User } from '../../../domain/model/user.entity';
+import { RegisterUserRequest } from '../../../infrastructure/register-user.request';
 
 interface RegisterForm {
   email: string;
@@ -44,7 +44,6 @@ export class Register {
   private readonly router = inject(Router);
   private readonly userStore = inject(UserStore);
 
-
   onSubmit(): void {
     this.errorMessage = '';
     this.successMessage = '';
@@ -59,6 +58,11 @@ export class Register {
       return;
     }
 
+    if (this.userData.password.length < 8) {
+      this.errorMessage = 'La contraseña debe tener al menos 8 caracteres';
+      return;
+    }
+
     if (this.userData.password !== this.confirmPassword) {
       this.errorMessage = 'Las contraseñas no coinciden';
       return;
@@ -69,8 +73,18 @@ export class Register {
       return;
     }
 
+    if (!this.userData.personalInfo.ubicacion) {
+      this.errorMessage = 'La ubicación es obligatoria';
+      return;
+    }
+
     if (!this.userData.personalInfo.tipoUsuario) {
       this.errorMessage = 'Debes seleccionar un tipo de usuario';
+      return;
+    }
+
+    if (!this.userData.personalInfo.fechaNacimiento) {
+      this.errorMessage = 'La fecha de nacimiento es obligatoria';
       return;
     }
 
@@ -82,37 +96,34 @@ export class Register {
     const users = this.userStore.users();
     const emailExists = users.some(u => u.email === this.userData.email);
     if (emailExists) {
-      this.errorMessage =
-        'Este email ya está registrado. Usa otro email o inicia sesión.';
+      this.errorMessage = 'Este email ya está registrado. Usa otro email o inicia sesión.';
       return;
     }
 
-    const now = new Date().toISOString();
-    const nextSeed = users.length + 1;
+    const age = this.calculateAge(this.userData.personalInfo.fechaNacimiento);
 
-    const age = this.userData.personalInfo.fechaNacimiento
-      ? this.calculateAge(this.userData.personalInfo.fechaNacimiento)
-      : 0;
+    if (age < 18) {
+      this.errorMessage = 'Debes ser mayor de 18 años para registrarte.';
+      return;
+    }
 
     if (age < 0) {
       this.errorMessage = 'La fecha de nacimiento no puede ser futura.';
       return;
     }
 
-    const newUser: User = {
-      id: 0,
-      created_at: now,
-      updated_at: now,
-      register_date: now,
-      age,
-      email: this.userData.email,
-      location: this.userData.personalInfo.ubicacion || '',
+    const nextSeed = users.length + 1;
+
+    const registerRequest: RegisterUserRequest = {
       name: this.userData.personalInfo.nombre,
+      email: this.userData.email,
       password: this.userData.password,
       photo: `https://picsum.photos/seed/u${nextSeed}/300/300`,
-    } as unknown as User;
+      age: age,
+      location: this.userData.personalInfo.ubicacion
+    };
 
-    this.userStore.addUser(newUser);
+    this.userStore.addUser(registerRequest);
     this.successMessage = '¡Registro exitoso! Redirigiendo al login...';
     setTimeout(() => this.router.navigate(['/login']), 1500);
   }
@@ -125,13 +136,14 @@ export class Register {
     const age = this.calculateAge(value);
     if (age < 0) {
       this.birthError = 'La fecha de nacimiento no puede ser futura.';
+    } else if (age < 18) {
+      this.birthError = 'Debes ser mayor de 18 años para registrarte.';
     }
   }
 
   private calculateAge(dateString: string): number {
     if (!dateString) return 0;
-    let birth = new Date(dateString);
-
+    const birth = new Date(dateString);
     const today = new Date();
     let age = today.getFullYear() - birth.getFullYear();
     const m = today.getMonth() - birth.getMonth();

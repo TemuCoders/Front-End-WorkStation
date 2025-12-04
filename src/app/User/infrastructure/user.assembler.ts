@@ -8,21 +8,26 @@ export class UserAssembler implements BaseAssembler<User, UserResource, UserResp
   }
 
   toEntityFromResource(resource: UserResource): User {
-    return new User(resource);
+    return new User({
+      id: resource.id,
+      name: resource.name,
+      email: resource.email,
+      photo: resource.photo,
+      age: resource.age,
+      location: resource.location,
+      registerDate: resource.registerDate
+    });
   }
 
   toResourceFromEntity(entity: User): UserResource {
     return {
       id: entity.id,
-      created_at: entity.createdAt,
-      updated_at: entity.updatedAt,
-      age: entity.age,
-      email: entity.email,
-      location: entity.location,
       name: entity.name,
-      password: entity.password,
+      email: entity.email,
       photo: entity.photo,
-      register_date: entity.registerDate
+      age: entity.age,
+      location: entity.location,
+      registerDate: entity.registerDate
     };
   }
 }

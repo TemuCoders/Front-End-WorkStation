@@ -110,14 +110,14 @@ export class Profile {
   }
   
   avatarUrl(u: User): string { 
-    return u.photo || `https://i.pravatar.cc/120?u=${encodeURIComponent(u.email || String(u.id))}`; 
-  }
-  
-  joinedYear(u: User): number {
-    const iso = u.createdAt || (u as any).registerDate || (u as any).register_date;
-    const d = iso ? new Date(iso) : new Date();
-    return d.getFullYear();
-  }
+  return u.photo || `https://i.pravatar.cc/120?u=${encodeURIComponent(u.email || String(u.id))}`; 
+}
+
+joinedYear(u: User): number {
+  const iso = u.registerDate; 
+  const d = iso ? new Date(iso) : new Date();
+  return d.getFullYear();
+}
 
   goBack(): void { 
     this.router.navigate(['..'], { relativeTo: this.route }); 
