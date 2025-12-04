@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal,ChangeDetectorRef, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BookingsApi } from '../../../infrastructure/bookings-api';
+import { BookingApiEndpoint } from '../../../infrastructure/booking-api-endpoint';
 import { SearchingApi } from '../../../../searching/infrastructure/searching-api';
 import { AuthService } from '../../../../User/infrastructure/auth.service';
 import { Sidebar } from '../../../../shared/presentation/components/sidebar/sidebar';
@@ -17,7 +17,7 @@ import { User } from '../../../../User/domain/model/user.entity';
 export class BookingListPage implements OnInit {
   private userStore = inject(UserStore);
 
-  private bookingsApi = inject(BookingsApi);
+  private bookingsApi = inject(BookingApiEndpoint);
   private searchingApi = inject(SearchingApi);
   private auth = inject(AuthService);
   private cdr = inject(ChangeDetectorRef);
@@ -59,7 +59,7 @@ export class BookingListPage implements OnInit {
     console.log('🌐 Estado inicial - loading:', this.loading);
     this.loading = true;
 
-    this.bookingsApi.getBookings().subscribe({
+    this.bookingsApi.getAll().subscribe({
       next: (allBookings: any[]) => {
         console.log('📦 Total bookings en DB:', allBookings.length);
         console.log('📦 Todos los bookings:', allBookings);

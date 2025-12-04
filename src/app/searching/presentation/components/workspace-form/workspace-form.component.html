@@ -294,14 +294,21 @@
           (click)="onSubmit()"
           [disabled]="workspaceForm.invalid || imageUrls().length === 0 || isSubmitting()"
           class="submit-button">
+
           @if (isSubmitting()) {
-            <mat-icon class="spinner">sync</mat-icon>
-            Creando...
+            <ng-container>
+              <mat-icon class="spinner">sync</mat-icon>
+              Creando...
+            </ng-container>
           } @else {
-            <mat-icon>check_circle</mat-icon>
-            Crear Espacio
+            <ng-container>
+              <mat-icon>check_circle</mat-icon>
+              Crear Espacio
+            </ng-container>
           }
+
         </button>
+
       </div>
     </mat-step>
   </mat-stepper>

@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BookingsApi } from '../../../infrastructure/bookings-api';
+import { BookingApiEndpoint } from '../../../infrastructure/booking-api-endpoint';
 import { SearchingApi } from '../../../../searching/infrastructure/searching-api';
 import { DatePipe, NgIf } from '@angular/common';
 import { WorkspaceResource } from '../../../../searching/infrastructure/workspace-resource';
@@ -18,7 +18,7 @@ import { WorkspaceResource } from '../../../../searching/infrastructure/workspac
 export class BookingDetailPage implements OnInit {  
 
   private route = inject(ActivatedRoute);
-  private api = inject(BookingsApi);
+  private api = inject(BookingApiEndpoint);
   private searchingApi = inject(SearchingApi);
   private router = inject(Router);
 
