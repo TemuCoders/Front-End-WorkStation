@@ -75,17 +75,20 @@ export class EditProfile {
 
   save(): void {
     const u = this.editedUser();
-    if (!u) return;
+    if (!u || !u.id) return;
     
-    if (u.id && u.id > 0) {
-      this.store.updateUser(u);
-    } else {
-      this.store.addUser(u);
-    }
+    const updateRequest = {
+      name: u.name,
+      age: u.age,
+      location: u.location,
+      photo: u.photo
+    };
+    
+    this.store.updateUser(u.id, updateRequest);
 
     const currentUser = this.authService.currentUser();
     if (currentUser && currentUser.id === u.id) {
-      this.authService.updateUser(u);
+      this.authService.updateUser(u.id, updateRequest);
     }
 
     this.goBack();

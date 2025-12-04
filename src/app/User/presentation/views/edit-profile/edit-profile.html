@@ -5,7 +5,6 @@
 
     <div class="main">
 
-
       <section class="profile-edit-layout">
 
         <article class="profile-card">
@@ -48,13 +47,15 @@
                 />
               </mat-form-field>
 
-              <mat-form-field appearance="outline" class="field">
+              <!-- Email: Solo lectura (no editable según backend) -->
+              <mat-form-field appearance="outline" class="field field-full">
                 <mat-label>Email address</mat-label>
                 <input
                   matInput
                   type="email"
                   [value]="user.email"
-                  (input)="onFieldChange('email', $any($event.target).value)"
+                  readonly
+                  disabled
                 />
               </mat-form-field>
 
@@ -83,15 +84,6 @@
                   matInput
                   [value]="user.photo"
                   (input)="onFieldChange('photo', $any($event.target).value)"
-                />
-              </mat-form-field>
-
-              <mat-form-field appearance="outline" class="field field-full">
-                <mat-label>Password (hash)</mat-label>
-                <input
-                  matInput
-                  [value]="user.password"
-                  (input)="onFieldChange('password', $any($event.target).value)"
                 />
               </mat-form-field>
             </div>

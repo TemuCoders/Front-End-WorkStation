@@ -16,9 +16,9 @@ import { AuthService } from '../../../infrastructure/auth.service';
 })
 export class Login {
   email = '';
-  password = '';
   errorMessage = '';
   successMessage = '';
+  isLoading = false;
 
   private readonly router = inject(Router);
   private readonly userStore = inject(UserStore);
@@ -27,9 +27,11 @@ export class Login {
   onLogin(): void {
     this.errorMessage = '';
     this.successMessage = '';
+    this.isLoading = true;
 
-    if (!this.email || !this.password) {
-      this.errorMessage = 'Por favor completa todos los campos';
+    if (!this.email) {
+      this.errorMessage = 'Por favor ingresa tu email';
+      this.isLoading = false;
       return;
     }
 
@@ -37,21 +39,21 @@ export class Login {
 
     if (!users || users.length === 0) {
       this.errorMessage = 'Cargando usuarios, intenta nuevamente en unos segundos';
+      this.isLoading = false;
       return;
     }
 
-    const found = users.find(
-      u => u.email === this.email && u.password === this.password
-    );
+    const found = users.find(u => u.email.toLowerCase() === this.email.toLowerCase());
 
     if (!found) {
-      this.errorMessage = 'Email o contraseña incorrectos';
+      this.errorMessage = 'Email no encontrado';
+      this.isLoading = false;
       return;
     }
 
     this.authService.login(found);
-
     this.successMessage = '¡Inicio de sesión exitoso!';
+    this.isLoading = false;
 
     setTimeout(() => {
       this.router.navigate(['/profile', found.id]);
