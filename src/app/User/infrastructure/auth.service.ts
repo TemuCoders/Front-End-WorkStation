@@ -1,6 +1,6 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
 import { Observable, of, forkJoin } from 'rxjs';
-import { tap, switchMap, catchError } from 'rxjs/operators';
+import { tap, switchMap, catchError, map } from 'rxjs/operators';
 import { User } from '../domain/model/user.entity';
 import { Freelancer } from '../domain/model/freelancer.entity';
 import { Owner } from '../domain/model/owner.entity';
@@ -61,7 +61,8 @@ export class AuthService {
     localStorage.setItem('authState', JSON.stringify(state));
   }
 
-  login(user: User): void {
+  // ✅ CORREGIDO: Ahora devuelve un Observable para que puedas esperarlo
+  login(user: User): Observable<AuthState> {
     const freelancerObs = user.isFreelancer() 
       ? this.freelancerApi.getByUserId(user.id).pipe(catchError(() => of(null)))
       : of(null);
@@ -70,11 +71,11 @@ export class AuthService {
       ? this.ownerApi.getByUserId(user.id).pipe(catchError(() => of(null)))
       : of(null);
 
-    forkJoin({
+    return forkJoin({
       freelancer: freelancerObs,
       owner: ownerObs
-    }).subscribe({
-      next: ({ freelancer, owner }) => {
+    }).pipe(
+      map(({ freelancer, owner }) => {
         const newState: AuthState = {
           user,
           freelancerProfile: freelancer,
@@ -82,10 +83,10 @@ export class AuthService {
         };
         this.authStateSignal.set(newState);
         this.saveAuthStateToStorage(newState);
-      },
-      error: (err) => {
+        return newState;
+      }),
+      catchError((err) => {
         console.error('Error loading profiles:', err);
-
         const newState: AuthState = {
           user,
           freelancerProfile: null,
@@ -93,15 +94,14 @@ export class AuthService {
         };
         this.authStateSignal.set(newState);
         this.saveAuthStateToStorage(newState);
-      }
-    });
+        return of(newState);
+      })
+    );
   }
 
   register(request: RegisterUserRequest): Observable<User> {
     return this.userApi.createUser(request).pipe(
-      tap(user => {
-        this.login(user);
-      })
+      switchMap(user => this.login(user).pipe(map(() => user)))
     );
   }
 
@@ -128,7 +128,7 @@ export class AuthService {
     );
   }
 
-
+  // Métodos de utilidad
   getUserId(): number | null {
     return this.currentUser()?.id || null;
   }
@@ -149,7 +149,13 @@ export class AuthService {
     return this.currentUser()?.isOwner() || false;
   }
 
-  isAdmin(): boolean {
-    return this.currentUser()?.isAdmin() || false;
+  getCurrentRoleId(): number | null {
+    if (this.isFreelancer()) {
+      return this.getFreelancerId();
+    }
+    if (this.isOwner()) {
+      return this.getOwnerId();
+    }
+    return null;
   }
 }

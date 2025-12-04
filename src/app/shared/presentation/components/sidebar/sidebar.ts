@@ -27,24 +27,62 @@ export class Sidebar {
   readonly navItems = computed<SidebarItem[]>(() => {
     const currentUser = this.user();
     const userId = currentUser?.id || 1;
+    
+    // ✅ CRÍTICO: Evaluar el rol DENTRO del computed
+    const isFreelancer = currentUser?.isFreelancer() || false;
+    const isOwner = currentUser?.isOwner() || false;
+    
+    const items: SidebarItem[] = [];
 
-    return [
-      {
-        route: `/profile/${userId}`,
-        icon: 'house',
-        label: 'Home',
-        exact: true
-      },
-      { route: '/bookings/list', icon: 'event', label: 'Bookings', exact: false },
-      { route: '/payments', icon: 'payments', label: 'Payments', exact: false },
-      { route: '/reviews', icon: 'reviews', label: 'Reviews', exact: false },
-      {
-        route: ['/profile', userId, 'edit'],
-        icon: 'person',
-        label: 'Profile',
+    console.log('🔍 Sidebar - Usuario:', currentUser?.name);
+    console.log('👤 Sidebar - Rol:', currentUser?.role?.roleName);
+    console.log('✅ Sidebar - isFreelancer:', isFreelancer);
+    console.log('✅ Sidebar - isOwner:', isOwner);
+
+    items.push({
+      route: `/profile/${userId}`,
+      icon: 'house',
+      label: 'Home',
+      exact: true
+    });
+
+    if (isFreelancer) {
+      console.log('📅 Agregando "My Bookings" al sidebar');
+      items.push({
+        route: '/bookings/list',
+        icon: 'event',
+        label: 'My Bookings',
         exact: false
-      },
-    ];
+      });
+    }
+
+    if (isOwner) {
+      console.log('🏢 Agregando "My Spaces" al sidebar');
+      items.push({
+        route: '/my-spaces',
+        icon: 'business',
+        label: 'My Spaces',
+        exact: false
+      });
+    }
+
+    items.push({
+      route: '/payments',
+      icon: 'payments',
+      label: 'Payments',
+      exact: false
+    });
+
+
+    items.push({
+      route: ['/profile', userId, 'edit'],
+      icon: 'person',
+      label: 'Profile',
+      exact: false
+    });
+
+    console.log('📋 Items finales del sidebar:', items.map(i => i.label));
+    return items;
   });
 
   readonly firstName = computed(() => {
@@ -58,6 +96,13 @@ export class Sidebar {
     if (!currentUser) return 'https://i.pravatar.cc/120';
     return currentUser.photo ||
            `https://i.pravatar.cc/120?u=${encodeURIComponent(currentUser.email || String(currentUser.id))}`;
+  });
+
+  readonly userRole = computed(() => {
+    const currentUser = this.user();
+    if (currentUser?.isFreelancer()) return 'Freelancer';
+    if (currentUser?.isOwner()) return 'Owner';
+    return 'User';
   });
 
   logout(): void {

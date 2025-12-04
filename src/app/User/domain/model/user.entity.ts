@@ -33,7 +33,4 @@ export class User {
     return this.role?.roleName === 'FREELANCER';
   }
 
-  isAdmin(): boolean {
-    return this.role?.roleName === 'ADMIN';
-  }
 }

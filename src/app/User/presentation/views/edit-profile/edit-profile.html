@@ -7,6 +7,7 @@
 
       <section class="profile-edit-layout">
 
+        <!-- PROFILE CARD -->
         <article class="profile-card">
           <div class="profile-cover">
             <img
@@ -27,14 +28,26 @@
           <div class="profile-info">
             <h2 class="profile-name">{{ user.name || '(sin nombre)' }}</h2>
             <p class="profile-username">@{{ firstName(user.name) | lowercase }}</p>
+
+            <div class="profile-details">
+              <span class="profile-role" [ngClass]="user.role.roleName | lowercase">
+                {{ user.role.roleName }}
+              </span>
+              <span class="profile-age">{{ user.age }} años</span>
+              <span class="profile-location">{{ user.location || 'Ubicación desconocida' }}</span>
+            </div>
+
             <p class="profile-quote">
               {{ user.location || '"I like the way you work it"' }}
             </p>
+
+            <p class="profile-register">Registrado desde: {{ user.registerDate | date:'mediumDate' }}</p>
           </div>
         </article>
 
+        <!-- PROFILE EDIT FORM -->
         <article class="profile-edit-card">
-          <h3 class="form-title">Edit Profile</h3>
+          <h3 class="form-title">Editar Perfil</h3>
 
           <form class="profile-form" (ngSubmit)="save()">
             <div class="form-grid">
@@ -47,18 +60,6 @@
                 />
               </mat-form-field>
 
-              <!-- Email: Solo lectura (no editable según backend) -->
-              <mat-form-field appearance="outline" class="field field-full">
-                <mat-label>Email address</mat-label>
-                <input
-                  matInput
-                  type="email"
-                  [value]="user.email"
-                  readonly
-                  disabled
-                />
-              </mat-form-field>
-
               <mat-form-field appearance="outline" class="field">
                 <mat-label>Edad</mat-label>
                 <input
@@ -66,6 +67,7 @@
                   type="number"
                   [value]="user.age"
                   (input)="onFieldChange('age', +$any($event.target).value)"
+                  min="0"
                 />
               </mat-form-field>
 
@@ -87,6 +89,7 @@
                 />
               </mat-form-field>
             </div>
+
 
             <div class="form-actions">
               <button mat-flat-button color="primary" type="submit">
@@ -110,6 +113,7 @@
             </div>
           </form>
         </article>
+
       </section>
     </div>
   </div>

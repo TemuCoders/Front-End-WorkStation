@@ -11,6 +11,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SearchingStore } from '../../../../searching/application/searching-store';
 import { WorkspaceMinimalResource } from '../../../../searching/infrastructure/workspace-minimal.resource';
 import { Sidebar } from '../../../../shared/presentation/components/sidebar/sidebar';
+import { AuthService } from '../../../infrastructure/auth.service';
 
 type ReviewItem = {
   id: number; 
@@ -42,6 +43,7 @@ export class Profile {
   private router = inject(Router);
   private userStore = inject(UserStore);
   private searchingStore = inject(SearchingStore);
+  private authService = inject(AuthService);
 
   private routeId = signal<number | null>(null);
   readonly editedUser = signal<User | undefined>(undefined);
@@ -50,15 +52,31 @@ export class Profile {
   readonly searchError = this.searchingStore.error;
   private readonly allWorkspaces = this.searchingStore.workspaces;
 
+  readonly isOwnProfile = computed(() => {
+    const currentUser = this.authService.currentUser();
+    const profileUser = this.editedUser();
+    return currentUser?.id === profileUser?.id;
+  });
+
   readonly myWorkspaces = computed<WorkspaceMinimalResource[]>(() => {  
-  const u = this.editedUser();
-  const list = this.allWorkspaces() || [];
-  if (!u || !u.id) return [];
+    const profileUser = this.editedUser();
+    const list = this.allWorkspaces() || [];
+    if (!profileUser) return [];
 
-  const owned = list.filter(w => w.ownerId === u.id);
+    if (profileUser.isOwner()) {
+      const currentUser = this.authService.currentUser();
+      
+      if (currentUser?.id === profileUser.id) {
+        const ownerId = this.authService.getOwnerId();
+        if (ownerId) {
+          const owned = list.filter(w => w.ownerId === ownerId);
+          return owned.length ? owned : [];
+        }
+      }
+    }
 
-  return owned.length ? owned : list.slice(0, 3);
-});
+    return [];
+  });
 
   readonly reviews = signal<ReviewItem[]>([
     {
@@ -86,6 +104,13 @@ export class Profile {
   readonly five = [1, 2, 3, 4, 5];
 
   constructor() {
+    // ✅ VALIDACIÓN: Verificar que el usuario esté autenticado
+    if (!this.authService.isAuthenticated()) {
+      console.error('❌ Usuario no autenticado');
+      this.router.navigate(['/login']);
+      return;
+    }
+
     this.route.params.pipe(takeUntilDestroyed()).subscribe(params => {
       const id = Number(params['id']);
       this.routeId.set(Number.isFinite(id) ? id : null);
@@ -94,10 +119,19 @@ export class Profile {
     effect(() => {
       const id = this.routeId();
       const users = this.userStore.users();
+      const currentUser = this.authService.currentUser();
+      
       if (!id) { 
         this.editedUser.set(undefined); 
         return; 
       }
+
+      if (currentUser && id !== currentUser.id) {
+        console.warn('⚠️ Intentando ver otro perfil, redirigiendo al propio');
+        this.router.navigate(['/profile', currentUser.id]);
+        return;
+      }
+
       const found = users.find(u => u.id === id);
       this.editedUser.set(found); 
     });
@@ -108,16 +142,16 @@ export class Profile {
   }
   
   avatarUrl(u: User): string { 
-  return u.photo || `https://i.pravatar.cc/120?u=${encodeURIComponent(u.email || String(u.id))}`; 
-}
+    return u.photo || `https://i.pravatar.cc/120?u=${encodeURIComponent(u.email || String(u.id))}`; 
+  }
 
-joinedYear(u: User): number {
-  const iso = u.registerDate; 
-  const d = iso ? new Date(iso) : new Date();
-  return d.getFullYear();
-}
+  joinedYear(u: User): number {
+    const iso = u.registerDate; 
+    const d = iso ? new Date(iso) : new Date();
+    return d.getFullYear();
+  }
 
   goBack(): void { 
-    this.router.navigate(['..'], { relativeTo: this.route }); 
+    this.router.navigate(['/']); 
   }
 }

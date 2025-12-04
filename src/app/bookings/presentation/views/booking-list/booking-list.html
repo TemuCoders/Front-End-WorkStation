@@ -40,9 +40,9 @@
           <hr>
 
           <div class="dates">
-            <p><strong>Check-in:</strong> {{ booking.startDate }}</p>
-            <p><strong>Check-out:</strong> {{ booking.endDate }}</p>
-            <p><strong>Reservado:</strong> {{ booking.bookingDate }}</p>
+              <p><strong>Check-in:</strong> <span> {{ booking.startDate }}</span></p>
+              <p><strong>Check-out:</strong> <span> {{ booking.endDate }}</span></p>
+              <p><strong>Reservado:</strong> <span> {{ booking.bookingDate }}</span></p>
           </div>
 
           <hr>
@@ -52,7 +52,7 @@
           </p>
 
           <div class="booking-id">
-            <small>Booking ID: #{{ booking.id }}</small>
+            <small>Booking ID: #{{ booking.bookingCode }}</small>
           </div>
         </div>
 

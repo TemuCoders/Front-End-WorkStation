@@ -25,10 +25,15 @@ export class SearchingStore {
   }
 
   /**
-   * Obtiene un workspace por su ID
+   * Obtiene un workspace por su spaceId
    */
   getWorkspaceById(id: number | null | undefined): Signal<WorkspaceMinimalResource | undefined> {
-    return computed(() => id ? this.workspaces().find(w => w.spaceId === id) : undefined);
+    return computed(() => {
+      if (!id) return undefined;
+      const found = this.workspaces().find(w => w.spaceId === id);
+      console.log(`🔍 SearchingStore: Buscando workspace con spaceId ${id}:`, found ? 'Encontrado' : 'No encontrado');
+      return found;
+    });
   }
 
   /**
@@ -40,10 +45,13 @@ export class SearchingStore {
 
     this.searchingApi.getWorkspaces().pipe(takeUntilDestroyed()).subscribe({
       next: workspaces => {
+        console.log('✅ SearchingStore: Workspaces cargados:', workspaces.length);
+        console.log('📋 SpaceIds disponibles:', workspaces.map(w => w.spaceId));
         this.workspacesSignal.set(workspaces);
         this.loadingSignal.set(false);
       },
       error: err => {
+        console.error('❌ SearchingStore: Error cargando workspaces:', err);
         this.errorSignal.set(this.formatError(err, 'Failed to load workspaces'));
         this.loadingSignal.set(false);
       }
@@ -59,10 +67,12 @@ export class SearchingStore {
 
     this.searchingApi.createWorkspace(request).pipe(retry(2)).subscribe({
       next: created => {
+        console.log('✅ SearchingStore: Workspace creado:', created);
         this.workspacesSignal.update(list => [...list, created]);
         this.loadingSignal.set(false);
       },
       error: err => {
+        console.error('❌ SearchingStore: Error creando workspace:', err);
         this.errorSignal.set(this.formatError(err, 'Failed to create workspace'));
         this.loadingSignal.set(false);
       }
@@ -78,8 +88,6 @@ export class SearchingStore {
 
     this.searchingApi.updateWorkspace(id, request).pipe(retry(2)).subscribe({
       next: workspaceComplete => {
-        // El backend devuelve WorkspaceResource (completo)
-        // Convertimos a minimal para actualizar la lista
         const minimal: WorkspaceMinimalResource = {
           spaceId: workspaceComplete.spaceId,
           name: workspaceComplete.name,
@@ -93,12 +101,14 @@ export class SearchingStore {
           images: workspaceComplete.images
         };
 
+        console.log('✅ SearchingStore: Workspace actualizado:', minimal);
         this.workspacesSignal.update(list =>
           list.map(w => w.spaceId === minimal.spaceId ? minimal : w)
         );
         this.loadingSignal.set(false);
       },
       error: err => {
+        console.error('❌ SearchingStore: Error actualizando workspace:', err);
         this.errorSignal.set(this.formatError(err, 'Failed to update workspace'));
         this.loadingSignal.set(false);
       }
@@ -106,7 +116,7 @@ export class SearchingStore {
   }
 
   /**
-   * Elimina un workspace por ID.
+   * Elimina un workspace por spaceId.
    */
   deleteWorkspace(id: number): void {
     this.loadingSignal.set(true);
@@ -114,10 +124,12 @@ export class SearchingStore {
 
     this.searchingApi.deleteWorkspace(id).pipe(retry(2)).subscribe({
       next: () => {
+        console.log('✅ SearchingStore: Workspace eliminado:', id);
         this.workspacesSignal.update(list => list.filter(w => w.spaceId !== id));
         this.loadingSignal.set(false);
       },
       error: err => {
+        console.error('❌ SearchingStore: Error eliminando workspace:', err);
         this.errorSignal.set(this.formatError(err, 'Failed to delete workspace'));
         this.loadingSignal.set(false);
       }

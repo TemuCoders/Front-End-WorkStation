@@ -7,7 +7,6 @@ import { BookingApiEndpoint } from '../../../infrastructure/booking-api-endpoint
 import { AuthService } from '../../../../User/infrastructure/auth.service';
 import { WorkspaceResource } from '../../../../searching/infrastructure/workspace-resource';
 
-
 @Component({
   selector: 'app-booking-form',
   standalone: true,
@@ -26,8 +25,9 @@ export class BookingFormPage implements OnInit {
 
   workspace: WorkspaceResource | null = null;
   spaceId!: number;
-  userId = this.auth.getUserId();
-
+  
+  freelancerId = this.auth.getFreelancerId();
+  
   total = 0;
 
   form = this.fb.group({
@@ -36,9 +36,24 @@ export class BookingFormPage implements OnInit {
   });
 
   ngOnInit() {
+    if (!this.auth.isFreelancer()) {
+      console.error("❌ Usuario no es freelancer");
+      alert("Solo los freelancers pueden crear reservas");
+      this.router.navigate(['/']);
+      return;
+    }
+
+    if (!this.freelancerId) {
+      console.error("❌ No se encontró el Freelancer ID");
+      alert("Error al cargar tu perfil de freelancer. Intenta iniciar sesión nuevamente.");
+      this.router.navigate(['/login']);
+      return;
+    }
+
     this.route.params.subscribe((params: any) => {
       this.spaceId = Number(params['id']);
       console.log("📌 SPACE ID:", this.spaceId);
+      console.log("✅ FREELANCER ID:", this.freelancerId);
 
       if (!this.spaceId || isNaN(this.spaceId)) {
         console.error("❌ ID inválido, redirigiendo...");
@@ -52,11 +67,16 @@ export class BookingFormPage implements OnInit {
     this.form.valueChanges.subscribe(() => this.calculateTotal());
   }
 
-   loadWorkspace() {
+  loadWorkspace() {
     this.searchingApi.getWorkspaceById(this.spaceId).subscribe({  
       next: (ws) => {
         console.log("📌 WORKSPACE recibido:", ws);
         this.workspace = ws;
+      },
+      error: (err) => {
+        console.error("❌ Error cargando workspace:", err);
+        alert("No se pudo cargar el espacio de trabajo");
+        this.router.navigate(['/searching']);
       }
     });
   }
@@ -80,20 +100,36 @@ export class BookingFormPage implements OnInit {
   }
 
   submit() {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      alert("Por favor completa todos los campos");
+      return;
+    }
+
+    if (!this.freelancerId) {
+      console.error("❌ No hay freelancerId disponible");
+      alert("Error: No se pudo identificar tu perfil de freelancer");
+      return;
+    }
 
     const payload = {
-      freelancerId: this.userId!,
+      freelancerId: this.freelancerId,  
       spaceId: this.spaceId,
       bookingDate: new Date().toISOString().split('T')[0],
       startDate: this.form.value.startDate!,
       endDate: this.form.value.endDate!
     };
 
+    console.log("📤 Enviando booking:", payload);
+
     this.bookingsApi.create(payload).subscribe({
       next: (res) => {
-        // Redirigir a la lista
+        console.log("✅ Booking creado:", res);
+        alert("¡Reserva creada exitosamente!");
         this.router.navigate(['/bookings/list']);
+      },
+      error: (err) => {
+        console.error("❌ Error creando booking:", err);
+        alert("Error al crear la reserva. Intenta nuevamente.");
       }
     });
   }

@@ -42,6 +42,49 @@
   flex-direction: column;
 }
 
+.profile-details {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: #666;
+  margin: 8px 0;
+}
+
+.profile-role {
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.profile-role.owner { background: #ff6f43; color: #fff; }
+.profile-role.freelancer { background: #4caf50; color: #fff; }
+
+.profile-register {
+  font-size: 11px;
+  color: #aaa;
+  margin-top: 6px;
+}
+
+.avatar-preview {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.preview-img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ccc;
+}
+
+
 .side-nav .item {
   display: flex;
   align-items: center;

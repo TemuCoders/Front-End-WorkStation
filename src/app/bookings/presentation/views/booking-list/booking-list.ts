@@ -1,5 +1,6 @@
 import { Component, inject, OnInit, signal, ChangeDetectorRef, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { BookingApiEndpoint } from '../../../infrastructure/booking-api-endpoint';
 import { SearchingApi } from '../../../../searching/infrastructure/searching-api';
 import { AuthService } from '../../../../User/infrastructure/auth.service';
@@ -20,41 +21,52 @@ export class BookingListPage implements OnInit {
   private searchingApi = inject(SearchingApi);
   private auth = inject(AuthService);
   private cdr = inject(ChangeDetectorRef);
+  private router = inject(Router);
 
   readonly currentUser = signal<UserResource | undefined>(undefined);
-  constructor() {
-      // Efecto para obtener el usuario actual
-      effect(() => {
-        const users = this.userStore.users();
-        const found = users.find(u => u.id === this.userId);
-        this.currentUser.set(found);
-      });
-  }
-
+  
   bookings: any[] = [];
   loading: boolean = true;
-  userId: number | null = null;
+  freelancerId: number | null = null;
+
+  constructor() {
+    effect(() => {
+      const users = this.userStore.users();
+      const currentAuthUser = this.auth.currentUser();
+      if (currentAuthUser) {
+        const found = users.find(u => u.id === currentAuthUser.id);
+        this.currentUser.set(found);
+      }
+    });
+  }
 
   ngOnInit(): void {
-    // Obtener el ID del usuario desde AuthService
-    const userId = this.auth.getUserId();
+    if (!this.auth.isFreelancer()) {
+      console.error('❌ Usuario no es freelancer');
+      alert('Solo los freelancers pueden ver reservas');
+      this.router.navigate(['/']);
+      return;
+    }
 
-    console.log('👤 UserID obtenido:', userId);
+    const freelancerId = this.auth.getFreelancerId();
 
-    if (userId !== null) {
-      this.userId = userId;
-      console.log('📋 UserID establecido:', this.userId);
+    console.log('👤 FreelancerID obtenido:', freelancerId);
+
+    if (freelancerId !== null) {
+      this.freelancerId = freelancerId;
+      console.log('📋 FreelancerID establecido:', this.freelancerId);
       this.loadBookings();
     } else {
-      console.error('❌ No hay usuario logueado');
+      console.error('❌ No se encontró el freelancer ID');
+      alert('Error al cargar tu perfil de freelancer');
       this.loading = false;
+      this.router.navigate(['/login']);
     }
   }
 
-  /** Cargar reservas del usuario actual */
   loadBookings(): void {
     console.log('🔄 Iniciando carga de bookings...');
-    console.log('🌐 Estado inicial - loading:', this.loading);
+    console.log('🔍 Buscando bookings del freelancerId:', this.freelancerId);
     this.loading = true;
 
     this.bookingsApi.getAll().subscribe({
@@ -62,15 +74,16 @@ export class BookingListPage implements OnInit {
         console.log('📦 Total bookings en DB:', allBookings.length);
         console.log('📦 Todos los bookings:', allBookings);
 
-        const userBookings = allBookings.filter(b => b.freelancerId === this.userId);
-        console.log('✅ Bookings del usuario:', userBookings.length);
+        // ✅ CORREGIDO: Filtrar por freelancerId
+        const freelancerBookings = allBookings.filter(b => b.freelancerId === this.freelancerId);
+        console.log('✅ Bookings del freelancer:', freelancerBookings.length);
+        console.log('📋 Bookings filtrados:', freelancerBookings);
 
-        if (userBookings.length === 0) {
-          console.log('⚠️ No hay bookings para este usuario');
+        if (freelancerBookings.length === 0) {
+          console.log('⚠️ No hay bookings para este freelancer');
           this.bookings = [];
           this.loading = false;
           this.cdr.detectChanges();
-          console.log('✅ Loading = false (sin bookings)');
           return;
         }
 
@@ -79,12 +92,17 @@ export class BookingListPage implements OnInit {
         this.searchingApi.getWorkspaces().subscribe({
           next: (wsList: any[]) => {
             console.log('🏢 Workspaces cargados:', wsList.length);
+            console.log('📋 Ejemplo de workspace:', wsList[0]); 
 
-            this.bookings = userBookings.map((b: any) => {
-              const ws = wsList.find((w: any) => w.id === b.spaceId);
+            this.bookings = freelancerBookings.map((b: any) => {
+              const ws = wsList.find((w: any) => w.spaceId === b.spaceId);
 
               if (!ws) {
-                console.warn(`⚠️ No se encontró workspace con id ${b.spaceId}`);
+                console.warn(`⚠️ No se encontró workspace con spaceId ${b.spaceId}`);
+                console.log('🔍 Workspace buscado:', b.spaceId);
+                console.log('📦 Workspaces disponibles:', wsList.map(w => ({ spaceId: w.spaceId, name: w.name })));
+              } else {
+                console.log(`✅ Workspace encontrado:`, ws.name);
               }
 
               const start = new Date(b.startDate);
@@ -92,52 +110,55 @@ export class BookingListPage implements OnInit {
 
               const nights = Math.max(
                 1,
-                (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)
+                Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24))
               );
 
               return {
                 ...b,
                 workspace: ws,
+                nights: nights,
                 total: nights * (ws?.price ?? 0)
               };
             });
 
             console.log('✅ Bookings procesados:', this.bookings);
             this.loading = false;
-            console.log('✅ Loading = false (datos cargados)');
-
             this.cdr.detectChanges();
 
             setTimeout(() => {
               console.log('🔄 Estado final:', {
                 loading: this.loading,
-                bookingsLength: this.bookings.length
+                bookingsLength: this.bookings.length,
+                freelancerId: this.freelancerId
               });
             }, 100);
           },
           error: (err: any) => {
-            console.error("❌ ERROR COMPLETO al cargar workspaces:", err);
+            console.error("❌ ERROR al cargar workspaces:", err);
             this.loading = false;
             this.cdr.detectChanges();
-            console.log('✅ Loading = false (error workspaces)');
           }
         });
       },
       error: (err: any) => {
-        console.error("❌ ERROR COMPLETO al cargar bookings:", err);
+        console.error("❌ ERROR al cargar bookings:", err);
         this.loading = false;
         this.cdr.detectChanges();
-        console.log('✅ Loading = false (error bookings)');
       }
     });
   }
 
-  /** Formateo de fecha bonito */
+  /** Formateo de fecha */
   formatDate(date: string): string {
     return new Date(date).toLocaleDateString("es-PE", {
       day: "2-digit",
       month: "short",
       year: "numeric"
     });
+  }
+
+  /** Navegar al detalle del booking */
+  viewBooking(bookingId: number): void {
+    this.router.navigate(['/bookings', bookingId]);
   }
 }

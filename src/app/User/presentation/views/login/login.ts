@@ -51,12 +51,26 @@ export class Login {
       return;
     }
 
-    this.authService.login(found);
-    this.successMessage = '¡Inicio de sesión exitoso!';
-    this.isLoading = false;
+    this.authService.login(found).subscribe({
+      next: (authState) => {
+        this.successMessage = '¡Inicio de sesión exitoso!';
+        this.isLoading = false;
 
-    setTimeout(() => {
-      this.router.navigate(['/profile', found.id]);
-    }, 500);
+        console.log('✅ Login completo');
+        console.log('Usuario:', authState.user);
+        console.log('Rol:', authState.user?.role.roleName);
+        console.log('Freelancer Profile:', authState.freelancerProfile);
+        console.log('Owner Profile:', authState.ownerProfile);
+
+        setTimeout(() => {
+          this.router.navigate(['/profile', found.id]);
+        }, 500);
+      },
+      error: (err) => {
+        console.error('❌ Error en login:', err);
+        this.errorMessage = 'Error al cargar el perfil. Intenta nuevamente.';
+        this.isLoading = false;
+      }
+    });
   }
 }
