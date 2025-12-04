@@ -1,15 +1,15 @@
-import {BookingResponse} from '../../infrastructure/booking-response';
+import { BookingResponse } from '../../infrastructure/booking-response';
 
 export class Booking {
   bookingCode!: string;
   freelancerId!: number;
   spaceId!: number;
-  bookingDate!: string;
-  startDate!: string;
-  endDate!: string;
+  bookingDate!: string;  
+  startDate!: string;    
+  endDate!: string;     
 
   constructor(resource?: BookingResponse) {
-    if (resource){
+    if (resource) {
       this.bookingCode = resource.bookingCode;
       this.freelancerId = resource.freelancerId;
       this.spaceId = resource.spaceId;

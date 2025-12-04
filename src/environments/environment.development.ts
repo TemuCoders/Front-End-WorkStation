@@ -7,5 +7,6 @@ export const environment = {
   platformProviderPaymentMethodsEndpointPath: '/paymentMethods',
   platformProviderReviewsEndpointPath: '/reviews',
   platformProviderUsersEndpointPath: '/users',
-  platformProviderSpacesEndpointPath: '/spaces'
+  platformProviderSpacesEndpointPath: '/spaces',
+  platformProviderBookingsEndpointPath: '/bookings'
 };

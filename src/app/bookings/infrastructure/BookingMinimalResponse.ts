@@ -1,5 +1,5 @@
 export interface BookingMinimalResponse {
-  bookingCode: string;            // <- json-server SIEMPRE devuelve esto
+  bookingCode: string;    
   spaceId: number;
   startDate: string;
   endDate: string;

@@ -3,7 +3,7 @@ import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SearchingApi } from '../../../../searching/infrastructure/searching-api';
-import { BookingsApi } from '../../../infrastructure/bookings-api';
+import { BookingApiEndpoint } from '../../../infrastructure/booking-api-endpoint';
 import { AuthService } from '../../../../User/infrastructure/auth.service';
 import { WorkspaceResource } from '../../../../searching/infrastructure/workspace-resource';
 
@@ -19,7 +19,7 @@ export class BookingFormPage implements OnInit {
 
   private route = inject(ActivatedRoute);
   private searchingApi = inject(SearchingApi);
-  private bookingsApi = inject(BookingsApi);
+  private bookingsApi = inject(BookingApiEndpoint);
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private auth = inject(AuthService);
@@ -90,7 +90,7 @@ export class BookingFormPage implements OnInit {
       endDate: this.form.value.endDate!
     };
 
-    this.bookingsApi.createBooking(payload).subscribe({
+    this.bookingsApi.create(payload).subscribe({
       next: (res) => {
         // Redirigir a la lista
         this.router.navigate(['/bookings/list']);
