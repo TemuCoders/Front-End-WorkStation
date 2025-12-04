@@ -1,98 +1,74 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { BaseApiEndpoint } from '../../shared/infrastructure/base-api-endpoint';
-import { Review } from '../domain/model/review.entity';
-import { ReviewResource } from './review-resource';
-import { ReviewResponse } from './review-response';
-import { ReviewAssembler } from './review-assembler';
+import { Observable, map, catchError } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { map, catchError } from 'rxjs/operators';
+import { ReviewResource } from './review-resource';
+import { Review } from '../domain/model/review.entity';
 
 @Injectable({ providedIn: 'root' })
-export class ReviewEndpoint extends BaseApiEndpoint<Review, ReviewResource, ReviewResponse, ReviewAssembler> {
+export class ReviewEndpoint {
 
-  constructor(http: HttpClient) {
-    const baseUrl = environment.platformProviderApiBaseUrl;
-    const endpoint = environment.platformProviderReviewsEndpointPath;
-    super(http, `${baseUrl}${endpoint}`, new ReviewAssembler());
+  private baseUrl = environment.platformProviderApiBaseUrl;
+
+  constructor(private http: HttpClient) {}
+
+  getById(reviewId: number): Observable<ReviewResource> {
+    return this.http.get<ReviewResource>(`${this.baseUrl}/reviews/${reviewId}`);
   }
 
-  /**
-   * Get reviews by space ID with pagination
-   * CORREGIDO: query params directos en json-server
-   */
-  getBySpaceId(spaceId: number, page = 0, size = 10): Observable<Review[]> {
-    const skip = page * size;
-    // json-server usa _start y _limit para paginación
+  getBySpace(spaceId: number, page = 0, size = 20): Observable<ReviewResource[]> {
+    return this.http
+      .get<any>(`${this.baseUrl}/spaces/${spaceId}/reviews?page=${page}&size=${size}`)
+      .pipe(
+        map((pageResponse) => pageResponse.content),
+        catchError((err) => {
+          console.error(err);
+          throw err;
+        })
+      );
+  }
+
+  getByUser(userId: number): Observable<ReviewResource[]> {
     return this.http.get<ReviewResource[]>(
-      `${this.endpointUrl}?spaceId=${spaceId}&_start=${skip}&_limit=${size}&_sort=createdAt&_order=desc`
-    ).pipe(
-      map(resources => resources.map(r => this.assembler.toEntityFromResource(r))),
-      catchError(this.handleError('Failed to fetch reviews by space ID'))
+      `${this.baseUrl}/users/${userId}/reviews`
     );
   }
 
-  /**
-   * Get reviews by user ID
-   */
-  getByUserId(userId: number): Observable<Review[]> {
-    return this.http.get<ReviewResource[]>(`${this.endpointUrl}?userId=${userId}`).pipe(
-      map(resources => resources.map(r => this.assembler.toEntityFromResource(r))),
-      catchError(this.handleError('Failed to fetch reviews by user ID'))
+  getSummary(spaceId: number): Observable<{ averageRating: number; totalCount: number }> {
+    return this.http.get<{ averageRating: number; totalCount: number }>(
+      `${this.baseUrl}/spaces/${spaceId}/reviews/summary`
     );
   }
 
-  /**
-   * Create review
-   */
   createReview(payload: {
     spaceId: number;
     userId: number;
     rating: number;
     comment: string;
-  }): Observable<Review> {
-    const now = new Date().toISOString();
-    const resource: any = {
-      spaceId: payload.spaceId,
-      userId: payload.userId,
-      rating: payload.rating,
-      comment: payload.comment,
-      status: 'PUBLISHED',
-      createdAt: now,
-      updatedAt: now
-    };
-
-    return this.http.post<ReviewResource>(this.endpointUrl, resource).pipe(
-      map(created => this.assembler.toEntityFromResource(created)),
-      catchError(this.handleError('Failed to create review'))
-    );
+  }): Observable<ReviewResource> {
+    return this.http.post<ReviewResource>(`${this.baseUrl}/reviews`, payload)
+      .pipe(
+        catchError((err) => {
+          console.error(err);
+          throw err;
+        })
+      );
   }
 
-  /**
-   * Update review
-   */
-  updateReview(reviewId: number, payload: { rating: number; comment: string }): Observable<Review> {
-    return this.http.patch<ReviewResource>(`${this.endpointUrl}/${reviewId}`, {
-      rating: payload.rating,
-      comment: payload.comment,
-      updatedAt: new Date().toISOString()
-    }).pipe(
-      map(resource => this.assembler.toEntityFromResource(resource)),
-      catchError(this.handleError('Failed to update review'))
-    );
+  updateReview(reviewId: number, payload: {
+    rating: number;
+    comment: string;
+  }): Observable<ReviewResource> {
+    return this.http.put<ReviewResource>(`${this.baseUrl}/reviews/${reviewId}`, payload)
+      .pipe(
+        catchError((err) => {
+          console.error(err);
+          throw err;
+        })
+      );
   }
 
-  /**
-   * Soft delete review
-   */
-  deleteReview(reviewId: number): Observable<Review> {
-    return this.http.patch<ReviewResource>(`${this.endpointUrl}/${reviewId}`, {
-      status: 'DELETED',
-      updatedAt: new Date().toISOString()
-    }).pipe(
-      map(resource => this.assembler.toEntityFromResource(resource)),
-      catchError(this.handleError('Failed to delete review'))
-    );
+  deleteReview(reviewId: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/reviews/${reviewId}`);
   }
 }

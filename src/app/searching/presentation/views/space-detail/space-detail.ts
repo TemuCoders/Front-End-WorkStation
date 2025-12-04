@@ -9,6 +9,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SearchingStore } from '../../../application/searching-store';
+import { ReviewListComponent } from '../../../../reviews/presentation/components/review-list/review-list';
 
 @Component({
   selector: 'app-workspace-detail',
@@ -21,7 +22,8 @@ import { SearchingStore } from '../../../application/searching-store';
     MatChipsModule,
     MatProgressSpinnerModule,
     MatDividerModule,
-    TranslatePipe
+    TranslatePipe,
+    ReviewListComponent
   ],
   templateUrl: './space-detail.html',
   styleUrl: './space-detail.css'

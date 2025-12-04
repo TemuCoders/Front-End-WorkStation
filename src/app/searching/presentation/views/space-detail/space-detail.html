@@ -145,8 +145,19 @@
 
         <mat-divider></mat-divider>
 
+        <section class="reviews-section">
+          <h2 class="section-title">
+            <mat-icon>rate_review</mat-icon>
+            Reseñas del espacio
+          </h2>
 
-        <mat-divider></mat-divider>
+          @if (workspace(); as ws) {
+            <app-review-list 
+              [spaceId]="ws.spaceId" 
+              [currentUserId]="1">
+            </app-review-list>
+          }
+        </section>
 
         <div class="booking-section">
           <div class="price-summary">

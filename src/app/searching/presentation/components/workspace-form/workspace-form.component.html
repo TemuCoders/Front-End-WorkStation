@@ -135,26 +135,79 @@
                   </mat-error>
                 }
               </mat-form-field>
+            </div>
 
-              <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Dirección</mat-label>
-                <input 
-                  matInput 
-                  formControlName="address"
-                  placeholder="Ej: Av. Javier Prado Este 476, San Isidro, Lima">
-                <mat-icon matPrefix>place</mat-icon>
-                <mat-hint>Dirección completa del espacio</mat-hint>
-                @if (address?.invalid && address?.touched) {
-                  <mat-error>
-                    @if (address?.errors?.['required']) {
-                      La dirección es requerida
-                    }
-                    @if (address?.errors?.['minlength']) {
-                      Mínimo 5 caracteres
-                    }
-                  </mat-error>
-                }
-              </mat-form-field>
+            <div class="form-section">
+              <h2 class="section-title">
+                <mat-icon class="section-icon">place</mat-icon>
+                Ubicación
+              </h2>
+
+              <div class="form-row">
+                <mat-form-field appearance="outline">
+                  <mat-label>Calle</mat-label>
+                  <input 
+                    matInput 
+                    formControlName="street"
+                    placeholder="Av. Javier Prado Este">
+                  <mat-icon matPrefix>route</mat-icon>
+                  @if (street?.invalid && street?.touched) {
+                    <mat-error>
+                      @if (street?.errors?.['required']) {
+                        La calle es requerida
+                      }
+                      @if (street?.errors?.['minlength']) {
+                        Mínimo 3 caracteres
+                      }
+                    </mat-error>
+                  }
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Número</mat-label>
+                  <input 
+                    matInput 
+                    formControlName="streetNumber"
+                    placeholder="476">
+                  <mat-icon matPrefix>pin</mat-icon>
+                  @if (streetNumber?.invalid && streetNumber?.touched) {
+                    <mat-error>El número es requerido</mat-error>
+                  }
+                </mat-form-field>
+              </div>
+
+              <div class="form-row">
+                <mat-form-field appearance="outline">
+                  <mat-label>Ciudad</mat-label>
+                  <input 
+                    matInput 
+                    formControlName="city"
+                    placeholder="Lima">
+                  <mat-icon matPrefix>location_city</mat-icon>
+                  @if (city?.invalid && city?.touched) {
+                    <mat-error>
+                      @if (city?.errors?.['required']) {
+                        La ciudad es requerida
+                      }
+                      @if (city?.errors?.['minlength']) {
+                        Mínimo 2 caracteres
+                      }
+                    </mat-error>
+                  }
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Código Postal</mat-label>
+                  <input 
+                    matInput 
+                    formControlName="postalCode"
+                    placeholder="15074">
+                  <mat-icon matPrefix>markunread_mailbox</mat-icon>
+                  @if (postalCode?.invalid && postalCode?.touched) {
+                    <mat-error>El código postal es requerido</mat-error>
+                  }
+                </mat-form-field>
+              </div>
             </div>
           </form>
         </mat-card-content>

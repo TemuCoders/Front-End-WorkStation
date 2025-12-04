@@ -66,6 +66,7 @@ export class Sidebar {
       });
     }
 
+
     items.push({
       route: '/payments',
       icon: 'payments',

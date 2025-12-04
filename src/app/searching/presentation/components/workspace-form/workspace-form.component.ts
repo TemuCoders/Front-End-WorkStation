@@ -12,17 +12,22 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from '../../../../User/infrastructure/auth.service';
+import { SearchingApi } from '../../../infrastructure/searching-api';
 
 interface WorkspaceCreateRequest {
   name: string;
-  description: string;
+  ownerId: number;
   spaceType: string;
-  capacity: number;
   price: number;
-  address: string;
+  capacity: number;
+  description: string;
   available: boolean;
+  street: string;
+  streetNumber: string;
+  city: string;
+  postalCode: string;
   images: string[];
-  ownerId?: string; 
 }
 
 @Component({
@@ -49,6 +54,8 @@ export class WorkspaceFormComponent implements OnInit {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private snackBar = inject(MatSnackBar);
+  private authService = inject(AuthService);
+  private searchingApi = inject(SearchingApi);
 
   workspaceForm!: FormGroup;
   isSubmitting = signal(false);
@@ -65,6 +72,23 @@ export class WorkspaceFormComponent implements OnInit {
   currentImageUrl = signal('');
 
   ngOnInit(): void {
+    // ✅ VALIDACIÓN: Solo owners pueden crear espacios
+    if (!this.authService.isOwner()) {
+      console.error('❌ Usuario no es owner');
+      this.showMessage('Solo los propietarios pueden crear espacios', 'error');
+      this.router.navigate(['/']);
+      return;
+    }
+
+    const ownerId = this.authService.getOwnerId();
+    if (!ownerId) {
+      console.error('❌ No se encontró el Owner ID');
+      this.showMessage('Error al cargar tu perfil de propietario', 'error');
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    console.log('✅ Owner ID:', ownerId);
     this.initForm();
   }
 
@@ -73,9 +97,13 @@ export class WorkspaceFormComponent implements OnInit {
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
       spaceType: ['', Validators.required],
       capacity: [1, [Validators.required, Validators.min(1), Validators.max(100)]],
-      
       description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]],
-      address: ['', [Validators.required, Validators.minLength(5)]],
+      
+      // ✅ CORREGIDO: Separar address en campos individuales
+      street: ['', [Validators.required, Validators.minLength(3)]],
+      streetNumber: ['', [Validators.required]],
+      city: ['', [Validators.required, Validators.minLength(2)]],
+      postalCode: ['', [Validators.required]],
       
       price: [0, [Validators.required, Validators.min(0)]],
       available: [true]
@@ -86,7 +114,10 @@ export class WorkspaceFormComponent implements OnInit {
   get spaceType() { return this.workspaceForm.get('spaceType'); }
   get capacity() { return this.workspaceForm.get('capacity'); }
   get description() { return this.workspaceForm.get('description'); }
-  get address() { return this.workspaceForm.get('address'); }
+  get street() { return this.workspaceForm.get('street'); }
+  get streetNumber() { return this.workspaceForm.get('streetNumber'); }
+  get city() { return this.workspaceForm.get('city'); }
+  get postalCode() { return this.workspaceForm.get('postalCode'); }
   get price() { return this.workspaceForm.get('price'); }
   get available() { return this.workspaceForm.get('available'); }
 
@@ -122,7 +153,8 @@ export class WorkspaceFormComponent implements OnInit {
       case 0:
         return !!(this.name?.valid && this.spaceType?.valid && this.capacity?.valid);
       case 1:
-        return !!(this.description?.valid && this.address?.valid);
+        return !!(this.description?.valid && this.street?.valid && 
+                  this.streetNumber?.valid && this.city?.valid && this.postalCode?.valid);
       case 2:
         return !!(this.price?.valid);
       default:
@@ -142,28 +174,44 @@ export class WorkspaceFormComponent implements OnInit {
       return;
     }
 
+    // ✅ VALIDACIÓN FINAL: Verificar ownerId
+    const ownerId = this.authService.getOwnerId();
+    if (!ownerId) {
+      console.error('❌ No hay ownerId disponible');
+      this.showMessage('Error: No se pudo identificar tu perfil de propietario', 'error');
+      return;
+    }
+
     this.isSubmitting.set(true);
 
+    // ✅ CORREGIDO: Incluir el ownerId correcto
     const workspaceData: WorkspaceCreateRequest = {
       ...this.workspaceForm.value,
       images: this.imageUrls(),
-
+      ownerId: ownerId  // ✅ Usar el ownerId del AuthService
     };
 
-    // Simulación de llamada al servicio
-    console.log('Workspace a crear:', workspaceData);
+    console.log('📤 Workspace a crear:', workspaceData);
 
-    setTimeout(() => {
-      this.isSubmitting.set(false);
-      this.showMessage('Espacio de trabajo creado exitosamente', 'success');
-      this.router.navigate(['/searching/workspaces']);
-    }, 1500);
-
+    // ✅ LLAMADA REAL AL API
+    this.searchingApi.createWorkspace(workspaceData).subscribe({
+      next: (created) => {
+        console.log('✅ Workspace creado:', created);
+        this.isSubmitting.set(false);
+        this.showMessage('Espacio de trabajo creado exitosamente', 'success');
+        this.router.navigate(['/my-spaces']);
+      },
+      error: (err) => {
+        console.error('❌ Error creando workspace:', err);
+        this.isSubmitting.set(false);
+        this.showMessage('Error al crear el espacio. Intenta nuevamente.', 'error');
+      }
+    });
   }
 
   cancel(): void {
     if (confirm('¿Estás seguro de cancelar? Se perderán los cambios no guardados.')) {
-      this.router.navigate(['/searching/workspaces']);
+      this.router.navigate(['/my-spaces']);
     }
   }
 

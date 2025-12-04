@@ -26,7 +26,7 @@ import { ReviewEditDialogComponent } from '../review-edit-dialog/review-edit-dia
     TranslateModule
   ],
   templateUrl: './review-list.html',
-  styleUrl: './review-list.css'
+  styleUrls: ['./review-list.css']
 })
 export class ReviewListComponent implements OnChanges {
   @Input({ required: true }) spaceId!: number;
@@ -35,8 +35,6 @@ export class ReviewListComponent implements OnChanges {
   facade = inject(ReviewFacade);
   dialog = inject(MatDialog);
 
-  totalLength = 100;
-
   ngOnChanges(): void {
     if (this.spaceId) {
       this.loadReviews();
@@ -44,13 +42,17 @@ export class ReviewListComponent implements OnChanges {
   }
 
   loadReviews(): void {
-    this.facade.loadBySpaceId(this.spaceId, this.facade.currentPage(), this.facade.pageSize());
+    this.facade.loadBySpaceId(
+      this.spaceId,
+      this.facade.currentPage(),
+      this.facade.pageSize()
+    );
   }
 
   editReview(review: Review): void {
     this.dialog.open(ReviewEditDialogComponent, {
       data: { review },
-      width: '500px'
+      width: '520px'
     });
   }
 

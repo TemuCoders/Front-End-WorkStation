@@ -1,36 +1,57 @@
 <div class="review-list-container">
-  <h3>{{ 'review.spaceReviews' | translate }}</h3>
-
+ 
+  <!-- LISTA -->
   @if (facade.reviews().length > 0) {
     <div class="reviews-grid">
       @for (review of facade.reviews(); track review.id) {
-        <mat-card [class.deleted]="review.status === 'DELETED'" class="review-card">
+        <mat-card
+          class="review-card"
+          [class.deleted]="review.status === 'DELETED'"
+        >
           <mat-card-header>
-            <mat-icon mat-card-avatar>person</mat-icon>
+            <mat-icon mat-card-avatar class="avatar">person</mat-icon>
             <mat-card-title>User #{{ review.userId }}</mat-card-title>
+
             <mat-card-subtitle>
               <div class="rating-line">
                 @for (star of getStars(review.rating); track $index) {
                   <span class="star">★</span>
                 }
-                <span class="date">· {{ review.createdAt | date:'medium' }}</span>
+                <span class="date">
+                  · {{ review.createdAt | date : 'medium' }}
+                </span>
               </div>
             </mat-card-subtitle>
           </mat-card-header>
 
           <mat-card-content>
             <p class="comment">{{ review.comment }}</p>
-            <mat-chip [color]="review.status === 'PUBLISHED' ? 'primary' : 'warn'" selected class="status-chip">
+
+            <mat-chip
+              class="status-chip"
+              [color]="
+                review.status === 'PUBLISHED' ? 'primary' : 'warn'
+              "
+              selected
+            >
               {{ review.status }}
             </mat-chip>
           </mat-card-content>
 
           @if (review.userId === currentUserId && review.status === 'PUBLISHED') {
             <mat-card-actions align="end">
-              <button mat-icon-button color="primary" (click)="editReview(review)">
+              <button
+                mat-icon-button
+                color="primary"
+                (click)="editReview(review)"
+              >
                 <mat-icon>edit</mat-icon>
               </button>
-              <button mat-icon-button color="warn" (click)="deleteReview(review.id)">
+              <button
+                mat-icon-button
+                color="warn"
+                (click)="deleteReview(review.id)"
+              >
                 <mat-icon>delete</mat-icon>
               </button>
             </mat-card-actions>
@@ -40,12 +61,14 @@
     </div>
   }
 
+  <!-- NO DATA -->
   @if (facade.reviews().length === 0 && !facade.loading()) {
     <div class="no-data">
       {{ 'review.noReviews' | translate }}
     </div>
   }
 
+  <!-- LOADING -->
   @if (facade.loading()) {
     <div class="loading-container">
       <mat-spinner></mat-spinner>
@@ -54,11 +77,11 @@
 
   @if (facade.reviews().length > 0) {
     <mat-paginator
-      [length]="totalLength"
       [pageSize]="facade.pageSize()"
       [pageIndex]="facade.currentPage()"
       [pageSizeOptions]="[5, 10, 20]"
-      (page)="onPageChange($event)">
+      (page)="onPageChange($event)"
+    >
     </mat-paginator>
   }
 </div>
