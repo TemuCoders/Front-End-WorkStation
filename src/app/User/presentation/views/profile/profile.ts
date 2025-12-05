@@ -1,6 +1,6 @@
 import { Component, inject, signal, effect, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router'; 
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -10,17 +10,20 @@ import { User } from '../../../domain/model/user.entity';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SearchingStore } from '../../../../searching/application/searching-store';
 import { WorkspaceMinimalResource } from '../../../../searching/infrastructure/workspace-minimal.resource';
+import { Booking } from '../../../../bookings/domain/model/booking.entity';
+import { BookingApiEndpoint } from '../../../../bookings/infrastructure/booking-api-endpoint';
 import { Sidebar } from '../../../../shared/presentation/components/sidebar/sidebar';
 import { AuthService } from '../../../infrastructure/auth.service';
 
+
 type ReviewItem = {
-  id: number; 
-  author: string; 
-  date: string; 
-  rating: number; 
-  text: string; 
-  likes: number; 
-  comments: number; 
+  id: number;
+  author: string;
+  date: string;
+  rating: number;
+  text: string;
+  likes: number;
+  comments: number;
   avatar: string;
 };
 
@@ -28,11 +31,11 @@ type ReviewItem = {
   selector: 'app-profile',
   standalone: true,
   imports: [
-    CommonModule, 
-    MatFormFieldModule, 
-    MatInputModule, 
-    MatButtonModule, 
-    MatIconModule, 
+    CommonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
     Sidebar
   ],
   templateUrl: './profile.html',
@@ -43,6 +46,7 @@ export class Profile {
   private router = inject(Router);
   private userStore = inject(UserStore);
   private searchingStore = inject(SearchingStore);
+  private bookingApi = inject(BookingApiEndpoint);
   private authService = inject(AuthService);
 
   private routeId = signal<number | null>(null);
@@ -52,20 +56,28 @@ export class Profile {
   readonly searchError = this.searchingStore.error;
   private readonly allWorkspaces = this.searchingStore.workspaces;
 
+  private readonly bookingsSignal = signal<Booking[]>([]);
+  readonly bookings = this.bookingsSignal.asReadonly();
+
+  readonly bookingsLoading = signal<boolean>(false);
+  readonly bookingsError = signal<string | null>(null);
+
+
   readonly isOwnProfile = computed(() => {
     const currentUser = this.authService.currentUser();
     const profileUser = this.editedUser();
     return currentUser?.id === profileUser?.id;
   });
 
-  readonly myWorkspaces = computed<WorkspaceMinimalResource[]>(() => {  
+  readonly myWorkspaces = computed<WorkspaceMinimalResource[] >(() => {
     const profileUser = this.editedUser();
     const list = this.allWorkspaces() || [];
     if (!profileUser) return [];
 
     if (profileUser.isOwner()) {
+      console.log('Owner: ',list);
       const currentUser = this.authService.currentUser();
-      
+
       if (currentUser?.id === profileUser.id) {
         const ownerId = this.authService.getOwnerId();
         if (ownerId) {
@@ -78,29 +90,69 @@ export class Profile {
     return [];
   });
 
+
+  private loadBookings(): void {
+    this.bookingsLoading.set(true);
+    this.bookingsError.set(null);
+
+    this.bookingApi
+      .getAll()
+      .pipe(takeUntilDestroyed())
+      .subscribe({
+        next: bookings => {
+          this.bookingsSignal.set(bookings);
+          this.bookingsLoading.set(false);
+          console.log('Bookings cargadas', bookings);
+        },
+        error: err => {
+          this.bookingsLoading.set(false);
+          this.bookingsError.set(err.message ?? 'Error al cargar bookings');
+          console.error('Error bookings', err);
+        }
+      });
+  }
+
+
+  readonly myBooking = computed<Booking[]>(() => {
+    const profileUser = this.editedUser();
+    const list = this.bookings() || [];
+    if (!profileUser) return [];
+
+    if (!profileUser.isFreelancer()) return [];
+
+    const currentUser = this.authService.currentUser();
+    if (!currentUser || currentUser.id !== profileUser.id) return [];
+
+    const freelancerId = this.authService.getFreelancerId();
+    if (!freelancerId) return [];
+
+    const mine = list.filter(b => b.freelancerId === freelancerId);
+    return mine.length ? mine : [];
+  });
+
   readonly reviews = signal<ReviewItem[]>([
     {
-      id: 1, 
-      author: 'Liam Carter', 
-      date: 'June 2023', 
+      id: 1,
+      author: 'Liam Carter',
+      date: 'June 2023',
       rating: 5,
       text: "Sophia's studio was perfect for my needs. It was clean, well-equipped, and in a great location. I highly recommend it!",
-      likes: 2, 
-      comments: 0, 
+      likes: 2,
+      comments: 0,
       avatar: 'https://i.pravatar.cc/48?img=12'
     },
     {
-      id: 2, 
-      author: 'Emily Stone', 
-      date: 'May 2023', 
+      id: 2,
+      author: 'Emily Stone',
+      date: 'May 2023',
       rating: 4,
       text: 'Great workspace and host. Internet was very fast and the room was quiet.',
-      likes: 4, 
-      comments: 1, 
+      likes: 4,
+      comments: 1,
       avatar: 'https://i.pravatar.cc/48?img=32'
     }
   ]);
-  
+
   readonly five = [1, 2, 3, 4, 5];
 
   constructor() {
@@ -110,7 +162,7 @@ export class Profile {
       this.router.navigate(['/login']);
       return;
     }
-
+    this.loadBookings();
     this.route.params.pipe(takeUntilDestroyed()).subscribe(params => {
       const id = Number(params['id']);
       this.routeId.set(Number.isFinite(id) ? id : null);
@@ -120,10 +172,10 @@ export class Profile {
       const id = this.routeId();
       const users = this.userStore.users();
       const currentUser = this.authService.currentUser();
-      
-      if (!id) { 
-        this.editedUser.set(undefined); 
-        return; 
+
+      if (!id) {
+        this.editedUser.set(undefined);
+        return;
       }
 
       if (currentUser && id !== currentUser.id) {
@@ -133,25 +185,25 @@ export class Profile {
       }
 
       const found = users.find(u => u.id === id);
-      this.editedUser.set(found); 
+      this.editedUser.set(found);
     });
   }
 
-  firstName(full: string): string { 
-    return (full || '').split(' ')[0] || ''; 
+  firstName(full: string): string {
+    return (full || '').split(' ')[0] || '';
   }
-  
-  avatarUrl(u: User): string { 
-    return u.photo || `https://i.pravatar.cc/120?u=${encodeURIComponent(u.email || String(u.id))}`; 
+
+  avatarUrl(u: User): string {
+    return u.photo || `https://i.pravatar.cc/120?u=${encodeURIComponent(u.email || String(u.id))}`;
   }
 
   joinedYear(u: User): number {
-    const iso = u.registerDate; 
+    const iso = u.registerDate;
     const d = iso ? new Date(iso) : new Date();
     return d.getFullYear();
   }
 
-  goBack(): void { 
-    this.router.navigate(['/']); 
+  goBack(): void {
+    this.router.navigate(['/']);
   }
 }

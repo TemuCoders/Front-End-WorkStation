@@ -10,64 +10,67 @@
         <div class="head-text">
           <h1 class="name">{{ user.name }}</h1>
           <div class="meta">Joined in {{ joinedYear(user) }}</div>
-          <div class="submeta">{{ reviews().length }} reviews · Superhost</div>
+          <span class="profile-role" [ngClass]="user.role.roleName | lowercase">
+                {{ user.role.roleName }}
+          </span>
         </div>
       </section>
 
 
-      <section class="section">
-        <h3 class="section-title">My Workspaces</h3>
+      @if (user.isOwner()) {
 
-        @if (searchLoading()) {
-          <div class="loading">Loading workspaces…</div>
-        } @else if (searchError()) {
-          <div class="error">{{ searchError() }}</div>
-        } @else if (myWorkspaces().length === 0) {
-          <div class="empty">No workspaces.</div>
-        } @else {
-          @for (w of myWorkspaces(); track w.spaceId) {  
-            <article class="workspace-row">
-              <div class="w-info">
-                <span class="w-badge">{{ w.spaceType }}</span>
-                <h4 class="w-title">{{ w.name }}</h4>
-                <div class="w-meta">
-                  {{ w.capacity }} guests · S/ {{ w.price }}/día · {{ w.address }}
+        <section class="section">
+          <h3 class="section-title">My Workspaces</h3>
+
+          @if (searchLoading()) {
+            <div class="loading">Loading workspaces…</div>
+          } @else if (searchError()) {
+            <div class="error">{{ searchError() }}</div>
+          } @else if (myWorkspaces().length === 0) {
+            <div class="empty">No workspaces.</div>
+          } @else {
+            @for (w of myWorkspaces(); track w.spaceId) {
+              <article class="workspace-row">
+                <div class="w-info">
+                  <span class="w-badge">{{ w.spaceType }}</span>
+                  <h4 class="w-title">{{ w.name }}</h4>
+                  <div class="w-meta">
+                    {{ w.capacity }} guests · S/ {{ w.price }}/día · {{ w.address }}
+                  </div>
                 </div>
-              </div>
-              <img [src]="w.images[0] || 'assets/placeholder.jpg'" alt="workspace" class="w-thumb" />
-            </article>
+                <img
+                  [src]="w.images[0] || 'assets/placeholder.jpg'"
+                  alt="workspace"
+                  class="w-thumb"
+                />
+              </article>
+            }
           }
-        }
-      </section>
+        </section>
+      } @else if (user.isFreelancer()) {
 
+        <section class="section">
+          <h3 class="section-title">My Bookings</h3>
 
-      <section class="section">
-        <h3 class="section-title">Reviews</h3>
+          @if (myBooking().length === 0) {
+            <div class="empty">No bookings.</div>
+          } @else {
+            @for (b of myBooking(); track b.bookingCode) {
+              <article class="workspace-row">
+                <div class="w-info">
+                  <span class="w-badge">Booking</span>
+                  <h4 class="w-title">Código {{ b.bookingCode }}</h4>
+                  <div class="w-meta">
+                    Space #{{ b.spaceId }} ·
+                    {{ b.startDate }} – {{ b.endDate }}
+                  </div>
+                </div>
+              </article>
+            }
+          }
+        </section>
+      }
 
-        @for (r of reviews(); track r.id) {
-          <article class="review-row">
-            <img [src]="r.avatar" class="rv-avatar" alt="reviewer" />
-            <div class="rv-body">
-              <div class="rv-head">
-                <strong>{{ r.author }}</strong>
-                <span class="rv-date">{{ r.date }}</span>
-              </div>
-
-              <div class="rv-stars">
-                @for (s of five; track s) {
-                  <mat-icon>{{ r.rating >= s ? 'star' : 'star_border' }}</mat-icon>
-                }
-              </div>
-
-              <p class="rv-text">{{ r.text }}</p>
-              <div class="rv-actions">
-                <span><mat-icon>favorite_border</mat-icon> {{ r.likes }}</span>
-                <span><mat-icon>chat_bubble_outline</mat-icon> {{ r.comments }}</span>
-              </div>
-            </div>
-          </article>
-        }
-      </section>
     </div>
   </div>
 } @else {
