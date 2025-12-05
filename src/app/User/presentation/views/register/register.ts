@@ -70,17 +70,17 @@ export class Register {
       photo: `https://picsum.photos/seed/${Date.now()}/300/300`,
       age,
       location: this.userData.personalInfo.ubicacion,
-      roleName: this.userData.personalInfo.tipoUsuario 
+      roleName: this.userData.personalInfo.tipoUsuario
     };
 
-    console.log('RegisterRequest:', registerRequest); 
+    console.log('RegisterRequest:', registerRequest);
 
     // Registrar usando AuthService
     this.authService.register(registerRequest).subscribe({
       next: (user) => {
         this.successMessage = '¡Registro exitoso! Redirigiendo a tu perfil...';
         this.isLoading = false;
-        setTimeout(() => this.router.navigate(['/profile', user.id]), 1500);
+        setTimeout(() => this.router.navigate(['/login']), 1500);
       },
       error: (err) => {
         console.error('Error al registrar:', err);
