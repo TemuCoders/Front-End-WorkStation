@@ -20,32 +20,92 @@
     <div *ngIf="!loading && bookings.length > 0" class="bookings-grid">
       <div *ngFor="let booking of bookings" class="booking-card">
 
-        <!-- Imagen del workspace -->
-        <div class="booking-image" *ngIf="booking.workspace">
-          <img [src]="booking.image" alt="Imagen del workspace" />
+        <!-- Header con nombre del espacio -->
+        <div class="booking-header">
+          <h2 class="ws-title">{{ booking.workspace?.name || 'Espacio no encontrado' }}</h2>
+          <span class="booking-status">Confirmado</span>
         </div>
 
-        <!-- Info del booking -->
-        <div class="booking-info">
-          <h2 class="ws-title">{{ booking.workspace?.name || 'Espacio no encontrado' }}</h2>
-          <p class="ws-description">{{ booking.workspace?.description || 'No hay descripción disponible.' }}</p>
-
-          <hr />
-
-          <div class="dates" *ngIf="booking.workspace">
-            <p><strong>Check-in:</strong> <span>{{ booking.startDate }}</span></p>
-            <p><strong>Check-out:</strong> <span>{{ booking.endDate }}</span></p>
-            <p><strong>Reservado:</strong> <span>{{ booking.bookingDate }}</span></p>
+        <!-- Info del workspace en grid -->
+        <div class="workspace-details">
+          <div class="detail-item">
+            <mat-icon class="detail-icon">location_on</mat-icon>
+            <div class="detail-content">
+              <span class="detail-label">Ubicación</span>
+              <span class="detail-value">{{ booking.workspace?.address || 'No disponible' }}</span>
+            </div>
           </div>
 
-          <hr />
+          <div class="detail-item">
+            <mat-icon class="detail-icon">groups</mat-icon>
+            <div class="detail-content">
+              <span class="detail-label">Capacidad</span>
+              <span class="detail-value">{{ booking.workspace?.capacity || 'N/A' }} personas</span>
+            </div>
+          </div>
 
-          <p class="total-text">
-            <strong>Total:</strong> S/ {{ booking.total }}
-          </p>
+          <div class="detail-item">
+            <mat-icon class="detail-icon">payments</mat-icon>
+            <div class="detail-content">
+              <span class="detail-label">Precio por noche</span>
+              <span class="detail-value">S/ {{ booking.workspace?.price || 0 }}</span>
+            </div>
+          </div>
 
-          <div class="booking-id">
-            <small>Booking ID: #{{ booking.bookingCode }}</small>
+          <div class="detail-item">
+            <mat-icon class="detail-icon">business</mat-icon>
+            <div class="detail-content">
+              <span class="detail-label">Tipo</span>
+              <span class="detail-value">{{ booking.workspace?.spaceType || 'Coworking' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <hr />
+
+        <!-- Fechas de la reserva -->
+        <div class="booking-dates">
+          <div class="date-block">
+            <mat-icon class="date-icon">event_available</mat-icon>
+            <div class="date-content">
+              <span class="date-label">Check-in</span>
+              <span class="date-value">{{ booking.startDate }}</span>
+            </div>
+          </div>
+          
+          <mat-icon class="date-separator">arrow_forward</mat-icon>
+          
+          <div class="date-block">
+            <mat-icon class="date-icon">event_busy</mat-icon>
+            <div class="date-content">
+              <span class="date-label">Check-out</span>
+              <span class="date-value">{{ booking.endDate }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="nights-info">
+          <mat-icon class="nights-icon">bedtime</mat-icon>
+          <span>{{ booking.nights }} {{ booking.nights === 1 ? 'noche' : 'noches' }}</span>
+        </div>
+
+        <hr />
+
+        <!-- Total y booking info -->
+        <div class="booking-footer">
+          <div class="total-section">
+            <span class="total-label">Total pagado</span>
+            <span class="total-amount">S/ {{ booking.total }}</span>
+          </div>
+          <div class="booking-meta">
+            <div class="meta-item">
+              <mat-icon class="meta-icon">schedule</mat-icon>
+              <span class="booking-date">Reservado el {{ booking.bookingDate }}</span>
+            </div>
+            <div class="meta-item">
+              <mat-icon class="meta-icon">confirmation_number</mat-icon>
+              <span class="booking-code">#{{ booking.bookingCode }}</span>
+            </div>
           </div>
         </div>
 

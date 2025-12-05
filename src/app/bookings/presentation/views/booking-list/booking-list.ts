@@ -7,11 +7,12 @@ import { Sidebar } from '../../../../shared/presentation/components/sidebar/side
 import { UserStore } from '../../../../User/application/User-store'; 
 import { UserResource } from '../../../../User/infrastructure/resources';
 import { Router } from '@angular/router';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-booking-list',
   standalone: true,
-  imports: [CommonModule, Sidebar],
+  imports: [CommonModule, Sidebar, MatIcon],
   templateUrl: './booking-list.html',
   styleUrls: ['./booking-list.css']
 })
