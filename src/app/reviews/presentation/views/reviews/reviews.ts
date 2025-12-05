@@ -1,13 +1,13 @@
-import { Component, OnInit, inject, signal, effect } from '@angular/core';
+import { Component, OnInit, inject, computed, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+
 import { ReviewSummaryComponent } from '../../components/review-summary/review-summary';
 import { ReviewCreateFormComponent } from '../../components/review-create-form/review-create-form';
 import { ReviewListComponent } from '../../components/review-list/review-list';
 import { Sidebar } from '../../../../shared/presentation/components/sidebar/sidebar';
-import { UserStore } from '../../../../User/application/User-store'; 
-import { User } from '../../../../User/domain/model/user.entity'; 
+import { AuthService } from '../../../../User/infrastructure/auth.service';
 
 @Component({
   selector: 'app-reviews',
@@ -25,20 +25,23 @@ import { User } from '../../../../User/domain/model/user.entity';
 })
 export class ReviewsComponent implements OnInit {
   private route = inject(ActivatedRoute);
-  private userStore = inject(UserStore);
+  private authService = inject(AuthService);
 
-  spaceId = 1; // DEV: hardcoded
-  userId = 1; 
+  // espacio (puede venir por ruta)
+  spaceId = 1;
 
-  // Signal para el usuario actual
-  readonly currentUser = signal<User | undefined>(undefined);
+  // datos del usuario actual
+  userId: number | null = null;
+
+  // reutilizamos el signal del AuthService
+  readonly currentUser = computed(() => this.authService.currentUser());
 
   constructor() {
-    // ← ESTO FALTABA: Efecto para cargar el usuario
     effect(() => {
-      const users = this.userStore.users();
-      const found = users.find(u => u.id === this.userId);
-      this.currentUser.set(found);
+      const user = this.currentUser();
+      this.userId = user?.id ?? null;
+
+      console.log('🔍 Reviews - Usuario actual:', user?.name, 'ID:', this.userId);
     });
   }
 
@@ -50,6 +53,7 @@ export class ReviewsComponent implements OnInit {
   }
 
   onReviewCreated(): void {
-    
+    // Si quisieras, aquí podrías forzar recarga del listado:
+    // this.facade.loadBySpaceId(this.spaceId, 0, this.facade.pageSize());
   }
 }

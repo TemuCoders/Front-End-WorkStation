@@ -1,5 +1,4 @@
 <div class="review-list-container">
- 
   <!-- LISTA -->
   @if (facade.reviews().length > 0) {
     <div class="reviews-grid">
@@ -10,7 +9,15 @@
         >
           <mat-card-header>
             <mat-icon mat-card-avatar class="avatar">person</mat-icon>
-            <mat-card-title>User #{{ review.userId }}</mat-card-title>
+
+            <!-- 👇 CAMBIADO -->
+            <mat-card-title>
+              @if (review.userId === currentUserId) {
+                {{ currentUserName || ('User #' + review.userId) }}
+              } @else {
+                User #{{ review.userId }}
+              }
+            </mat-card-title>
 
             <mat-card-subtitle>
               <div class="rating-line">
@@ -38,6 +45,7 @@
             </mat-chip>
           </mat-card-content>
 
+          <!-- 👇 Ya restringe edición solo al dueño -->
           @if (review.userId === currentUserId && review.status === 'PUBLISHED') {
             <mat-card-actions align="end">
               <button
@@ -61,14 +69,12 @@
     </div>
   }
 
-  <!-- NO DATA -->
   @if (facade.reviews().length === 0 && !facade.loading()) {
     <div class="no-data">
       {{ 'review.noReviews' | translate }}
     </div>
   }
 
-  <!-- LOADING -->
   @if (facade.loading()) {
     <div class="loading-container">
       <mat-spinner></mat-spinner>

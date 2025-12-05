@@ -11,8 +11,8 @@ import { PaymentCreateDialogComponent } from '../../components/payment-create-di
 import { PaymentMethodListComponent } from '../../components/payment-method-list/payment-method-list';
 import { PaymentMethodAddDialogComponent } from '../../components/payment-method-add-dialog/payment-method-add-dialog';
 import { Sidebar } from '../../../../shared/presentation/components/sidebar/sidebar';
-import { UserStore } from '../../../../User/application/User-store'; 
-import { User } from '../../../../User/domain/model/user.entity'; 
+import { AuthService } from '../../../../User/infrastructure/auth.service';
+import { User } from '../../../../User/domain/model/user.entity';
 
 @Component({
   selector: 'app-payment-management',
@@ -26,6 +26,7 @@ import { User } from '../../../../User/domain/model/user.entity';
     InvoiceDetailsComponent,
     PaymentListComponent,
     PaymentMethodListComponent,
+    PaymentMethodAddDialogComponent,
     Sidebar
   ],
   templateUrl: './payment-management.html',
@@ -34,31 +35,42 @@ import { User } from '../../../../User/domain/model/user.entity';
 export class PaymentManagementComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private dialog = inject(MatDialog);
-  private userStore = inject(UserStore);
+  private authService = inject(AuthService);
 
-  invoiceId = 1; // DEV: hardcoded
-  userId = 1; // DEV: usuario logueado simulado
+  invoiceId = 0;
+  userId = 0;
 
-  // Signal para el usuario actual
-  readonly currentUser = signal<User | undefined>(undefined);
+  // Solo si aún necesitas el signal para algo más
+  readonly currentUser = signal<User | null>(null);
 
   constructor() {
-    // Efecto para obtener el usuario actual
+    // Vinculamos el usuario actual al AuthService
     effect(() => {
-      const users = this.userStore.users();
-      const found = users.find(u => u.id === this.userId);
-      this.currentUser.set(found);
+      const user = this.authService.currentUser();
+      this.currentUser.set(user ?? null);
+
+      if (user) {
+        this.userId = user.id;
+        console.log('💳 PaymentManagement - userId (from auth):', this.userId);
+      } else {
+        this.userId = 0;
+        console.warn('⚠️ PaymentManagement - No hay usuario logueado');
+      }
     });
   }
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('invoiceId');
-    if (idParam) {
-      this.invoiceId = +idParam;
-    }
+    this.invoiceId = idParam ? +idParam : 0;
+    console.log('📄 PaymentManagement - invoiceId:', this.invoiceId);
   }
 
   openCreatePayment(): void {
+    if (!this.invoiceId || !this.userId) {
+      console.warn('⚠️ No se puede crear pago, falta invoiceId o userId');
+      return;
+    }
+
     this.dialog.open(PaymentCreateDialogComponent, {
       data: { invoiceId: this.invoiceId, userId: this.userId },
       width: '500px'
@@ -66,6 +78,11 @@ export class PaymentManagementComponent implements OnInit {
   }
 
   openAddPaymentMethod(): void {
+    if (!this.userId) {
+      console.warn('⚠️ No se puede agregar método de pago, no hay userId');
+      return;
+    }
+
     this.dialog.open(PaymentMethodAddDialogComponent, {
       data: { userId: this.userId },
       width: '500px'

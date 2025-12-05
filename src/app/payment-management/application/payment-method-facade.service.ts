@@ -1,58 +1,84 @@
-import { Injectable, inject, signal } from '@angular/core';
-import { PaymentManagementApi } from '../infrastructure/payment-management-api';
+import { Injectable, inject, signal, computed } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { finalize, tap } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 import { PaymentMethod } from '../domain/model/payment-method.entity';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class PaymentMethodFacade {
-  private api = inject(PaymentManagementApi);
+  private http = inject(HttpClient);
+  private readonly baseUrl = environment.platformProviderApiBaseUrl;
 
-  paymentMethods = signal<PaymentMethod[]>([]);
-  loading = signal(false);
-  error = signal<string | null>(null);
+  private paymentMethodsSignal = signal<PaymentMethod[]>([]);
+  private loadingSignal = signal(false);
 
+  paymentMethods = computed(() => this.paymentMethodsSignal());
+  loading = computed(() => this.loadingSignal());
+
+  // ✅ GET /api/v1/payment-methods?userId=...
   loadByUserId(userId: number): void {
-    this.loading.set(true);
-    this.error.set(null);
+    if (!userId) {
+      console.warn('PaymentMethodFacade.loadByUserId: userId inválido', userId);
+      return;
+    }
 
-    this.api.paymentMethods.getByUserId(userId).subscribe({
-      next: (methods) => {
-        this.paymentMethods.set(methods);
-        this.loading.set(false);
-      },
-      error: (err) => {
-        this.error.set(err.message);
-        this.loading.set(false);
-      }
-    });
+    this.loadingSignal.set(true);
+
+    this.http
+      .get<PaymentMethod[]>(`${this.baseUrl}/payment-methods`, {
+        params: { userId: userId.toString() }
+      })
+      .pipe(
+        tap(methods => this.paymentMethodsSignal.set(methods)),
+        finalize(() => this.loadingSignal.set(false))
+      )
+      .subscribe({
+        error: err => {
+          console.error('Error cargando métodos de pago:', err);
+          this.paymentMethodsSignal.set([]);
+        }
+      });
   }
 
+  // ✅ POST /api/v1/payment-methods
   add(payload: {
     userId: number;
     type: string;
     maskedPan?: string;
-    expMonth?: number;
-    expYear?: number;
+    expMonth?: number | null;
+    expYear?: number | null;
   }): void {
-    this.api.paymentMethods.addPaymentMethod(payload).subscribe({
-      next: (method) => {
-        this.paymentMethods.update(list => [...list, method]);
-      },
-      error: (err) => {
-        this.error.set(err.message);
-      }
-    });
+    console.log('[PaymentMethodFacade.add] payload enviado:', payload);
+
+    this.http
+      .post<PaymentMethod>(`${this.baseUrl}/payment-methods`, payload)
+      .subscribe({
+        next: created => {
+          this.paymentMethodsSignal.set([...this.paymentMethodsSignal(), created]);
+        },
+        error: err => {
+          console.error('Error creando método de pago:', err);
+        }
+      });
   }
 
+  // ✅ DELETE /api/v1/payment-methods/{id}
   disable(id: number): void {
-    this.api.paymentMethods.disable(id).subscribe({
-      next: (updatedMethod) => {
-        this.paymentMethods.update(list =>
-          list.map(m => m.id === id ? updatedMethod : m)
-        );
-      },
-      error: (err) => {
-        this.error.set(err.message);
-      }
-    });
+    this.http
+      .delete<void>(`${this.baseUrl}/payment-methods/${id}`)
+      .subscribe({
+        next: () => {
+          this.paymentMethodsSignal.set(
+            this.paymentMethodsSignal().map(m =>
+              m.id === id ? { ...m, status: 'DISABLED' } : m
+            )
+          );
+        },
+        error: err => {
+          console.error('Error deshabilitando método de pago:', err);
+        }
+      });
   }
 }

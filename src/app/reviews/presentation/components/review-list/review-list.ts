@@ -30,7 +30,8 @@ import { ReviewEditDialogComponent } from '../review-edit-dialog/review-edit-dia
 })
 export class ReviewListComponent implements OnChanges {
   @Input({ required: true }) spaceId!: number;
-  @Input() currentUserId = 1;
+  @Input() currentUserId: number | null = null;
+  @Input() currentUserName = '';   // 👈 NUEVO
 
   facade = inject(ReviewFacade);
   dialog = inject(MatDialog);

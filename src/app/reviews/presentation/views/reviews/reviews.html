@@ -2,7 +2,7 @@
   @if (currentUser(); as user) {
     <app-sidebar></app-sidebar>
   }
-  
+
   <div class="container">
     <div class="header">
       <h1>{{ 'review.title' | translate }}</h1>
@@ -11,13 +11,14 @@
 
     <app-review-create-form
       [spaceId]="spaceId"
-      [userId]="userId"
+      [userId]="userId!"
       (created)="onReviewCreated()">
     </app-review-create-form>
 
     <app-review-list
       [spaceId]="spaceId"
-      [currentUserId]="userId">
+      [currentUserId]="userId"
+      [currentUserName]="currentUser()?.name || ''">
     </app-review-list>
   </div>
 </div>

@@ -40,8 +40,14 @@ export class PaymentCreateDialogComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: { invoiceId: number; userId: number }) {}
 
   ngOnInit(): void {
-    this.paymentMethodFacade.loadByUserId(this.data.userId);
-    this.invoiceFacade.loadById(this.data.invoiceId);
+    // 🔐 Solo llamamos si los IDs son válidos
+    if (this.data.userId) {
+      this.paymentMethodFacade.loadByUserId(this.data.userId);
+    }
+
+    if (this.data.invoiceId) {
+      this.invoiceFacade.loadById(this.data.invoiceId);
+    }
   }
 
   submit(): void {
