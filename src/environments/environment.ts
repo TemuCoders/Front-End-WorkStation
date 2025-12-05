@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
+  serverBasePath: 'http://localhost:8092',
   platformProviderApiBaseUrl: 'https://backend-3iv0.onrender.com/api/v1',
   platformProviderWorkspacesEndpointPath: '/spaces',
   platformProviderInvoicesEndpointPath: '/invoices',
@@ -10,5 +11,5 @@ export const environment = {
   platformProviderSpacesEndpointPath: '/spaces',
   platformProviderBookingsEndpointPath: '/bookings',
   platformProviderFreelancersEndpointPath: '/freelancers',
-  platformProviderOwnersEndpointPath: '/owners' 
+  platformProviderOwnersEndpointPath: '/owners'
 };
