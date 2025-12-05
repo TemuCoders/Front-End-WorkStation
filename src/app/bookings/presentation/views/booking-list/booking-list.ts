@@ -200,7 +200,8 @@ private processBookings(bookingsToProcess: any[]): void {
           ...b,
           workspace: ws,
           nights: nights,
-          total: nights * (ws?.price ?? 0)
+          total: nights * (ws?.price ?? 0),
+          image: ws?.images?.[0]?.url ?? 'assets/default-image.jpg'
         };
       });
 
