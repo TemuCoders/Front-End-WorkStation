@@ -10,5 +10,5 @@ export const environment = {
   platformProviderSpacesEndpointPath: '/spaces',
   platformProviderBookingsEndpointPath: '/bookings',
   platformProviderFreelancersEndpointPath: '/freelancers',
-  platformProviderOwnersEndpointPath: '/owners' 
+  platformProviderOwnersEndpointPath: '/owners'
 };
