@@ -6,6 +6,7 @@ import { AuthService } from '../../../../User/infrastructure/auth.service';
 import { Sidebar } from '../../../../shared/presentation/components/sidebar/sidebar';
 import { UserStore } from '../../../../User/application/User-store'; 
 import { UserResource } from '../../../../User/infrastructure/resources';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-booking-list',
@@ -20,6 +21,7 @@ export class BookingListPage implements OnInit {
   private searchingApi = inject(SearchingApi);
   private auth = inject(AuthService);
   private cdr = inject(ChangeDetectorRef);
+  private router = inject(Router);
 
   readonly currentUser = signal<UserResource | undefined>(undefined);
   constructor() {
@@ -35,108 +37,182 @@ export class BookingListPage implements OnInit {
   userId: number | null = null;
 
   ngOnInit(): void {
-    // Obtener el ID del usuario desde AuthService
-    const userId = this.auth.getUserId();
+  const isFreelancer = this.auth.isFreelancer();
+  const isOwner = this.auth.isOwner();
 
-    console.log('👤 UserID obtenido:', userId);
-
-    if (userId !== null) {
-      this.userId = userId;
-      console.log('📋 UserID establecido:', this.userId);
-      this.loadBookings();
-    } else {
-      console.error('❌ No hay usuario logueado');
-      this.loading = false;
-    }
+  if (!isFreelancer && !isOwner) {
+    console.error('❌ Usuario no es freelancer ni owner');
+    alert('No tienes permisos para ver reservas');
+    this.router.navigate(['/']);
+    return;
   }
 
-  /** Cargar reservas del usuario actual */
-  loadBookings(): void {
-    console.log('🔄 Iniciando carga de bookings...');
-    console.log('🌐 Estado inicial - loading:', this.loading);
-    this.loading = true;
+  if (isFreelancer) {
+    this.loadFreelancerBookings();
+  } else if (isOwner) {
+    this.loadOwnerBookings();
+  }
+}
 
-    this.bookingsApi.getAll().subscribe({
-      next: (allBookings: any[]) => {
-        console.log('📦 Total bookings en DB:', allBookings.length);
-        console.log('📦 Todos los bookings:', allBookings);
+/** Cargar reservas del freelancer actual */
+loadFreelancerBookings(): void {
+  const freelancerId = this.auth.getFreelancerId();
 
-        const userBookings = allBookings.filter(b => b.freelancerId === this.userId);
-        console.log('✅ Bookings del usuario:', userBookings.length);
+  console.log('👤 FreelancerID obtenido:', freelancerId);
 
-        if (userBookings.length === 0) {
-          console.log('⚠️ No hay bookings para este usuario');
-          this.bookings = [];
-          this.loading = false;
-          this.cdr.detectChanges();
-          console.log('✅ Loading = false (sin bookings)');
-          return;
-        }
+  if (freelancerId === null) {
+    console.error('❌ No se encontró el freelancer ID');
+    alert('Error al cargar tu perfil de freelancer');
+    this.loading = false;
+    this.router.navigate(['/login']);
+    return;
+  }
 
-        // Cargar workspaces
-        console.log('🔄 Iniciando carga de workspaces...');
-        this.searchingApi.getWorkspaces().subscribe({
-          next: (wsList: any[]) => {
-            console.log('🏢 Workspaces cargados:', wsList.length);
+  this.userId = freelancerId; 
+  console.log('📋 FreelancerID establecido:', freelancerId);
+  this.loadBookingsForFreelancer(freelancerId);
+}
 
-            this.bookings = userBookings.map((b: any) => {
-              const ws = wsList.find((w: any) => w.id === b.spaceId);
+/** Cargar reservas de los espacios del owner */
+loadOwnerBookings(): void {
+  const ownerId = this.auth.getOwnerId();
 
-              if (!ws) {
-                console.warn(`⚠️ No se encontró workspace con id ${b.spaceId}`);
-              }
+  console.log('👤 OwnerID obtenido:', ownerId);
 
-              const start = new Date(b.startDate);
-              const end = new Date(b.endDate);
+  if (ownerId === null) {
+    console.error('❌ No se encontró el owner ID');
+    alert('Error al cargar tu perfil de propietario');
+    this.loading = false;
+    this.router.navigate(['/login']);
+    return;
+  }
 
-              const nights = Math.max(
-                1,
-                (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)
-              );
+  console.log('🔄 Cargando espacios del owner...');
+  this.loading = true;
 
-              return {
-                ...b,
-                workspace: ws,
-                total: nights * (ws?.price ?? 0)
-              };
-            });
+  // Primero obtener los espacios del owner
+  this.searchingApi.getWorkspaces().subscribe({
+    next: (allSpaces) => {
+      const ownerSpaces = allSpaces.filter(s => s.ownerId === ownerId);
+      const ownerSpaceIds = ownerSpaces.map(s => s.spaceId);
+      
+      console.log('🏢 Espacios del owner:', ownerSpaceIds);
 
-            console.log('✅ Bookings procesados:', this.bookings);
-            this.loading = false;
-            console.log('✅ Loading = false (datos cargados)');
-
-            this.cdr.detectChanges();
-
-            setTimeout(() => {
-              console.log('🔄 Estado final:', {
-                loading: this.loading,
-                bookingsLength: this.bookings.length
-              });
-            }, 100);
-          },
-          error: (err: any) => {
-            console.error("❌ ERROR COMPLETO al cargar workspaces:", err);
-            this.loading = false;
-            this.cdr.detectChanges();
-            console.log('✅ Loading = false (error workspaces)');
-          }
-        });
-      },
-      error: (err: any) => {
-        console.error("❌ ERROR COMPLETO al cargar bookings:", err);
+      if (ownerSpaceIds.length === 0) {
+        console.log('⚠️ El owner no tiene espacios registrados');
+        this.bookings = [];
         this.loading = false;
         this.cdr.detectChanges();
-        console.log('✅ Loading = false (error bookings)');
+        return;
       }
-    });
-  }
 
-  /** Formateo de fecha bonito */
-  formatDate(date: string): string {
-    return new Date(date).toLocaleDateString("es-PE", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric"
-    });
-  }
+      // Ahora cargar bookings de esos espacios
+      this.loadBookingsForOwnerSpaces(ownerSpaceIds);
+    },
+    error: (err) => {
+      console.error('❌ Error cargando espacios:', err);
+      this.loading = false;
+      this.cdr.detectChanges();
+    }
+  });
+}
+
+/** Cargar bookings del freelancer */
+private loadBookingsForFreelancer(freelancerId: number): void {
+  this.bookingsApi.getAll().subscribe({
+    next: (allBookings: any[]) => {
+      console.log('📦 Total bookings en DB:', allBookings.length);
+
+      const freelancerBookings = allBookings.filter(b => b.freelancerId === freelancerId);
+      console.log('✅ Bookings del freelancer:', freelancerBookings.length);
+
+      if (freelancerBookings.length === 0) {
+        this.bookings = [];
+        this.loading = false;
+        this.cdr.detectChanges();
+        return;
+      }
+
+      this.processBookings(freelancerBookings);
+    },
+    error: (err) => {
+      console.error('❌ Error cargando bookings:', err);
+      this.loading = false;
+      this.cdr.detectChanges();
+    }
+  });
+}
+
+/** Cargar bookings filtrados por spaceIds del owner */
+private loadBookingsForOwnerSpaces(ownerSpaceIds: number[]): void {
+  console.log('🔄 Cargando bookings de los espacios del owner...');
+
+  this.bookingsApi.getAll().subscribe({
+    next: (allBookings: any[]) => {
+      console.log('📦 Total bookings en DB:', allBookings.length);
+
+      // ✅ Filtrar bookings que pertenecen a espacios del owner
+      const ownerBookings = allBookings.filter(b => ownerSpaceIds.includes(b.spaceId));
+      
+      console.log('✅ Bookings de los espacios del owner:', ownerBookings.length);
+
+      if (ownerBookings.length === 0) {
+        this.bookings = [];
+        this.loading = false;
+        this.cdr.detectChanges();
+        return;
+      }
+
+      this.processBookings(ownerBookings);
+    },
+    error: (err) => {
+      console.error('❌ Error cargando bookings:', err);
+      this.loading = false;
+      this.cdr.detectChanges();
+    }
+  });
+}
+
+/** Procesar bookings y cargar workspaces */
+private processBookings(bookingsToProcess: any[]): void {
+  this.searchingApi.getWorkspaces().subscribe({
+    next: (wsList: any[]) => {
+      console.log('🏢 Workspaces cargados:', wsList.length);
+
+      this.bookings = bookingsToProcess.map((b: any) => {
+        const ws = wsList.find((w: any) => w.spaceId === b.spaceId);
+
+        if (!ws) {
+          console.warn(`⚠️ No se encontró workspace con spaceId ${b.spaceId}`);
+        } else {
+          console.log(`✅ Workspace encontrado:`, ws.name);
+        }
+
+        const start = new Date(b.startDate);
+        const end = new Date(b.endDate);
+
+        const nights = Math.max(
+          1,
+          Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24))
+        );
+
+        return {
+          ...b,
+          workspace: ws,
+          nights: nights,
+          total: nights * (ws?.price ?? 0)
+        };
+      });
+
+      console.log('✅ Bookings procesados:', this.bookings);
+      this.loading = false;
+      this.cdr.detectChanges();
+    },
+    error: (err: any) => {
+      console.error("❌ ERROR al cargar workspaces:", err);
+      this.loading = false;
+      this.cdr.detectChanges();
+    }
+  });
+}
 }

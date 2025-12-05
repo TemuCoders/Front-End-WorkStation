@@ -6,6 +6,7 @@ import { AuthService } from '../../../../User/infrastructure/auth.service';
 import { SearchingApi } from '../../../infrastructure/searching-api';
 import { WorkspaceMinimalResource } from '../../../infrastructure/workspace-minimal.resource';
 import { Sidebar } from '../../../../shared/presentation/components/sidebar/sidebar';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-my-spaces-list',
@@ -14,7 +15,8 @@ import { Sidebar } from '../../../../shared/presentation/components/sidebar/side
     CommonModule,
     RouterLink,
     FormsModule,
-    Sidebar
+    Sidebar,
+    MatIcon
   ],
   templateUrl: './my-spaces-list.html',
   styleUrls: ['./my-spaces-list.css']

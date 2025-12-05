@@ -5,7 +5,7 @@
     <div class="page-header">
       <h1 class="page-title">Mis Espacios de Trabajo</h1>
       <button class="btn btn-primary" (click)="createNewSpace()">
-        ➕ Crear Nuevo Espacio
+        <mat-icon>add</mat-icon> Crear Nuevo Espacio
       </button>
     </div>
 
@@ -18,24 +18,22 @@
         <h2>No tienes espacios registrados</h2>
         <p>Comienza creando tu primer espacio de trabajo</p>
         <button class="btn btn-primary" (click)="createNewSpace()">
-          ➕ Crear Primer Espacio
+          <mat-icon>add_box</mat-icon> Crear Primer Espacio
         </button>
       </div>
     } @else {
-      <div class="spaces-list">
+
+      <div class="spaces-grid">
         @for (space of mySpaces(); track space.spaceId) {
           <div class="space-card">
+
             @if (editingSpaceId() === space.spaceId) {
-              <!-- MODO EDICIÓN -->
               <div class="edit-mode">
                 <h3>Editando: {{ space.name }}</h3>
-                
+
                 <div class="form-group">
                   <label>Nombre:</label>
-                  <input 
-                    type="text" 
-                    [(ngModel)]="editForm().name"
-                    class="form-input">
+                  <input type="text" [(ngModel)]="editForm().name" class="form-input">
                 </div>
 
                 <div class="form-row">
@@ -51,127 +49,103 @@
 
                   <div class="form-group">
                     <label>Capacidad:</label>
-                    <input 
-                      type="number" 
-                      [(ngModel)]="editForm().capacity"
-                      class="form-input"
-                      min="1">
+                    <input type="number" [(ngModel)]="editForm().capacity" class="form-input">
                   </div>
 
                   <div class="form-group">
                     <label>Precio/día (S/):</label>
-                    <input 
-                      type="number" 
-                      [(ngModel)]="editForm().price"
-                      class="form-input"
-                      min="0">
+                    <input type="number" [(ngModel)]="editForm().price" class="form-input">
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label>Descripción:</label>
-                  <textarea 
-                    [(ngModel)]="editForm().description"
-                    class="form-textarea"
-                    rows="3"></textarea>
+                  <textarea [(ngModel)]="editForm().description" class="form-textarea" rows="3"></textarea>
                 </div>
 
                 <div class="form-row">
                   <div class="form-group">
                     <label>Calle:</label>
-                    <input 
-                      type="text" 
-                      [(ngModel)]="editForm().street"
-                      class="form-input">
+                    <input type="text" [(ngModel)]="editForm().street" class="form-input">
                   </div>
 
                   <div class="form-group">
                     <label>Número:</label>
-                    <input 
-                      type="text" 
-                      [(ngModel)]="editForm().streetNumber"
-                      class="form-input">
+                    <input type="text" [(ngModel)]="editForm().streetNumber" class="form-input">
                   </div>
                 </div>
 
                 <div class="form-row">
                   <div class="form-group">
                     <label>Ciudad:</label>
-                    <input 
-                      type="text" 
-                      [(ngModel)]="editForm().city"
-                      class="form-input">
+                    <input type="text" [(ngModel)]="editForm().city" class="form-input">
                   </div>
 
                   <div class="form-group">
                     <label>Código Postal:</label>
-                    <input 
-                      type="text" 
-                      [(ngModel)]="editForm().postalCode"
-                      class="form-input">
+                    <input type="text" [(ngModel)]="editForm().postalCode" class="form-input">
                   </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group checkbox-group">
                   <label>
-                    <input 
-                      type="checkbox" 
-                      [(ngModel)]="editForm().available">
+                    <input type="checkbox" [(ngModel)]="editForm().available">
                     Disponible para reservas
                   </label>
                 </div>
 
                 <div class="edit-actions">
                   <button class="btn btn-success" (click)="saveEdit(space.spaceId)">
-                    ✓ Guardar
+                    <mat-icon>check</mat-icon> Guardar
                   </button>
                   <button class="btn btn-secondary" (click)="cancelEdit()">
-                    ✕ Cancelar
+                    <mat-icon>close</mat-icon> Cancelar
                   </button>
                 </div>
               </div>
+
             } @else {
-              <!-- MODO VISTA -->
-              <div class="space-image">
-                <img [src]="getMainImage(space.images)" [alt]="space.name">
-                <span class="status-badge" [class.available]="space.available">
-                  {{ space.available ? 'Disponible' : 'No disponible' }}
-                </span>
-              </div>
+              <div class="airbnb-card">
 
-              <div class="space-info">
-                <h3>{{ space.name }}</h3>
-                
-                <div class="space-details">
-                  <span class="detail-item">📍 {{ space.address }}</span>
-                  <span class="detail-item">🏢 {{ space.spaceType }}</span>
-                  <span class="detail-item">👥 {{ space.capacity }} personas</span>
-                  <span class="detail-item">💰 S/ {{ space.price }}/día</span>
+                <div class="space-image">
+                  <img [src]="getMainImage(space.images)" [alt]="space.name">
+                  <span class="status-badge" [class.available]="space.available">
+                    {{ space.available ? 'Disponible' : 'No disponible' }}
+                  </span>
                 </div>
 
-                <p class="space-description">{{ space.description }}</p>
+                <div class="space-info">
+                  <div class="space-title">
+                    <h3>{{ space.name }}</h3>
+                    <span class="space-type">{{ space.spaceType }}</span>
+                  </div>
 
-                <div class="space-actions">
-                  <button class="btn btn-sm btn-primary" (click)="startEdit(space)">
-                    ✏️ Editar
-                  </button>
-                  
-                  <button 
-                    class="btn btn-sm" 
-                    [class.btn-warning]="space.available"
-                    [class.btn-success]="!space.available"
-                    (click)="toggleAvailability(space)">
-                    {{ space.available ? '🔒 Desactivar' : '🔓 Activar' }}
-                  </button>
+                  <div class="space-meta">
+                    <span><mat-icon>location_on</mat-icon> {{ space.address }}</span>
+                    <span><mat-icon>people</mat-icon> {{ space.capacity }} personas</span>
+                  </div>
 
-                  <button class="btn btn-sm btn-info" (click)="viewSpaceBookings(space.spaceId)">
-                    📅 Ver Reservas
-                  </button>
+                  <p class="space-description">{{ space.description }}</p>
 
-                  <button class="btn btn-sm btn-danger" (click)="deleteSpace(space.spaceId, space.name)">
-                    🗑️ Eliminar
-                  </button>
+                  <div class="space-price">
+                    <span>S/ {{ space.price }}</span> <small>/ día</small>
+                  </div>
+
+                  <div class="space-actions">
+                    <button class="btn-action" (click)="startEdit(space)">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button class="btn-action" (click)="toggleAvailability(space)">
+                      <mat-icon>
+                        {{ space.available ? 'lock' : 'lock_open' }}
+                      </mat-icon>
+                    </button>
+                    <button class="btn-action delete" (click)="deleteSpace(space.spaceId, space.name)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
                 </div>
+
               </div>
             }
           </div>

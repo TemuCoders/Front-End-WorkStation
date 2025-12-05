@@ -34,8 +34,7 @@ export class Layout {
 
     return [
       { link: '/searching/workspaces', label: 'option.workspaces' },
-      { link: `/profile/${profileId}`, label: 'option.profile' },
-      { link: '/create', label: 'Crear Espacio' },
+      { link: `/profile/${profileId}`, label: 'option.profile' }
     ];
   });
 }

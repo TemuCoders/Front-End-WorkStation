@@ -28,7 +28,6 @@ export class Sidebar {
     const currentUser = this.user();
     const userId = currentUser?.id || 1;
     
-    // ✅ CRÍTICO: Evaluar el rol DENTRO del computed
     const isFreelancer = currentUser?.isFreelancer() || false;
     const isOwner = currentUser?.isOwner() || false;
     
@@ -46,15 +45,12 @@ export class Sidebar {
       exact: true
     });
 
-    if (isFreelancer) {
-      console.log('📅 Agregando "My Bookings" al sidebar');
-      items.push({
+    items.push({
         route: '/bookings/list',
         icon: 'event',
         label: 'My Bookings',
         exact: false
-      });
-    }
+    });
 
     if (isOwner) {
       console.log('🏢 Agregando "My Spaces" al sidebar');
