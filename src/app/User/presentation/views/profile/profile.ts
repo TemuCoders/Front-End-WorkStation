@@ -10,10 +10,11 @@ import { User } from '../../../domain/model/user.entity';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SearchingStore } from '../../../../searching/application/searching-store';
 import { WorkspaceMinimalResource } from '../../../../searching/infrastructure/workspace-minimal.resource';
-import {BookingResponse} from '../../../../bookings/infrastructure/booking-response';
-import {BookingApiEndpoint} from '../../../../bookings/infrastructure/booking-api-endpoint';
+import { Booking } from '../../../../bookings/domain/model/booking.entity';
+import { BookingApiEndpoint } from '../../../../bookings/infrastructure/booking-api-endpoint';
 import { Sidebar } from '../../../../shared/presentation/components/sidebar/sidebar';
 import { AuthService } from '../../../infrastructure/auth.service';
+
 
 type ReviewItem = {
   id: number;
@@ -55,6 +56,12 @@ export class Profile {
   readonly searchError = this.searchingStore.error;
   private readonly allWorkspaces = this.searchingStore.workspaces;
 
+  private readonly bookingsSignal = signal<Booking[]>([]);
+  readonly bookings = this.bookingsSignal.asReadonly();
+
+  readonly bookingsLoading = signal<boolean>(false);
+  readonly bookingsError = signal<string | null>(null);
+
 
   readonly isOwnProfile = computed(() => {
     const currentUser = this.authService.currentUser();
@@ -68,6 +75,7 @@ export class Profile {
     if (!profileUser) return [];
 
     if (profileUser.isOwner()) {
+      console.log('Owner: ',list);
       const currentUser = this.authService.currentUser();
 
       if (currentUser?.id === profileUser.id) {
@@ -83,26 +91,44 @@ export class Profile {
   });
 
 
-  readonly myBooking = computed<BookingResponse[]>(()=> {
+  private loadBookings(): void {
+    this.bookingsLoading.set(true);
+    this.bookingsError.set(null);
 
+    this.bookingApi
+      .getAll()
+      .pipe(takeUntilDestroyed())
+      .subscribe({
+        next: bookings => {
+          this.bookingsSignal.set(bookings);
+          this.bookingsLoading.set(false);
+          console.log('Bookings cargadas', bookings);
+        },
+        error: err => {
+          this.bookingsLoading.set(false);
+          this.bookingsError.set(err.message ?? 'Error al cargar bookings');
+          console.error('Error bookings', err);
+        }
+      });
+  }
+
+
+  readonly myBooking = computed<Booking[]>(() => {
     const profileUser = this.editedUser();
-    const booking = signal<BookingResponse[]>([]).asReadonly();
-    const list = booking() || [];
+    const list = this.bookings() || [];
     if (!profileUser) return [];
 
-    if (profileUser.isFreelancer()) {
-      const currentUser = this.authService.currentUser();
+    if (!profileUser.isFreelancer()) return [];
 
-      if (currentUser?.id === profileUser.id) {
-        const freelancerId = this.authService.getFreelancerId();
-        if (freelancerId) {
-           const freelancer = list.filter(f => f.freelancerId === freelancerId);
-          return freelancer.length ? freelancer : [];
-        }
-      }}
+    const currentUser = this.authService.currentUser();
+    if (!currentUser || currentUser.id !== profileUser.id) return [];
 
-    return [];
-  })
+    const freelancerId = this.authService.getFreelancerId();
+    if (!freelancerId) return [];
+
+    const mine = list.filter(b => b.freelancerId === freelancerId);
+    return mine.length ? mine : [];
+  });
 
   readonly reviews = signal<ReviewItem[]>([
     {
@@ -136,7 +162,7 @@ export class Profile {
       this.router.navigate(['/login']);
       return;
     }
-
+    this.loadBookings();
     this.route.params.pipe(takeUntilDestroyed()).subscribe(params => {
       const id = Number(params['id']);
       this.routeId.set(Number.isFinite(id) ? id : null);

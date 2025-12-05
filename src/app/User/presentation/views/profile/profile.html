@@ -10,7 +10,9 @@
         <div class="head-text">
           <h1 class="name">{{ user.name }}</h1>
           <div class="meta">Joined in {{ joinedYear(user) }}</div>
-          <div class="submeta">{{ reviews().length }} reviews · Superhost</div>
+          <span class="profile-role" [ngClass]="user.role.roleName | lowercase">
+                {{ user.role.roleName }}
+          </span>
         </div>
       </section>
 

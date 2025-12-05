@@ -246,3 +246,14 @@
     height: 80px;
   }
 }
+
+.profile-role {
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.profile-role.owner { background: #ff6f43; color: #fff; }
+.profile-role.freelancer { background: #4caf50; color: #fff; }
