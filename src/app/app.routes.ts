@@ -16,6 +16,7 @@ export const routes: Routes = [
     children: [
       { path: 'login', loadComponent: login, title: `${baseTitle} - Login` },
       { path: 'register', loadComponent: register, title: `${baseTitle} - Registro` },
+      { path: '', redirectTo: '/login', pathMatch: 'full' },
     ]
   },
 
@@ -37,6 +38,5 @@ export const routes: Routes = [
     ],
   },
 
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', loadComponent:  pageNotFound, title: `${baseTitle} - Page Not Found`  },
 ];
