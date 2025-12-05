@@ -22,7 +22,53 @@
     "button": "Ver Workspaces"
   },
   "workspace": {
-    "reserve": "Reservar"
+    "reserve": "Reservar",
+    "pageTitle": "My Workspaces",
+    "createNewButton": "Create New Workspace",
+    "loadingMessage": "Loading your workspaces...",
+    "emptyState": {
+      "title": "You don't have any workspaces registered",
+      "content": "Start by creating your first workspace",
+      "createButton": "Create First Workspace"
+    },
+    "editMode": {
+      "title": "Editing: {{name}}",
+      "labels": {
+        "name": "Name:",
+        "type": "Type:",
+        "capacity": "Capacity:",
+        "price": "Price/day (S/):",
+        "description": "Description:",
+        "street": "Street:",
+        "streetNumber": "Number:",
+        "city": "City:",
+        "postalCode": "Postal Code:",
+        "available": "Available for reservations"
+      },
+      "actions": {
+        "save": "Save",
+        "cancel": "Cancel"
+      },
+      "spaceTypes": {
+        "privateOffice": "Private Office",
+        "meetingRoom": "Meeting Room",
+        "dedicatedDesk": "Dedicated Desk",
+        "coworkingSpace": "Coworking Space"
+      }
+    },    
+    "card": {
+      "status": {
+        "available": "Available",
+        "notAvailable": "Not Available"
+      },
+      "people": "{{count}} people",
+      "pricePerDay": "S/ {{price}} / day",
+      "actions": {
+        "edit": "Edit",
+        "toggleAvailability": "Toggle Availability",
+        "delete": "Delete"
+      }
+    }
   },
   "workspaceForm": {
     "title": {

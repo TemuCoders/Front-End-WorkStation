@@ -22,7 +22,53 @@
     "button": "View Workspaces"
   },
   "workspace": {
-    "reserve": "Reserve"
+    "reserve": "Reserve",
+    "pageTitle": "Mis Espacios de Trabajo",
+    "createNewButton": "Crear Nuevo Espacio",
+    "loadingMessage": "Cargando tus espacios...",
+    "emptyState": {
+      "title": "No tienes espacios registrados",
+      "content": "Comienza creando tu primer espacio de trabajo",
+      "createButton": "Crear Primer Espacio"
+    },
+    "editMode": {
+      "title": "Editando: {{name}}",
+      "labels": {
+        "name": "Nombre:",
+        "type": "Tipo:",
+        "capacity": "Capacidad:",
+        "price": "Precio/día (S/):",
+        "description": "Descripción:",
+        "street": "Calle:",
+        "streetNumber": "Número:",
+        "city": "Ciudad:",
+        "postalCode": "Código Postal:",
+        "available": "Disponible para reservas"
+      },
+      "actions": {
+        "save": "Guardar",
+        "cancel": "Cancelar"
+      },
+      "spaceTypes": {
+        "privateOffice": "Oficina Privada",
+        "meetingRoom": "Sala de Reuniones",
+        "dedicatedDesk": "Escritorio Dedicado",
+        "coworkingSpace": "Espacio Coworking"
+      }
+    },
+    "card": {
+      "status": {
+        "available": "Disponible",
+        "notAvailable": "No disponible"
+      },
+      "people": "{{count}} personas",
+      "pricePerDay": "S/ {{price}} / día",
+      "actions": {
+        "edit": "Editar",
+        "toggleAvailability": "Cambiar disponibilidad",
+        "delete": "Eliminar"
+      }
+    }
   },
   "workspaceTable": {
     "status": {

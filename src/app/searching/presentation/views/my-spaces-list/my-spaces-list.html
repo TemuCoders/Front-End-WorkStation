@@ -3,86 +3,86 @@
 
   <main class="main-content">
     <div class="page-header">
-      <h1 class="page-title">Mis Espacios de Trabajo</h1>
+      <h1 class="page-title">{{ 'workspace.pageTitle' | translate }}</h1>
       <button class="btn btn-primary" (click)="createNewSpace()">
-        <mat-icon>add</mat-icon> Crear Nuevo Espacio
+        <mat-icon>add</mat-icon>
+        {{ 'workspace.createNewButton' | translate }}
       </button>
     </div>
 
     @if (loading()) {
       <div class="loading-container">
-        <p>Cargando tus espacios...</p>
+        <p>{{ 'workspace.loadingMessage' | translate }}</p>
       </div>
     } @else if (mySpaces().length === 0) {
       <div class="empty-state">
-        <h2>No tienes espacios registrados</h2>
-        <p>Comienza creando tu primer espacio de trabajo</p>
+        <h2>{{ 'workspace.emptyState.title' | translate }}</h2>
+        <p>{{ 'workspace.emptyState.content' | translate }}</p>
         <button class="btn btn-primary" (click)="createNewSpace()">
-          <mat-icon>add_box</mat-icon> Crear Primer Espacio
+          <mat-icon>add_box</mat-icon>
+          {{ 'workspace.emptyState.createButton' | translate }}
         </button>
       </div>
     } @else {
-
       <div class="spaces-grid">
         @for (space of mySpaces(); track space.spaceId) {
           <div class="space-card">
-
             @if (editingSpaceId() === space.spaceId) {
               <div class="edit-mode">
-                <h3>Editando: {{ space.name }}</h3>
+                <h3>{{ 'workspace.editMode.title' | translate:{name: space.name} }}</h3>
 
                 <div class="form-group">
-                  <label>Nombre:</label>
+                  <label>{{ 'workspace.editMode.labels.name' | translate }}</label>
                   <input type="text" [(ngModel)]="editForm().name" class="form-input">
                 </div>
 
                 <div class="form-row">
                   <div class="form-group">
-                    <label>Tipo:</label>
+                    <label>{{ 'workspace.editMode.labels.type' | translate }}</label>
                     <select [(ngModel)]="editForm().spaceType" class="form-input">
-                      <option value="Oficina Privada">Oficina Privada</option>
-                      <option value="Sala de Reuniones">Sala de Reuniones</option>
-                      <option value="Escritorio Dedicado">Escritorio Dedicado</option>
-                      <option value="Espacio Coworking">Espacio Coworking</option>
+                      <option value="Oficina Privada">{{ 'workspace.editMode.spaceTypes.privateOffice' | translate }}</option>
+                      <option value="Sala de Reuniones">{{ 'workspace.editMode.spaceTypes.meetingRoom' | translate }}</option>
+                      <option value="Escritorio Dedicado">{{ 'workspace.editMode.spaceTypes.dedicatedDesk' | translate }}</option>
+                      <option value="Espacio Coworking">{{ 'workspace.editMode.spaceTypes.coworkingSpace' | translate }}</option>
                     </select>
                   </div>
 
                   <div class="form-group">
-                    <label>Capacidad:</label>
+                    <label>{{ 'workspace.editMode.labels.capacity' | translate }}</label>
                     <input type="number" [(ngModel)]="editForm().capacity" class="form-input">
                   </div>
 
                   <div class="form-group">
-                    <label>Precio/día (S/):</label>
+                    <label>{{ 'workspace.editMode.labels.price' | translate }}</label>
                     <input type="number" [(ngModel)]="editForm().price" class="form-input">
                   </div>
                 </div>
 
                 <div class="form-group">
-                  <label>Descripción:</label>
+                  <label>{{ 'workspace.editMode.labels.description' | translate }}</label>
                   <textarea [(ngModel)]="editForm().description" class="form-textarea" rows="3"></textarea>
                 </div>
 
                 <div class="form-row">
                   <div class="form-group">
-                    <label>Calle:</label>
+                    <label>{{ 'workspace.editMode.labels.street' | translate }}</label>
                     <input type="text" [(ngModel)]="editForm().street" class="form-input">
                   </div>
 
                   <div class="form-group">
-                    <label>Número:</label>
+                    <label>{{ 'workspace.editMode.labels.streetNumber' | translate }}</label>
                     <input type="text" [(ngModel)]="editForm().streetNumber" class="form-input">
                   </div>
                 </div>
 
                 <div class="form-row">
                   <div class="form-group">
-                    <label>Ciudad:</label>
+                    <label>{{ 'workspace.editMode.labels.city' | translate }}</label>
                     <input type="text" [(ngModel)]="editForm().city" class="form-input">
                   </div>
 
                   <div class="form-group">
-                    <label>Código Postal:</label>
+                    <label>{{ 'workspace.editMode.labels.postalCode' | translate }}</label>
                     <input type="text" [(ngModel)]="editForm().postalCode" class="form-input">
                   </div>
                 </div>
@@ -90,27 +90,26 @@
                 <div class="form-group checkbox-group">
                   <label>
                     <input type="checkbox" [(ngModel)]="editForm().available">
-                    Disponible para reservas
+                    {{ 'workspace.editMode.labels.available' | translate }}
                   </label>
                 </div>
 
                 <div class="edit-actions">
                   <button class="btn btn-success" (click)="saveEdit(space.spaceId)">
-                    <mat-icon>check</mat-icon> Guardar
+                    <mat-icon>check</mat-icon> {{ 'workspace.editMode.actions.save' | translate }}
                   </button>
                   <button class="btn btn-secondary" (click)="cancelEdit()">
-                    <mat-icon>close</mat-icon> Cancelar
+                    <mat-icon>close</mat-icon> {{ 'workspace.editMode.actions.cancel' | translate }}
                   </button>
                 </div>
               </div>
 
             } @else {
               <div class="airbnb-card">
-
                 <div class="space-image">
                   <img [src]="getMainImage(space.images)" [alt]="space.name">
                   <span class="status-badge" [class.available]="space.available">
-                    {{ space.available ? 'Disponible' : 'No disponible' }}
+                    {{ space.available ? ('workspace.card.status.available' | translate) : ('workspace.card.status.notAvailable' | translate) }}
                   </span>
                 </div>
 
@@ -122,13 +121,13 @@
 
                   <div class="space-meta">
                     <span><mat-icon>location_on</mat-icon> {{ space.address }}</span>
-                    <span><mat-icon>people</mat-icon> {{ space.capacity }} personas</span>
+                    <span><mat-icon>people</mat-icon> {{ 'workspace.card.people' | translate:{count: space.capacity} }}</span>
                   </div>
 
                   <p class="space-description">{{ space.description }}</p>
 
                   <div class="space-price">
-                    <span>S/ {{ space.price }}</span> <small>/ día</small>
+                    <span>{{ 'workspace.card.pricePerDay' | translate:{price: space.price} }}</span>
                   </div>
 
                   <div class="space-actions">
@@ -142,10 +141,10 @@
                     </button>
                     <button class="btn-action delete" (click)="deleteSpace(space.spaceId, space.name)">
                       <mat-icon>delete</mat-icon>
+
                     </button>
                   </div>
                 </div>
-
               </div>
             }
           </div>

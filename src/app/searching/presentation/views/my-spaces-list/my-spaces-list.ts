@@ -7,6 +7,7 @@ import { SearchingApi } from '../../../infrastructure/searching-api';
 import { WorkspaceMinimalResource } from '../../../infrastructure/workspace-minimal.resource';
 import { Sidebar } from '../../../../shared/presentation/components/sidebar/sidebar';
 import { MatIcon } from '@angular/material/icon';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-my-spaces-list',
@@ -16,7 +17,8 @@ import { MatIcon } from '@angular/material/icon';
     RouterLink,
     FormsModule,
     Sidebar,
-    MatIcon
+    MatIcon,
+    TranslatePipe
   ],
   templateUrl: './my-spaces-list.html',
   styleUrls: ['./my-spaces-list.css']
