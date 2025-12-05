@@ -63,7 +63,6 @@ export class Register {
     if (age < 0) return this.setError('La fecha de nacimiento no puede ser futura.');
     if (age < 18) return this.setError('Debes ser mayor de 18 años para registrarte.');
 
-    // Preparar request para backend
     const registerRequest = {
       name: this.userData.personalInfo.nombre,
       email: this.userData.email,
@@ -71,10 +70,10 @@ export class Register {
       photo: `https://picsum.photos/seed/${Date.now()}/300/300`,
       age,
       location: this.userData.personalInfo.ubicacion,
-      roleName: this.userData.personalInfo.tipoUsuario // <-- CORRECCIÓN PARA BACKEND
+      roleName: this.userData.personalInfo.tipoUsuario 
     };
 
-    console.log('RegisterRequest:', registerRequest); // DEBUG
+    console.log('RegisterRequest:', registerRequest); 
 
     // Registrar usando AuthService
     this.authService.register(registerRequest).subscribe({

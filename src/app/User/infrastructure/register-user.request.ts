@@ -5,4 +5,5 @@ export interface RegisterUserRequest {
   photo: string;
   age: number;
   location: string;
+  roleName: string;
 }
